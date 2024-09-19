@@ -1,3 +1,8 @@
+using E_Learning.Data;
+using E_Learning.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace E_Learning
 {
     public class Program
@@ -8,7 +13,12 @@ namespace E_Learning
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ElearingDbcontext>();
+            builder.Services.AddDbContext<ElearingDbcontext>(opion =>
+            {
+                opion.UseSqlServer(builder.Configuration.GetConnectionString("DefeultConnection"));
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
