@@ -1,0 +1,45 @@
+body{
+ 
+}
+.sup_bt{
+    background-color: black;
+    position: relative;
+    right: 200px;
+    top: 100px;
+}
+.login{
+    
+    position:relative;
+    bottom: 600px;
+    left: 800px;
+    width: 450px;
+    height: 700px;
+    padding-left: 50px;
+    padding-top: 10px;
+    font-size: x-large;
+}
+.login input{
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: x-large;
+}
+.login button{
+    background-color: blue;
+    color: white;
+    width: 400px;
+    height: 50px;
+    border-radius: 10px;
+    font-size: x-large;
+}
+.login button:hover{
+    color: black;
+}
+.login a{
+    color: blue;
+    font-size: medium;
+
+}
+img{
+    padding-top: 100px;
+}
