@@ -1,7 +1,9 @@
-using E_Learning.Data;
-using E_Learning.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Entites.Data;
+using Entites.Models;
+using Repositories.Interfaces;
+using Repositories.Impelmentations;
 
 namespace E_Learning
 {
@@ -15,6 +17,7 @@ namespace E_Learning
             builder.Services.AddControllersWithViews();
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ElearingDbcontext>();
+            builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddDbContext<ElearingDbcontext>(opion =>
             {
                 opion.UseSqlServer(builder.Configuration.GetConnectionString("DefeultConnection"));

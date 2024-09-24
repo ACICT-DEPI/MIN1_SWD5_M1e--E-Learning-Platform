@@ -1,4 +1,4 @@
-using E_Learning.Models;
+using Entites.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
