@@ -3,11 +3,12 @@ using System;
 using Entites.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Entites.Migrations
+namespace E_Learning.Migrations
 {
     [DbContext(typeof(ElearingDbcontext))]
     partial class ElearingDbcontextModelSnapshot : ModelSnapshot
@@ -21,7 +22,7 @@ namespace Entites.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("E_Learning.Models.Anouncment", b =>
+            modelBuilder.Entity("Entites.Models.Anouncment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +44,7 @@ namespace Entites.Migrations
                     b.ToTable("Anouncments");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Answer", b =>
+            modelBuilder.Entity("Entites.Models.Answer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,7 +75,7 @@ namespace Entites.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Course", b =>
+            modelBuilder.Entity("Entites.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +123,7 @@ namespace Entites.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Deposit", b =>
+            modelBuilder.Entity("Entites.Models.Deposit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -147,7 +148,7 @@ namespace Entites.Migrations
                     b.ToTable("Deposits");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Enrolment", b =>
+            modelBuilder.Entity("Entites.Models.Enrolment", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -168,7 +169,7 @@ namespace Entites.Migrations
                     b.ToTable("Enrolments");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Lesson", b =>
+            modelBuilder.Entity("Entites.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,7 +187,7 @@ namespace Entites.Migrations
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Material", b =>
+            modelBuilder.Entity("Entites.Models.Material", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -208,7 +209,7 @@ namespace Entites.Migrations
                     b.ToTable("Materials");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Module", b =>
+            modelBuilder.Entity("Entites.Models.Module", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -234,7 +235,7 @@ namespace Entites.Migrations
                     b.ToTable("Modules");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Note", b =>
+            modelBuilder.Entity("Entites.Models.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -265,7 +266,7 @@ namespace Entites.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Payment", b =>
+            modelBuilder.Entity("Entites.Models.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -295,7 +296,7 @@ namespace Entites.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Progress", b =>
+            modelBuilder.Entity("Entites.Models.Progress", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -310,7 +311,7 @@ namespace Entites.Migrations
                     b.ToTable("Progresses");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Question", b =>
+            modelBuilder.Entity("Entites.Models.Question", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -346,7 +347,7 @@ namespace Entites.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("E_Learning.Models.User", b =>
+            modelBuilder.Entity("Entites.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -426,7 +427,7 @@ namespace Entites.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Withdrow", b =>
+            modelBuilder.Entity("Entites.Models.Withdrow", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -584,159 +585,159 @@ namespace Entites.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Anouncment", b =>
+            modelBuilder.Entity("Entites.Models.Anouncment", b =>
                 {
-                    b.HasOne("E_Learning.Models.Course", null)
+                    b.HasOne("Entites.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Answer", b =>
+            modelBuilder.Entity("Entites.Models.Answer", b =>
                 {
-                    b.HasOne("E_Learning.Models.Question", null)
+                    b.HasOne("Entites.Models.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Course", b =>
+            modelBuilder.Entity("Entites.Models.Course", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("InstractourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Deposit", b =>
+            modelBuilder.Entity("Entites.Models.Deposit", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Enrolment", b =>
+            modelBuilder.Entity("Entites.Models.Enrolment", b =>
                 {
-                    b.HasOne("E_Learning.Models.Course", null)
+                    b.HasOne("Entites.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Lesson", b =>
+            modelBuilder.Entity("Entites.Models.Lesson", b =>
                 {
-                    b.HasOne("E_Learning.Models.Module", null)
+                    b.HasOne("Entites.Models.Module", null)
                         .WithMany()
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Material", b =>
+            modelBuilder.Entity("Entites.Models.Material", b =>
                 {
-                    b.HasOne("E_Learning.Models.Lesson", null)
+                    b.HasOne("Entites.Models.Lesson", null)
                         .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Module", b =>
+            modelBuilder.Entity("Entites.Models.Module", b =>
                 {
-                    b.HasOne("E_Learning.Models.Course", null)
+                    b.HasOne("Entites.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Note", b =>
+            modelBuilder.Entity("Entites.Models.Note", b =>
                 {
-                    b.HasOne("E_Learning.Models.Lesson", null)
+                    b.HasOne("Entites.Models.Lesson", null)
                         .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Payment", b =>
+            modelBuilder.Entity("Entites.Models.Payment", b =>
                 {
-                    b.HasOne("E_Learning.Models.Course", null)
+                    b.HasOne("Entites.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Progress", b =>
+            modelBuilder.Entity("Entites.Models.Progress", b =>
                 {
-                    b.HasOne("E_Learning.Models.Lesson", null)
+                    b.HasOne("Entites.Models.Lesson", null)
                         .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Question", b =>
+            modelBuilder.Entity("Entites.Models.Question", b =>
                 {
-                    b.HasOne("E_Learning.Models.Course", null)
+                    b.HasOne("Entites.Models.Course", null)
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.Lesson", null)
+                    b.HasOne("Entites.Models.Lesson", null)
                         .WithMany()
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("E_Learning.Models.Withdrow", b =>
+            modelBuilder.Entity("Entites.Models.Withdrow", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -754,7 +755,7 @@ namespace Entites.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -763,7 +764,7 @@ namespace Entites.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -778,7 +779,7 @@ namespace Entites.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -787,7 +788,7 @@ namespace Entites.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("E_Learning.Models.User", null)
+                    b.HasOne("Entites.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
