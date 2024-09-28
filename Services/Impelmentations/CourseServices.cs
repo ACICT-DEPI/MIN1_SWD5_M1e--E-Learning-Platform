@@ -45,9 +45,19 @@ namespace Services.Impelmentations
             Course newcourse=_mapper.Map<Course>(course);
             newcourse.InstractourId= "new-id";
            ResponseVM result= await _repositoryManger.courseRepository.CreateNewCourse(newcourse);
-            if (result.isSuccess)
-                _repositoryManger.Save();
-            return result;
-        }
+			if (result.isSuccess)
+			{
+				try
+				{
+					_repositoryManger.Save();
+
+				}
+				catch (Exception ex)
+				{
+					result.message += ex.Message;
+				}
+			}
+			return result;
+		}
     }
 }
