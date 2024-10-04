@@ -1,5 +1,6 @@
 ﻿using Enities.ViweModel.Course;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using Services.Interfaces;
 
 namespace E_Learning.Controllers
@@ -12,10 +13,23 @@ namespace E_Learning.Controllers
         {
             _servicesManger = servicesManger;
         }
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            _servicesManger.courseServices.GetAllCourcesAsync(true);
-            return View();
+           var courses=await _servicesManger.courseServices.GetAllCourcesAsync(false);
+            return View(courses);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ManageCourse(int id)
+        {
+            var course = await _servicesManger.courseServices.GetCourseByIdAsync(id,true);
+            return View(course);
+        }
+        [HttpGet]
+        public async Task<IActionResult> DisplayCourse(int id)
+        {
+            var course = await _servicesManger.courseServices.GetCourseByIdAsync(id, true);
+            return View(course);
         }
         [HttpGet]
         public IActionResult CreateCourse() 

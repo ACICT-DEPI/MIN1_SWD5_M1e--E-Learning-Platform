@@ -15,9 +15,9 @@ namespace Repositories.Impelmentations
         public ModuleRepository(ElearingDbcontext context) : base(context)
         {
         }
-        public async Task<IQueryable<Module>> GetAllModule(bool istracked)
+        public async Task<IEnumerable<Module>> GetAllModule(bool istracked)
         {
-            return await FindAll(istracked);
+            return await FindByCondition(m=>!m.IsDeleted,istracked);
         }
 
         public async Task<ResponseVM> CreateNewModule(Module module)

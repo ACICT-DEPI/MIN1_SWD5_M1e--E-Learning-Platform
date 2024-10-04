@@ -7,8 +7,8 @@ namespace Services.Interfaces
 {
     public interface ICourseServices
     {
-        IQueryable<GetCourseVM> GetAllCourcesAsync(bool istraked);
-        GetCourseVM GetCourseByConditionAsync(int id, bool istracked);
+       Task<List<Course>> GetAllCourcesAsync(bool istraked);
+        Task<Course> GetCourseByIdAsync(int id, bool istracked);
         Task<ResponseVM> CreateNewCourse(CreateCourseVM course);
 
     }

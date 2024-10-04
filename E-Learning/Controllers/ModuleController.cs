@@ -26,9 +26,9 @@ namespace E_Learning.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateModule(CreateModuleVM model)
+		public async Task<IActionResult> CreateModule(CreateModuleVM model,int courseid)
 		{
-			var result= await _servicesManger.moduleServices.CreateNewModule(model,2);
+			var result= await _servicesManger.moduleServices.CreateNewModule(model, courseid);
 			return RedirectToAction("Index");
 		}
 	}

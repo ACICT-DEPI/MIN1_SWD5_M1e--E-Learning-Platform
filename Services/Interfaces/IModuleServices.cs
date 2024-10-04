@@ -11,7 +11,8 @@ namespace Services.Interfaces
 {
     public interface IModuleServices
     {
-        Task<List<GetModuleVM>> GetAllModule(bool istracked);
+        Task<IEnumerable<GetModuleVM>> GetAllModule(bool istracked);
+       
         Task<ResponseVM> CreateNewModule(CreateModuleVM module,int courseid);
         
     }

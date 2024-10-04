@@ -24,7 +24,7 @@ namespace Repositories.Impelmentations
                 _context.Set<T>();
         }
 
-        public  IQueryable<T> FindByCondition(Expression<Func<T, bool>> condition, bool istracked)
+        public async Task <IQueryable<T>> FindByCondition(Expression<Func<T, bool>> condition, bool istracked)
         {
             return !istracked?
                  _context.Set<T>()
@@ -33,7 +33,14 @@ namespace Repositories.Impelmentations
                 _context.Set<T>()
                 .Where(condition);
         }
-        public async Task<ResponseVM> Create(T entity)
+		public  Task<T> FindById(Expression<Func<T,bool>> condition)
+		{
+            var entity =  _context.Set<T>().SingleOrDefaultAsync(condition);
+
+			return entity;
+			   
+		}
+		public async Task<ResponseVM> Create(T entity)
         {
             try
             {
@@ -45,14 +52,31 @@ namespace Repositories.Impelmentations
 
             }
         }
-        public void Update(T entity)
+        public async Task<ResponseVM> Update(T entity)
         {
-           _context.Set<T>().Update(entity);
+            try
+            {
+                _context.Set<T>().Update(entity);
+                return new ResponseVM { isSuccess = true, model = entity, message = "the Process od Delete Success" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseVM { isSuccess = false, model = entity, message = ex.Message.ToString() };
+            }
         }
-        public void Delete(T entity)
+        public async Task<ResponseVM> Delete(T entity)
         {
-            _context.Set<T>().Remove(entity);
+            try
+            {
+                 _context.Set<T>().Remove(entity);
+                return new ResponseVM { isSuccess = true, model = entity, message = "the Process od Delete Success" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseVM { isSuccess = false,model=entity, message = ex.Message.ToString() };
+            }
         }
-       
-    }
+
+		
+	}
 }

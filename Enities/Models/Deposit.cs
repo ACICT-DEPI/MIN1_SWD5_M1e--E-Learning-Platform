@@ -6,5 +6,6 @@
         public DateTime DepositDate { get; set; }
         public decimal Amount { get; set; }
         public string UserId { get; set; }
+        public virtual User? User { get; set; }
     }
 }

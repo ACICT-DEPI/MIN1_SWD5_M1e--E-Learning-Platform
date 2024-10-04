@@ -1,0 +1,26 @@
+﻿
+<div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+    <form id="addmoduleform${moduleCount}" class="newModuleForm">
+        <div class="text-danger"></div>
+        <div class="">
+            <h5 class="mt-2">Module Title</h5>
+            <input type="text" name="Title" class="form-control mt-2 w-75"
+                   data-val="true"
+                   data-val-required="Title is required" />
+            <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+        </div>
+        <div class="mt-2">
+            <h5 class="mt-2">What will students be able to do at the end of this section?</h5>
+            <input type="text" name="Description" class="form-control mt-2 w-75"
+                   data-val="true"
+                   data-val-required="Description is required" />
+            <span class="text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+        </div>
+        <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+            <input type="button" value="Save" class="btn btn-primary mx-3" onclick="savemodule(this.parentNode.parentNode)" />
+        </div>
+    </form>
+    <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+        <input type="button" value="Cancel" class="btn btn-primary mx-3" onclick="removemodule(this.parentNode.parentNode)" />
+    </div>
+</div>
