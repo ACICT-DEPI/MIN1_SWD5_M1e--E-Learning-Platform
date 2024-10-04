@@ -26,18 +26,18 @@ namespace Services.Impelmentations
             return _httpContext.HttpContext.User.Identity.Name;
         }
 
-        public IQueryable<GetCourseVM> GetAllCourcesAsync(bool istraked)
+        public async Task<List<Course>> GetAllCourcesAsync(bool istraked)
         {
-            var courses = _repositoryManger.courseRepository.GetAllCourcesAsync(istraked);
-            var Coursesdto= _mapper.Map<IQueryable<GetCourseVM>>(courses);
+            var courses = await _repositoryManger.courseRepository.GetAllCourcesAsync(istraked);
+            var Coursesdto= _mapper.Map<List<Course>>(courses);
             return Coursesdto;
         }
 
-        public GetCourseVM GetCourseByConditionAsync(int id, bool istracked)
+        public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
         {
-            var course = _repositoryManger.courseRepository.GetCourseByConditionAsync(id,istracked);
-            var Coursedto = _mapper.Map<GetCourseVM>(course);
-            return Coursedto;
+            var course =await _repositoryManger.courseRepository.GetCourseByIdAsync(id,istracked);
+            
+            return course;
         }
 
         public async Task<ResponseVM> CreateNewCourse(CreateCourseVM course)
@@ -49,7 +49,7 @@ namespace Services.Impelmentations
 			{
 				try
 				{
-					_repositoryManger.Save();
+				 await	_repositoryManger.Save();
 
 				}
 				catch (Exception ex)

@@ -1,5 +1,230 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using Enities.ViweModel.Module
+@model List<GetModuleVM>
+<div class="bg-white m-5 w-80 border border-2 shadow rounded">
+    <div class="bg-white m-5" id="addnewmodule">
+        <div class="bg-white m-5 d-flex flex-column justify-content-between">
+            <div class="mt-3">
+                <h2>Curriculum</h2>
+            </div>
+
+            <div class="m-2">
+                <p>
+                    Start putting together your course by creating sections, lectures, and practice activities
+                    (quizzes, coding exercises, and assignments). Use your course outline to structure your content
+                    and label your sections and lectures clearly. If you’re intending to offer your course for free,
+                    the total length of video content must be less than 2 hours.
+                </p>
+            </div>
+        </div>
+        <hr class="border-bottom border-2 border-dark" />
+
+        @foreach (var module in Model)
+        {
+            <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+                <div class="d-flex d-flex-row mx-1 my-3">
+                    <h5 class="mx-1">Module Title : </h5>
+                    <p class="mx-1">@module.Title</p>
+                    <ul class="list-inline mx-3">
+                        <li class="list-inline-item">
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex flex-md-column justify-content-around">
+                    @foreach (var lesson in Model)
+                    {
+
+                    }
+                    <div id="par">
+                        <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:20%; height:40px" onclick="newcurriculm(this.parentNode)" id="newcurriculum">
+                            <div class="my-1  d-flex d-flex-row justify-content-center">
+                                <i class="fa-sharp fa-solid fa-plus mt-1"></i>
+                                <label class="">
+                                    Curriculum item
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        }
+
+    </div>
+    <div class="mt-4 mb-2 mx-auto">
+        <input type="button" value="Add New Section" class="btn btn-primary" onclick="addmodule()" />
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        let moduleCount = 1;
+        let lecturCount = 1;
+        function addmodule() {
+            moduleCount++;
+
+            var newModule = `
+                        <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+                            <form id="addmoduleform${moduleCount}" class="newModuleForm">
+                                <div class="text-danger"></div>
+                                <div class="">
+                                    <h5 class="mt-2">Module Title</h5>
+                                    <input type="text" name="Title" class="form-control mt-2 w-75"
+                                        data-val="true"
+                                        data-val-required="Title is required" />
+                                    <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="mt-2">
+                                    <h5 class="mt-2">What will students be able to do at the end of this section?</h5>
+                                    <input type="text" name="Description" class="form-control mt-2 w-75"
+                                        data-val="true"
+                                        data-val-required="Description is required" />
+                                    <span class="text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                    <input type="button" value="Save" class="btn btn-primary mx-3" onclick="savemodule(this.parentNode.parentNode)" />
+                                </div>
+                            </form>
+                            <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                <input type="button" value="Cancel" class="btn btn-primary mx-3" onclick="removemodule(this.parentNode.parentNode)" />
+                            </div>
+                        </div>`;
+
+
+
+            var container = document.getElementById("addnewmodule");
+            container.insertAdjacentHTML('beforeend', newModule);
+
+
+            var newForm = container.querySelector(`#addmoduleform${moduleCount}`);
+            console.log(newForm);
+            $.validator.unobtrusive.parse(newForm);
+        }
+        function addlecture(input) {
+            lecturCount++;
+            input.innerHTML = `
+                      <i class="fa-sharp fa-solid fa-xmark mx-4 " onclick="canclenewcurriculm(this.parentNode)"></i>
+                      <div class="border border-2 bg-white  mx-5 mt-1 mb-3  ">
+                               <form class="addlectureform${lecturCount}">
+                                        <div class="my-2 mx-1 d-flex d-flex-row justify-content-around">
+                                        <label  name="Title" >
+                                            New Lecture :
+                                        </label>
+                                        <input type="text" name="Title" value="" placeholder="Enter Title" class="form-control" style="width:85%"
+                                                data-val="true"
+                                                data-val-required="This field may not be blank." />
+                                                <br />
+                                         <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class=" mb-2 d-flex d-flex-row justify-content-end">
+                                        <div class="mx-2">
+                                                            <input type="button" value="Add Lecture" class="btn btn-primary mx-3" onclick="savelecture(this.parentNode.parentNode.parentNode)" />
+                                        </div>
+                                        <div class="mx-2">
+                                            <input type="button" value="Cancel" class="btn btn-outline-danger mx-1" onclick="newcurriculm(this.parentNode.parentNode.parentNode.parentNode)" />
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                             `;
+
+            var newForm = input.querySelector(`#addmoduleform${moduleCount}`);
+            console.log(newForm);
+            $.validator.unobtrusive.parse(newForm);
+        }
+        function removemodule(module) {
+            module.remove();
+        }
+
+        function savemodule(button) {
+            var form = $(button).closest("form");
+            $.validator.unobtrusive.parse(form);
+            if (form.valid()) {
+                var formdata = form.serialize();
+
+                $.ajax({
+                    url: '/Module/CreateModule',
+                    type: "POST",
+                    data: formdata,
+                    success: function (response) {
+                        form.closest('.border').remove();
+                        window.location.reload();
+
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+        }
+        function savelecture(button) {
+            var form = $(button).closest("form");
+            $.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+                var formdata = form.serialize();
+                var moduleid = 4;  // Example moduleid, get this dynamically based on your app
+
+                $.ajax({
+                    url: '/Lesson/CreateLesson',
+                    type: 'POST',
+                    data: formdata + '&moduleid=' + moduleid,  // Append moduleid to form data
+                    success: function (response) {
+
+                            window.location.reload();  // Refresh the page on success
+
+                    },
+                    error: function (request, status, error) {
+
+                        alert(request.responseText);
+
+                    }
+                });
+            }
+        }
+
+        function newcurriculm(input) {
+
+            input.innerHTML = `
+
+                 <i class="fa-sharp fa-solid fa-xmark mx-4 " onclick="canclenewcurriculm(this.parentNode)"></i>
+
+                    <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:80%; height:40px" onclick="addlecture(this.parentNode)">
+                    <div class="my-1  d-flex d-flex-row justify-content-center">
+                        <i class="fa-sharp fa-solid fa-plus mt-1 mx-2"></i>
+                        <label class="" onclick="">
+                            Lecture
+                        </label>
+                    </div>
+                </div>
+
+
+
+                    `;
+        }
+        function canclenewcurriculm(input) {
+            input.innerHTML = `
+                                     <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:20%; height:40px" onclick="newcurriculm(this.parentNode)" id="newcurriculum">
+                                        <div class="my-1  d-flex d-flex-row justify-content-center">
+                                            <i class="fa-sharp fa-solid fa-plus mt-1"></i>
+                                            <label class="">
+                                                Curriculum item
+                                            </label>
+                                        </div>
+                                    </div>
+                    `;
+        }
+
+    </script>
 }

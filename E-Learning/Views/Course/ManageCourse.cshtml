@@ -1,0 +1,494 @@
+﻿@using Enities.ViweModel.Module
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@model Course
+@{
+    var lecturenum = 0;
+    var modulenum = 0;
+    Material material = new Material();
+
+}
+<div class="bg-white m-5 w-80 border border-2 shadow rounded">
+    <div class="bg-white m-5" id="addnewmodule">
+        <div class="bg-white m-5 d-flex flex-column justify-content-between">
+            <div class="mt-3">
+                <h2>Curriculum</h2>
+            </div>
+
+            <div class="m-2">
+                <p>
+                    Start putting together your course by creating sections, lectures, and practice activities
+                    (quizzes, coding exercises, and assignments). Use your course outline to structure your content
+                    and label your sections and lectures clearly. If you’re intending to offer your course for free,
+                    the total length of video content must be less than 2 hours.
+                </p>
+            </div>
+        </div>
+        <hr class="border-bottom border-2 border-dark" />
+
+        @foreach (var module in Model.Modules)
+        {
+
+            <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+                <div class="d-flex d-flex-row mx-1 my-3">
+                    <h5 class="mx-1">Module Title : </h5>
+                    <p class="mx-1">@module.Title</p>
+                    <ul class="list-inline mx-3">
+                        <li class="list-inline-item">
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="d-flex flex-md-column justify-content-around">
+                    @{
+                        var lessonnum = 0;
+                    }
+                    @foreach (var lesson in module.Lessons)
+                    {
+                        string location = Model.Id.ToString() + "/" + module.Id.ToString() + "/" + lesson.Id.ToString();
+                        var options = new JsonSerializerOptions
+                    {
+                        ReferenceHandler = ReferenceHandler.Preserve, // This handles circular references
+                        WriteIndented = true // Optional: For pretty-printing the JSON
+                    };
+                        var jsonstring = JsonSerializer.Serialize(lesson.Materials, options);
+
+
+                        var lessonnumber = lessonnum;
+                        lessonnum++;
+                        lecturenum++;
+                        <div id="par" class="">
+                            <div class="border border-2 bg-white  mx-5 mt-1 mb-3 d-flex d-flex-row justify-content-between" style="width:90%; height:70px">
+                                <div class=" my-1  d-flex d-flex-row justify-content-start">
+                                    <h5 class="mx-1">Lecture @lecturenum : </h5>
+                                    <p class="mx-1">@lesson.Title</p>
+                                    <ul class="list-inline mx-3">
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class=" d-flex d-flex-row justify-content-end mx-1 my-auto">
+
+                                    <div class="border border-2 bg-white my-1 px-1 py-1  d-flex d-flex-row justify-content-center" style=" width:100%; height:35px " onclick="addcontant(this.parentNode.parentNode.parentNode,@lecturenum,'@lesson.Title','@location',@lesson.Id)">
+                                        <i class="fa-sharp fa-solid fa-plus mt-1 "></i>
+                                        <label class="">
+                                            Contant
+                                        </label>
+                                    </div>
+
+                                    <i class='fas fa-angle-down mx-2 mt-3' style='font-size:20px' onclick="loadmaterial(this.parentNode.parentNode.parentNode,@lecturenum,'@lesson.Title','@location',@lesson.Id)"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    }
+                    <div id="">
+                        <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:20%; height:40px" onclick="newcurriculm(this.parentNode,@module.Id)" id="newcurriculum">
+                            <div class="my-1  d-flex d-flex-row justify-content-center">
+                                <i class="fa-sharp fa-solid fa-plus mt-1"></i>
+                                <label class="">
+                                    Curriculum item
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            modulenum++;
+
+        }
+
+    </div>
+
+    <div class="mt-4 mb-2 mx-auto">
+        <input type="button" value="Add New Section" class="btn btn-primary" onclick="addmodule()" />
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+
+
+        let moduleCount = 1;
+        let lecturCount = 1;
+        function addmodule() {
+            moduleCount++;
+
+            var newModule = `
+
+                                <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+                                    <form id="addmoduleform${moduleCount}" class="newModuleForm">
+                                        <div class="text-danger"></div>
+                                        <div class="">
+                                            <h5 class="mt-2">Module Title</h5>
+                                            <input type="text" name="Title" class="form-control mt-2 w-75"
+                                                   data-val="true"
+                                                   data-val-required="Title is required" />
+                                            <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                                        </div>
+                                        <div class="mt-2">
+                                            <h5 class="mt-2">What will students be able to do at the end of this section?</h5>
+                                            <input type="text" name="Description" class="form-control mt-2 w-75"
+                                                   data-val="true"
+                                                   data-val-required="Description is required" />
+                                            <span class="text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                                        </div>
+                                        <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                            <input type="button" value="Save" class="btn btn-primary mx-3" onclick="savemodule(this.parentNode.parentNode)" />
+                                        </div>
+                                    </form>
+                                    <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                        <input type="button" value="Cancel" class="btn btn-primary mx-3" onclick="removemodule(this.parentNode.parentNode)" />
+                                    </div>
+                                </div>
+                                    `;
+
+            var container = document.getElementById("addnewmodule");
+
+            container.insertAdjacentHTML('beforeend', newModule);
+
+            var newForm = container.querySelector(`#addmoduleform${moduleCount}`);
+            console.log(newForm);
+            $.validator.unobtrusive.parse(newForm);
+        }
+        function addlecture(input, moduleid) {
+            lecturCount++;
+            input.innerHTML = `
+                                                      <i class="fa-sharp fa-solid fa-xmark mx-4 " onclick="canclenewcurriculm(this.parentNode,${moduleid})"></i>
+                                                      <div class="border border-2 bg-white  mx-5 mt-1 mb-3  ">
+                                                               <form class="addlectureform${lecturCount}">
+                                                                        <div class="my-2 mx-1 d-flex d-flex-row justify-content-around">
+                                                                        <label  name="Title" >
+                                                                            New Lecture :
+                                                                        </label>
+                                                                        <input type="text" name="Title" value="" placeholder="Enter Title" class="form-control" style="width:85%"
+                                                                                data-val="true"
+                                                                                data-val-required="This field may not be blank." />
+                                                                                <br />
+                                                                         <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                                                                    </div>
+                                                                    <div class=" mb-2 d-flex d-flex-row justify-content-end">
+                                                                        <div class="mx-2">
+                                                                                    <input type="button" value="Add Lecture" class="btn btn-primary mx-3" onclick="savelecture(this.parentNode.parentNode.parentNode,${moduleid})" />
+                                                                        </div>
+                                                                        <div class="mx-2">
+                                                                                   <input type="button" value="Cancel" class="btn btn-outline-danger mx-1" onclick="newcurriculm(this.parentNode.parentNode.parentNode.parentNode.parentNode,${moduleid})" />
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                            </div>
+                                                             `;
+
+            var newForm = input.querySelector(`#addmoduleform${moduleCount}`);
+            console.log(newForm);
+            $.validator.unobtrusive.parse(newForm);
+        }
+        function removemodule(module) {
+            module.remove();
+        }
+
+        function savemodule(button) {
+            var form = $(button).closest("form");
+            $.validator.unobtrusive.parse(form);
+            if (form.valid()) {
+                var formdata = form.serialize();
+                var courseid = @Model.Id;
+                $.ajax({
+                    url: '/Module/CreateModule',
+                    type: "POST",
+                    data: formdata + '&courseid=' + courseid,
+                    success: function (response) {
+                        //form.closest('.border').remove();
+                        window.location.reload();
+
+
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            }
+        }
+        function savelecture(button, modulid) {
+            var form = $(button).closest("form");
+            $.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+                var formdata = form.serialize();
+
+                var moduleid = modulid;
+
+                $.ajax({
+                    url: '/Lesson/CreateLesson',
+                    type: 'POST',
+                    data: formdata + '&moduleid=' + moduleid,
+                    success: function (response) {
+
+                        window.location.reload();
+
+                    },
+                    error: function (request, status, error) {
+
+                        alert(request.responseText);
+
+                    }
+                });
+            }
+        }
+
+        function newcurriculm(input, moduleid) {
+
+            input.innerHTML = `
+
+                                                         <i class="fa-sharp fa-solid fa-xmark mx-4 " onclick="canclenewcurriculm(this.parentNode,${moduleid})"></i>
+
+                                                   <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:80%; height:40px" onclick="addlecture(this.parentNode,${moduleid})">
+                                                    <div class="my-1  d-flex d-flex-row justify-content-center">
+                                                        <i class="fa-sharp fa-solid fa-plus mt-1 mx-2"></i>
+                                                        <label class="" onclick="">
+                                                            Lecture
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                    `;
+        }
+        function canclenewcurriculm(input, moduleid) {
+            input.innerHTML = `
+                                                                <div class="border border-2 bg-white  mx-5 mt-1 mb-3 " style="width:20%; height:40px" onclick="newcurriculm(this.parentNode,${moduleid})" id="newcurriculum">
+                                                        <div class="my-1  d-flex d-flex-row justify-content-center">
+                                                            <i class="fa-sharp fa-solid fa-plus mt-1"></i>
+                                                            <label class="">
+                                                                Curriculum item
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    `;
+        }
+        function addcontant(input, lectnum, lectname, location, lessonid) {
+            input.innerHTML = `
+                                 <div  class="border border-2 bg-white  mx-5 mt-1" style="width:90%; ">
+                                                        <div class=" d-flex d-flex-row justify-content-between" >
+                                                            <div class=" my-1  d-flex d-flex-row justify-content-start">
+                                                                <h5 class="mx-1">Lecture ${lectnum} : </h5>
+                                                                <p class="mx-1">${lectname}</p>
+                                                                <ul class="list-inline mx-3">
+                                                                    <li class="list-inline-item">
+                                                                        <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                                    </li>
+                                                                    <li class="list-inline-item">
+                                                                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="mx-2 mt-2 d-flex flex-row">
+                                                                <p>Select content type</p>
+                                                                    <a class="nav-link active mx-1" data-bs-toggle="tab" href="#video" role="tab" aria-selected="true" onclick="canceladdcontant(this.parentNode.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonid})">
+                                                                    <i class="fa-solid fa-x mx-1"></i>
+                                                                </a>
+                                                           </div>
+
+                                                        </div>
+                                                        <div class="  d-flex flex-column justify-content-center" >
+
+                                                            <p class=" mx-auto">
+                                                                Select the main type of content. Files and links can be added as resources. Learn about content types.
+                                                            </p>
+
+                                                            <div class="mx-auto mb-2 d-flex flex-md-column justify-content-center" style="width:50%;height:70px;background-color:#f7f9fa">
+
+                                                                <input type="file" name="file" accept="video/*" onchange="savevideo(event,'${lectname}','${location}',${lessonid})" />
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                         `;
+        }
+        function canceladdcontant(input, lectnum, lectname, location, lessonid) {
+            input.innerHTML = `
+                                    <div class="border border-2 bg-white  mx-5 mt-1 mb-3 d-flex d-flex-row justify-content-between" style="width:90%; height:70px">
+                                                        <div class=" my-1  d-flex d-flex-row justify-content-start">
+                                                            <h5 class="mx-1">Lecture ${lectnum} : </h5>
+                                                            <p class="mx-1">${lectname}</p>
+                                                            <ul class="list-inline mx-3">
+                                                                <li class="list-inline-item">
+                                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class=" d-flex d-flex-row justify-content-end mx-1 my-auto">
+                                                             <div class="border border-2 bg-white my-1 px-1 py-1  d-flex d-flex-row justify-content-center" style=" width:100%; height:35px " onclick="addcontant(this.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonid})">
+                                                                <i class="fa-sharp fa-solid fa-plus mt-1 "></i>
+                                                                <label class="">
+                                                                    Contant
+                                                                </label>
+                                                            </div>
+
+                                                                <i class='fas fa-angle-down mx-2 mt-3' style='font-size:20px'  onclick="loadmaterial(this.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonid})"></i>
+                                                        </div>
+                                                    </div>
+                            `;
+        }
+
+        function savevideo(event, lectname, location, lessonid) {
+            var file = event.target.files[0];
+            if (file) {
+                var fileExtension = file.name.split('.').pop();
+                var newFileName = lectname + '.' + fileExtension;
+                var renamedFile = new File([file], newFileName, { type: file.type });
+
+                var formData = new FormData();
+                formData.append("file", renamedFile);
+                formData.append("location", location);
+                formData.append("lessonid", lessonid);
+                console.log(formData);
+                $.ajax({
+                    url: '/Material/CreateMaterial',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        window.location.reload();
+                    },
+                    error: function (request, status, error) {
+                        alert(request.responseText);
+                    }
+                });
+            } else {
+                alert("No file selected");
+            }
+        }
+        function loadmaterial(input, lectnum, lectname, location, lessonId) {
+
+            const url = `/Material/GetMaterialByLessonId/${lessonId}`;
+            console.log("Request URL: ", url); // Log the URL to verify
+            $.ajax({
+                url: `/Material/GetMaterialByLessonId?lessonId=${lessonId}`,  
+                type: 'GET',
+                success: function (material) {
+                    displayMaterial(input, lectnum, lectname, location, lessonId, material);
+                },
+                error: function (request, status, error) {
+                    alert('Failed to load Materials: ' + request.responseText);
+                }
+            });
+        }
+
+        function displayMaterial(input, lectnum, lectname, location, lessonId, materials) {
+            console.log(materials);
+            let materialRows = '';
+            materials.forEach(material => {
+                console.log(material);
+                materialRows += `
+                                    <tr>
+                                        <td>${material.path}</td>
+                                        <td>${material.type}</td> 
+                                        <td>${material.uploadDate }</td>
+                                        <td><i class="fa fa-trash" aria-hidden="true"></i></td>
+
+                                    </tr>
+                                `;
+            });
+            input.innerHTML = `
+                            <div  class="border border-2 bg-white  mx-5 mt-1" style="width:90%; ">
+                                <div class=" d-flex d-flex-row justify-content-between" >
+                                    <div class=" my-1  d-flex d-flex-row justify-content-start">
+                                        <h5 class="mx-1">Lecture ${lectnum} : </h5>
+                                        <p class="mx-1">${lectname}</p>
+                                            <ul class="list-inline mx-3">
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class=" d-flex d-flex-row justify-content-end mx-1 my-auto">
+                                                    <div class="border border-2 bg-white my-1 px-1 py-1  d-flex d-flex-row justify-content-center" style=" width:100%; height:35px " onclick="addcontant(this.parentNode.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonId})">
+                                            <i class="fa-sharp fa-solid fa-plus mt-1 "></i>
+                                            <label class="">
+                                                Contant
+                                            </label>
+                                        </div>
+
+                                                 <i class='fas fa-angle-up mx-2 mt-3' style='font-size:20px' onclick="canselloadmaterial(this.parentNode.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonId})"></i>
+                                       </div>
+
+                                    </div>
+                                    <div  >
+                                     <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">File Name</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                 ${materialRows}
+
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            `;
+
+        }
+        function canselloadmaterial(input, lectnum, lectname, location, lessonid) {
+            input.innerHTML = `
+                                     <div class="border border-2 bg-white  mx-5 mt-1 mb-3 d-flex d-flex-row justify-content-between" style="width:90%; height:70px">
+                                                <div class=" my-1  d-flex d-flex-row justify-content-start">
+                                                    <h5 class="mx-1">Lecture ${lectnum} : </h5>
+                                                    <p class="mx-1">${lectname}</p>
+                                                    <ul class="list-inline mx-3">
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class=" d-flex d-flex-row justify-content-end mx-1 my-auto">
+
+                                                            <div class="border border-2 bg-white my-1 px-1 py-1  d-flex d-flex-row justify-content-center" style=" width:100%; height:35px " onclick="addcontant(this.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonid})">
+                                                        <i class="fa-sharp fa-solid fa-plus mt-1 "></i>
+                                                        <label class="">
+                                                            Contant
+                                                        </label>
+                                                    </div>
+
+                                                     <i class='fas fa-angle-down mx-2 mt-3' style='font-size:20px' onclick="loadmaterial(this.parentNode.parentNode.parentNode,${lectnum},'${lectname}','${location}',${lessonid})"></i>
+                                                </div>
+                                            </div>
+                        `;
+
+        }
+        
+
+    </script>
+}

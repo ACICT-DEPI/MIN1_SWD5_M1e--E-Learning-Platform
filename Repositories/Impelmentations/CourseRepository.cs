@@ -4,25 +4,34 @@ using Microsoft.EntityFrameworkCore;
 using Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Enities.ViweModel;
+using Microsoft.VisualBasic;
 namespace Repositories.Impelmentations
 { 
     public class CourseRepository:BaseRepository<Course>,ICourseRepository
     {
      
-
+        private readonly ElearingDbcontext _context;
         public CourseRepository(ElearingDbcontext context) : base(context)
         {
-            
+            _context=context;
         }
 
         public async Task<IQueryable<Course>> GetAllCourcesAsync(bool istracked)
         {
-            return await FindAll(istracked);
+
+            return await FindByCondition(c=>!c.IsDeleted,istracked);
         }
 
-        public async Task<Course> GetCourseByConditionAsync(int id, bool istracked)
+        public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
         {
-           return await FindByCondition(c => c.Id.Equals(id), istracked).SingleOrDefaultAsync();
+            return await _context.Courses
+                .Include(c=>c.Modules)
+                .ThenInclude(m=>m.Lessons)
+                .ThenInclude(l=>l.Materials)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e=>e.Id==id)
+                ;
+
         }
 
         public async Task<ResponseVM> CreateNewCourse(Course course)
@@ -30,14 +39,14 @@ namespace Repositories.Impelmentations
            return await Create(course);
         }
 
-        public void UpdateCourse(Course course)
+        public Task<ResponseVM> UpdateCourse(Course course)
         {
-            Update(course);
+           return Update(course);
         }
 
-        public void DeleteCourse(Course course)
+        public Task<ResponseVM> DeleteCourse(Course course)
         {
-            Delete(course);
+          return  Delete(course);
         }
     }
 }

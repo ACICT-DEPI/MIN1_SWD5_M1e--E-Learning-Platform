@@ -22,10 +22,10 @@ namespace Services.Impelmentations
 			_repositoryManger = repositoryManger;
 			_mapper = mapper;
 		}
-        public async Task<List<GetModuleVM>> GetAllModule(bool istracked)
+        public async Task<IEnumerable<GetModuleVM>> GetAllModule(bool istracked)
         {
             var modules= await _repositoryManger.moduleRepository.GetAllModule(istracked);
-            var modulesvm = _mapper.Map<List<GetModuleVM>>(modules);
+            var modulesvm = _mapper.Map<IEnumerable<GetModuleVM>>(modules);
 			return modulesvm;
         }
         public async Task<ResponseVM> CreateNewModule(CreateModuleVM module,int courseid)

@@ -1,0 +1,220 @@
+﻿@model Course
+<div class="d-flex d-flex-row justify-content-between">
+	<div class="d-flex flex-column bg-white" style="width:70%">
+		<div style="width:100%;background-color:#2d2f31;" id="videodiv">
+			
+			<video id="courseVideo" controls="controls" width="100%" height="425" >
+				<source src="/videos/kkk/bbbb/cxxxxxx/Recording-20241002_042013.webm" type="video/webm" />
+				<source src="movie.mp4" type="video/mp4">
+				<source src="movie.ogg" type="video/ogg">
+			</video>
+            
+		</div>
+		
+	</div>
+	<div class="border border-1 bg-white" style="width:30%">
+		<div class="border border-1 shadow  d-flex flex-row justify-content-between  align-content-center " style="height:50px">
+			<p class="my-auto mx-2">Course content</p>
+			<i class="fa-solid fa-x mx-3 my-auto"></i>
+		</div>
+		<div style="overflow:scroll;height:600px">
+			@{
+				var sectionnumber = 0;
+				var lessonnumber = 0;
+			}
+			@foreach(var moduel in Model.Modules)
+			{
+				sectionnumber++;
+				<div class="par">
+					<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="loadlesson(this.parentNode,'@moduel.Title',@moduel.Id,@sectionnumber,@lessonnumber)">
+
+					<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
+					<h4 class="my-auto mx-2"> Section @sectionnumber : @moduel.Title</h4>
+					<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px' ></i>
+				   </div>
+				</div>
+			    @{
+					lessonnumber+=moduel.Lessons.Count();
+                 }
+				
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<script>
+
+	function loadlesson(input,modulename,moduleid,modulenum,lessonnum) {
+
+		const url = `/Lesson/GetLessonByModuleId?moduleid=${moduleid}`;
+		console.log(url);
+		$.ajax({
+			
+			url:url ,
+			type:'GET',
+			dataType: 'json',
+			success:function(lessons){
+				console.log(lessons);
+				displaylesson(input, modulename, moduleid, modulenum, lessonnum,lessons);
+			},
+			error: function (request) {
+				alert('Failed to load lessons: ' + request.responseText);
+			}
+		});
+	}
+	function displaylesson(input, modulename, moduleid, modulenum, lessonnum, lessons) {
+		console.log(lessons)
+		var countlesson = lessonnum;
+		let lessonrow =``;
+		lessons.forEach(lesson => {
+			countlesson++;
+			var path = `/videos/${@Model.Id}/${moduleid}/${lesson.id}/`;
+			lessonrow += `
+							<div class=" d-flex flex-row  align-content-center" onclick="loadmaterial(this,'${path}',${lesson.id})" style="height:50px;background-color:white;"onmouseover="this.style.background='#d1d7dc';" onmouseout="this.style.background='white';">
+							   <input class="form-check-input mx-2 my-auto" type="checkbox" value="" id="flexCheckDefault"  onclick="boxcheckded(this,${lesson.id})"     ${(lesson.isChecked) ? 'checked' : ''} >
+						<h6 class="mx-2 my-auto">${countlesson}. ${lesson.title} </h6>
+					</div>
+			
+			
+			`;
+		});
+			input.innerHTML = `
+					<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="canceldisplaylesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
+
+						<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
+						<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
+						<i class='fas fa-angle-up mx-3 my-auto' style='font-size:20px' ></i>
+					   </div>
+					</div>
+					${lessonrow}	
+			`;
+
+	}
+	function canceldisplaylesson(input, modulename, moduleid, modulenum, lessonnum) {
+		input.innerHTML = `
+							<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="loadlesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
+
+							<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
+							<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
+							<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px' ></i>
+						   </div>
+						</div>
+						
+				`;
+	}
+	function trackprogress(input,lessonid) 
+	{
+		let video = document.getElementById('courseVideo');
+		let lessonId = lessonid; 
+
+		// Triggered when the user moves to a new time in the video
+		video.ontimeupdate = function () {
+			saveProgress(video.currentTime, video.duration);
+		};
+
+		// Save progress when the video is paused or ends
+		video.onpause = function () {
+			saveProgress(video.currentTime, video.duration);
+		};
+
+		video.onended = function () {
+			saveProgress(video.currentTime, video.duration, true);
+		};
+
+		function saveProgress(currentTime, duration, completed = false) {
+			let progress = (currentTime / duration) * 100;
+
+			$.ajax({
+				url: '/Course/TrackVideoProgress',
+				type: 'POST',
+				data: {
+					lessonId: lessonId,
+					currentTime: currentTime,
+					progress: progress,
+					completed: completed
+				},
+				success: function (response) {
+					console.log('Progress saved: ' + progress + '%');
+				},
+				error: function (error) {
+					console.error('Error saving progress: ', error);
+				}
+			});
+		}
+	}
+	function boxcheckded(check, lessonid) {
+		console.log(lessonid);
+		var formdata = new FormData();
+		formdata.append("LessonId", lessonid);
+		formdata.append("IsChecked", check.checked);  
+		if (check.checked) {
+			$.ajax({
+				url: '/Progress/CreateProgress',
+				type: 'POST',
+				data: formdata,
+				contentType: false,  
+				processData: false,  
+				success: function (response) {
+					console.log("Progress created successfully.");
+				},
+				error: function (request, error) {
+					alert('Error: ' + request.responseText);
+				}
+			});
+		}
+		else
+		{
+			$.ajax({
+				url: `/Progress/DeleteProgress?lessonid=${lessonid}`,
+				type: 'DELETE',
+				data: formdata,
+				contentType: false,  
+				processData: false,  
+				success: function (response) {
+					console.log("Progress Deleted successfully.");
+				},
+				error: function (request, error) {
+					alert('Error: ' + request.responseText);
+				}
+			});
+		}
+	}
+	function loadmaterial(input,path, lessonId) {
+
+		const url = `/Material/GetMaterialByLessonId/${lessonId}`;
+		console.log("Request URL: ", url); 
+		$.ajax({
+			url: `/Material/GetMaterialByLessonId?lessonId=${lessonId}`,
+			type: 'GET',
+			success: function (material) {
+				displayvideo(input, path, material);
+			},
+			error: function (request, status, error) {
+				alert('Failed to load Materials: ' + request.responseText);
+			}
+		});
+	}
+	function displayvideo(input, path, materials) {
+		console.log(materials);
+		var videoname='';
+		materials.forEach(material => {
+			if (material.type == 'Video')
+				videoname =  material.path ;
+			console.log(videoname);
+		});
+		if(videoname=='')
+		 alert("this lesson did not have video")
+		 else
+		 {
+		console.log(videoname);
+		var fullpath = path+videoname;
+		var videodiv = document.getElementById('videodiv');
+		videodiv.innerHTML = `
+			<video id="courseVideo" controls="controls" width="100%" height="425" >
+					<source src= '${fullpath}' type="video/webm" />
+				    
+				</video>
+		`;
+		 }
+	}
+</script>

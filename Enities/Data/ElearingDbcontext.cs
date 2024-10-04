@@ -15,74 +15,74 @@ namespace Entites.Data
             base.OnModelCreating(builder);
             //User Table
             builder.Entity<User>()
-                 .HasMany<Course>()
-                 .WithOne()
-                 .HasForeignKey(x=>x.InstractourId);
+                 .HasMany<Course>(c=>c.Courses)
+                 .WithOne(c=>c.User)
+                 .HasForeignKey(x => x.InstractourId);
 
             builder.Entity<User>()
-                .HasMany<Enrolment>()
-                .WithOne()
+                .HasMany<Enrolment>(u=>u.Enrolments)
+                .WithOne(e=>e.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Question>()
-                .WithOne()
+                .HasMany<Question>(u=>u.Questions)
+                .WithOne(q=>q.User)
                 .HasForeignKey(f=>f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Answer>()
-                .WithOne()
+                .HasMany<Answer>(u=>u.Answers)
+                .WithOne(a=>a.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Payment>()
-                .WithOne()
+                .HasMany<Payment>(u=>u.Payments)
+                .WithOne(p=>p.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Withdrow>()
-                .WithOne()
+                .HasMany<Withdrow>(u=>u.Withdrows)
+                .WithOne(w=>w.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Deposit>()
-                .WithOne()
+                .HasMany<Deposit>(u=>u.Deposits)
+                .WithOne(d=>d.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Note>()
-                .WithOne()
+                .HasMany<Note>(u=>u.Notes)
+                .WithOne(n=>n.User)
                 .HasForeignKey(f => f.UserId);
 
             builder.Entity<User>()
-                .HasMany<Progress>()
-                .WithOne()
+                .HasMany<Progress>(u=>u.Progresses)
+                .WithOne(p=>p.User)
                 .HasForeignKey(f => f.UserId);
 
             //Course Table
             builder.Entity<Course>()
-                .HasMany<Enrolment>()
-                .WithOne()
+                .HasMany<Enrolment>(c=>c.Enrolments)
+                .WithOne(e=>e.Course)
                 .HasForeignKey(f => f.CourseId);
 
             builder.Entity<Course>()
-                .HasMany<Module>()
-                .WithOne()
+                .HasMany<Module>(c=>c.Modules)
+                .WithOne(m=>m.Course)
                 .HasForeignKey(f => f.CourseId);
 
             builder.Entity<Course>()
-                .HasMany<Question>()
-                .WithOne()
+                .HasMany<Question>(c=>c.Questions)
+                .WithOne(q=>q.Course)
                 .HasForeignKey(f => f.CourseId);
 
             builder.Entity<Course>()
-                .HasMany<Anouncment>()
-                .WithOne()
+                .HasMany<Anouncment>(c=>c.Anouncments)
+                .WithOne(a=>a.Course)
                 .HasForeignKey(f => f.CourseId);
 
             builder.Entity<Course>()
-                .HasMany<Payment>()
-                .WithOne()
+                .HasMany<Payment>(c=>c.Payments)
+                .WithOne(p=>p.Course)
                 .HasForeignKey(f => f.CourseId);
 
             //Enrollment Table
@@ -91,35 +91,35 @@ namespace Entites.Data
 
             //Module Table
             builder.Entity<Module>()
-                .HasMany<Lesson>()
-                .WithOne()
+                .HasMany<Lesson>(m=>m.Lessons)
+                .WithOne(l=>l.Module)
                 .HasForeignKey(f => f.ModuleId);
 
             //Lesson Table
             builder.Entity<Lesson>()
-                .HasMany<Material>()
-                .WithOne()
+                .HasMany<Material>(l=>l.Materials)
+                .WithOne(m=>m.Lesson)
                 .HasForeignKey(f => f.LessonId);
 
             builder.Entity<Lesson>()
-                .HasMany<Question>()
-                .WithOne()
+                .HasMany<Question>(l=>l.Questions)
+                .WithOne(q=>q.Lesson)
                 .HasForeignKey(f => f.LessonId);
 
             builder.Entity<Lesson>()
-                .HasMany<Note>()
-                .WithOne()
+                .HasMany<Note>(l=>l.Notes)
+                .WithOne(n=>n.Lesson)
                 .HasForeignKey(f => f.LessonId);
 
             builder.Entity<Lesson>()
-                .HasMany<Progress>()
-                .WithOne()
+                .HasMany<Progress>(l=>l.Progresss)
+                .WithOne(p=>p.Lesson)
                 .HasForeignKey(f => f.LessonId);
 
             //Question Table
             builder.Entity<Question>()
-                .HasMany<Answer>()
-                .WithOne()
+                .HasMany<Answer>(q=>q.Answers)
+                .WithOne(a=>a.Question)
                 .HasForeignKey(f => f.QuestionId);
 
             //Progress Table

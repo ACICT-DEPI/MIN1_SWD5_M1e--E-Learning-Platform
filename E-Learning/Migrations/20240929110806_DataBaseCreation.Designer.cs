@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.Migrations
 {
     [DbContext(typeof(ElearingDbcontext))]
-    [Migration("20240926141947_DataBaseCreation")]
+    [Migration("20240929110806_DataBaseCreation")]
     partial class DataBaseCreation
     {
         /// <inheritdoc />
@@ -94,7 +94,6 @@ namespace E_Learning.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("InstractourId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Language")
@@ -115,9 +114,12 @@ namespace E_Learning.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TItle")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ispublic")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -183,6 +185,10 @@ namespace E_Learning.Migrations
                     b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ModuleId");
@@ -202,7 +208,6 @@ namespace E_Learning.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -590,161 +595,199 @@ namespace E_Learning.Migrations
 
             modelBuilder.Entity("Entites.Models.Anouncment", b =>
                 {
-                    b.HasOne("Entites.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Course", "Course")
+                        .WithMany("Anouncments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("Entites.Models.Answer", b =>
                 {
-                    b.HasOne("Entites.Models.Question", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Question", "Question")
+                        .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Answers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Course", b =>
                 {
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("InstractourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Courses")
+                        .HasForeignKey("InstractourId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Deposit", b =>
                 {
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Deposits")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Enrolment", b =>
                 {
-                    b.HasOne("Entites.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Course", "Course")
+                        .WithMany("Enrolments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Enrolments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Lesson", b =>
                 {
-                    b.HasOne("Entites.Models.Module", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Module", "Module")
+                        .WithMany("Lessons")
                         .HasForeignKey("ModuleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("Entites.Models.Material", b =>
                 {
-                    b.HasOne("Entites.Models.Lesson", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Lesson", "Lesson")
+                        .WithMany("Materials")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Lesson");
                 });
 
             modelBuilder.Entity("Entites.Models.Module", b =>
                 {
-                    b.HasOne("Entites.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Course", "Course")
+                        .WithMany("Modules")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("Entites.Models.Note", b =>
                 {
-                    b.HasOne("Entites.Models.Lesson", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Lesson", "Lesson")
+                        .WithMany("Notes")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Notes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Payment", b =>
                 {
-                    b.HasOne("Entites.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Course", "Course")
+                        .WithMany("Payments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Payments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Progress", b =>
                 {
-                    b.HasOne("Entites.Models.Lesson", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Lesson", "Lesson")
+                        .WithMany("Progresss")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Progresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Question", b =>
                 {
-                    b.HasOne("Entites.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Course", "Course")
+                        .WithMany("Questions")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.Lesson", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.Lesson", "Lesson")
+                        .WithMany("Questions")
                         .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Questions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entites.Models.Withdrow", b =>
                 {
-                    b.HasOne("Entites.Models.User", null)
-                        .WithMany()
+                    b.HasOne("Entites.Models.User", "User")
+                        .WithMany("Withdrows")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -796,6 +839,61 @@ namespace E_Learning.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entites.Models.Course", b =>
+                {
+                    b.Navigation("Anouncments");
+
+                    b.Navigation("Enrolments");
+
+                    b.Navigation("Modules");
+
+                    b.Navigation("Payments");
+
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Entites.Models.Lesson", b =>
+                {
+                    b.Navigation("Materials");
+
+                    b.Navigation("Notes");
+
+                    b.Navigation("Progresss");
+
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("Entites.Models.Module", b =>
+                {
+                    b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("Entites.Models.Question", b =>
+                {
+                    b.Navigation("Answers");
+                });
+
+            modelBuilder.Entity("Entites.Models.User", b =>
+                {
+                    b.Navigation("Answers");
+
+                    b.Navigation("Courses");
+
+                    b.Navigation("Deposits");
+
+                    b.Navigation("Enrolments");
+
+                    b.Navigation("Notes");
+
+                    b.Navigation("Payments");
+
+                    b.Navigation("Progresses");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("Withdrows");
                 });
 #pragma warning restore 612, 618
         }

@@ -48,30 +48,8 @@
                             </div>
                         </div>
                     </div>
+                    
 
-                  
-                     @* <div class="border border-2 bg-white  mx-5 mt-1 mb-3  d-flex flex-column justify-content-around" style="" >
-                         <form class="addlectureform">
-                             <div class="my-2 mx-1 d-flex d-flex-row justify-content-around">
-                                 <label class="form-control" name="Title" >
-                                     New Lecture :
-                                 </label>
-                                 <input type="text" name="Title" value="" placeholder="Enter Title" class="form-control" style="width:85%"
-                                         data-val="true"
-                                         data-val-required="This field may not be blank." />
-                                  <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
-                             </div>
-                             <div class=" mb-2 d-flex d-flex-row justify-content-end">
-                                 <div class="mx-2">
-                                     <input type="button" value="Add Lecture" class="btn btn-primary mx-3" onclick="savelecture(this.parentNode.parentNode)" />
-                                 </div>
-                                 <div class="mx-2">
-                                     <input type="button" value="Cancel" class="btn btn-outline-danger mx-1" onclick="removemodule(this.parentNode.parentNode)" />
-                                 </div>
-                             </div>
-                         </form>
-
-                     </div> *@
                 </div>
             </div>
         }
@@ -95,31 +73,31 @@
             moduleCount++;
 
             var newModule = `
-                                    <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
-                                        <form id="addmoduleform${moduleCount}" class="newModuleForm">
-                                            <div class="text-danger"></div>
-                                            <div class="">
-                                                <h5 class="mt-2">Module Title</h5>
-                                                <input type="text" name="Title" class="form-control mt-2 w-75"
-                                                    data-val="true"
-                                                    data-val-required="Title is required" />
-                                                <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
-                                            </div>
-                                            <div class="mt-2">
-                                                <h5 class="mt-2">What will students be able to do at the end of this section?</h5>
-                                                <input type="text" name="Description" class="form-control mt-2 w-75"
-                                                    data-val="true"
-                                                    data-val-required="Description is required" />
-                                                <span class="text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
-                                            </div>
-                                            <div class="mt-4 mb-2 d-inline-flex justify-content-end">
-                                                <input type="button" value="Save" class="btn btn-primary mx-3" onclick="savemodule(this.parentNode.parentNode)" />
-                                            </div>
-                                        </form>
-                                        <div class="mt-4 mb-2 d-inline-flex justify-content-end">
-                                            <input type="button" value="Cancel" class="btn btn-primary mx-3" onclick="removemodule(this.parentNode.parentNode)" />
-                                        </div>
-                                    </div>`;
+                        <div class="border border-2 m-5 d-flex flex-column justify-content-between" style="background:#f7f9fa">
+                            <form id="addmoduleform${moduleCount}" class="newModuleForm">
+                                <div class="text-danger"></div>
+                                <div class="">
+                                    <h5 class="mt-2">Module Title</h5>
+                                    <input type="text" name="Title" class="form-control mt-2 w-75"
+                                        data-val="true"
+                                        data-val-required="Title is required" />
+                                    <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="mt-2">
+                                    <h5 class="mt-2">What will students be able to do at the end of this section?</h5>
+                                    <input type="text" name="Description" class="form-control mt-2 w-75"
+                                        data-val="true"
+                                        data-val-required="Description is required" />
+                                    <span class="text-danger" data-valmsg-for="Description" data-valmsg-replace="true"></span>
+                                </div>
+                                <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                    <input type="button" value="Save" class="btn btn-primary mx-3" onclick="savemodule(this.parentNode.parentNode)" />
+                                </div>
+                            </form>
+                            <div class="mt-4 mb-2 d-inline-flex justify-content-end">
+                                <input type="button" value="Cancel" class="btn btn-primary mx-3" onclick="removemodule(this.parentNode.parentNode)" />
+                            </div>
+                        </div>`;
 
 
 
@@ -135,7 +113,7 @@
             lecturCount++;
             input.innerHTML = `
                       <i class="fa-sharp fa-solid fa-xmark mx-4 " onclick="canclenewcurriculm(this.parentNode)"></i>
-                      <div class="border border-2 bg-white  mx-5 mt-1 mb-3  >
+                      <div class="border border-2 bg-white  mx-5 mt-1 mb-3  ">
                                <form class="addlectureform${lecturCount}">
                                         <div class="my-2 mx-1 d-flex d-flex-row justify-content-around">
                                         <label  name="Title" >
@@ -144,11 +122,12 @@
                                         <input type="text" name="Title" value="" placeholder="Enter Title" class="form-control" style="width:85%"
                                                 data-val="true"
                                                 data-val-required="This field may not be blank." />
+                                                <br />
                                          <span class="text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
                                     </div>
                                     <div class=" mb-2 d-flex d-flex-row justify-content-end">
                                         <div class="mx-2">
-                                            <input type="button" value="Add Lecture" class="btn btn-primary mx-3" onclick="savelecture(this.parentNode.parentNode)" />
+                                                            <input type="button" value="Add Lecture" class="btn btn-primary mx-3" onclick="savelecture(this.parentNode.parentNode.parentNode)" />
                                         </div>
                                         <div class="mx-2">
                                             <input type="button" value="Cancel" class="btn btn-outline-danger mx-1" onclick="newcurriculm(this.parentNode.parentNode.parentNode.parentNode)" />
@@ -185,6 +164,31 @@
                     },
                     error: function (request, status, error) {
                         alert(request.responseText);
+                    }
+                });
+            }
+        }
+        function savelecture(button) {
+            var form = $(button).closest("form");
+            $.validator.unobtrusive.parse(form);
+
+            if (form.valid()) {
+                var formdata = form.serialize();
+                var moduleid = 4;  // Example moduleid, get this dynamically based on your app
+
+                $.ajax({
+                    url: '/Lesson/CreateLesson',
+                    type: 'POST',
+                    data: formdata + '&moduleid=' + moduleid,  // Append moduleid to form data
+                    success: function (response) {
+                       
+                            window.location.reload();  // Refresh the page on success
+                        
+                    },
+                    error: function (request, status, error) {
+                       
+                        alert(request.responseText);
+                        
                     }
                 });
             }

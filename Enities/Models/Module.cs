@@ -1,4 +1,6 @@
-﻿namespace Entites.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Entites.Models
 {
     public class Module
     {
@@ -6,5 +8,9 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public int CourseId { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
+        public virtual Course? Course { get; set; }
+        public virtual ICollection<Lesson> Lessons { get; set; }=new List<Lesson>();
     }
 }
