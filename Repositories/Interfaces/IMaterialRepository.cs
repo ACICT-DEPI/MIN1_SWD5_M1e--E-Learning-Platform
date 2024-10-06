@@ -11,6 +11,10 @@ namespace Repositories.Interfaces
     public interface IMaterialRepository
     {
         Task<IQueryable<Material>> GetMaterialsByLessonId(int lessonid);
-        Task<ResponseVM> UploadVideo(Material material);
+        Task<Material> GetMaterialById(int id,bool istracked);
+        Task<ResponseVM> CreateMaterial(Material material);
+        Task<ResponseVM> UpsateMaterial(Material material);
+        Task<ResponseVM> DeleteMaterial(Material material); 
+
     }
 }

@@ -40,7 +40,7 @@ namespace Services.Impelmentations
             return course;
         }
 
-        public async Task<ResponseVM> CreateNewCourse(CreateCourseVM course)
+        public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
         {
             Course newcourse=_mapper.Map<Course>(course);
             newcourse.InstractourId= "new-id";
@@ -59,5 +59,51 @@ namespace Services.Impelmentations
 			}
 			return result;
 		}
+
+        public async Task<ResponseVM> UpdateCourse(CreateorUpdateCourseVM courseVM, int id)
+        {
+            var course = await _repositoryManger.courseRepository.GetCourseByIdAsync(id, true);
+            if(course == null) 
+                return new ResponseVM { isSuccess = false ,message="No Found Course with this id"};
+            var updatedcourse= _mapper.Map<Course>(courseVM);
+            updatedcourse.Id=course.Id;
+            updatedcourse.InstractourId = course.InstractourId;
+            var result= await _repositoryManger.courseRepository.UpdateCourse(updatedcourse);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message;
+                }
+            }
+            return result;
+
+        }
+
+        public async Task<ResponseVM> DeleteCourseAsync(int id)
+        {
+            var course = await _repositoryManger.courseRepository.GetCourseByIdAsync(id, true);
+            if (course == null)
+                return new ResponseVM { isSuccess = false, message = "No Found Course with this id" };
+            var result = await _repositoryManger.courseRepository.DeleteCourse(course);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message;
+                }
+            }
+            return result;
+        }
     }
 }

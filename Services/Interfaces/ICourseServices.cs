@@ -9,7 +9,9 @@ namespace Services.Interfaces
     {
        Task<List<Course>> GetAllCourcesAsync(bool istraked);
         Task<Course> GetCourseByIdAsync(int id, bool istracked);
-        Task<ResponseVM> CreateNewCourse(CreateCourseVM course);
+        Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course);
+        Task<ResponseVM> UpdateCourse(CreateorUpdateCourseVM courseVM,int id);
+        Task<ResponseVM> DeleteCourseAsync(int id);
 
     }
 }

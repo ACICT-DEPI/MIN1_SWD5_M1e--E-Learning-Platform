@@ -26,10 +26,28 @@ namespace E_Learning.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> CreateModule(CreateModuleVM model,int courseid)
+		public async Task<IActionResult> CreateModule(CreateorUpdateModuleVM model,int courseid)
 		{
 			var result= await _servicesManger.moduleServices.CreateNewModule(model, courseid);
 			return RedirectToAction("Index");
 		}
-	}
+		[HttpPut]
+		public async Task<IActionResult> UpdateModule(CreateorUpdateModuleVM model ,int moduleid)
+		{
+			var result= await _servicesManger.moduleServices.UpdateModule(model,moduleid);
+			if (result.isSuccess)
+				return Ok();
+			return BadRequest(result);
+		}
+		[HttpDelete]
+		public async Task<IActionResult> DeleteModule(int id)
+		{
+            var result = await _servicesManger.moduleServices.DeleteModule(id);
+            if (result.isSuccess)
+                return Ok();
+            return BadRequest(result);
+        }
+
+
+    }
 }

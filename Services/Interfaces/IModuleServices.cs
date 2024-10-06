@@ -13,7 +13,9 @@ namespace Services.Interfaces
     {
         Task<IEnumerable<GetModuleVM>> GetAllModule(bool istracked);
        
-        Task<ResponseVM> CreateNewModule(CreateModuleVM module,int courseid);
+        Task<ResponseVM> CreateNewModule(CreateorUpdateModuleVM module,int courseid);
+        Task<ResponseVM> UpdateModule(CreateorUpdateModuleVM moduleVM,int courseid);
+        Task<ResponseVM> DeleteModule(int id);
         
     }
 }

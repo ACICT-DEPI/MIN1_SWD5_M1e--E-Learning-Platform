@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Enities.ViweModel.Course
 {
-    public class CreateCourseVM
+    public class CreateorUpdateCourseVM
     {
         public string TItle { get; set; }
         public string Description { get; set; }

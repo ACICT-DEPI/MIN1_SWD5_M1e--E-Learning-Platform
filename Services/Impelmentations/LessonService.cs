@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Services.Impelmentations
 {
-    public class LessonService : ILessonService
+    public sealed class LessonService : ILessonService
     {
         private readonly IRepositoryManger _repositoryManger;
         
@@ -51,7 +51,7 @@ namespace Services.Impelmentations
             }
 
         }
-        public async Task<ResponseVM> CreateLesson(CreateLessonVM model,int moduleid)
+        public async Task<ResponseVM> CreateLesson(CreateorUpdateLessonVM model,int moduleid)
         {
             var lesson= _mapper.Map<Lesson>(model);
             lesson.ModuleId = moduleid;
@@ -70,6 +70,49 @@ namespace Services.Impelmentations
             return result;
         }
 
-        
+        public async Task<ResponseVM> UpdateLesson(CreateorUpdateLessonVM model, int id)
+        {
+            var lesson = await _repositoryManger.lessonRepository.GetLessonById(id, true);
+            if (lesson == null)
+                return new ResponseVM { isSuccess = false, message = "No Found Lesson with this id" };
+            var updatedlesson = _mapper.Map<Lesson>(model);
+            updatedlesson.Id = lesson.Id;
+            updatedlesson.ModuleId = lesson.ModuleId;
+            var result = await _repositoryManger.lessonRepository.UpdateLesson(updatedlesson);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message;
+                }
+            }
+            return result;
+        }
+
+        public async Task<ResponseVM> DeleteLesson(int id)
+        {
+            var lesson = await _repositoryManger.lessonRepository.GetLessonById(id, true);
+            if (lesson == null)
+                return new ResponseVM { isSuccess = false, message = "No Found Lesson with this id" };
+            var result = await _repositoryManger.lessonRepository.DeleteLesson(lesson);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message;
+                }
+            }
+            return result;
+        }
     }
 }
