@@ -11,7 +11,8 @@ namespace Services.Interfaces
     public interface ILessonService
     {
         Task<List<GetLessonVM>> GetLessons(int moduleid);
-        Task<ResponseVM> CreateLesson(CreateLessonVM model,int moduleid);
-
+        Task<ResponseVM> CreateLesson(CreateorUpdateLessonVM model,int moduleid);
+        Task<ResponseVM> UpdateLesson(CreateorUpdateLessonVM model,int id);
+        Task<ResponseVM> DeleteLesson(int id);
     }
 }

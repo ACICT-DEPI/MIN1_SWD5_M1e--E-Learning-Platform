@@ -11,5 +11,6 @@ namespace Services.Interfaces
     public interface IUploadFileService
     {
         public Task<ResponseVM> UploadVideo(IFormFile video, string location);
+        public Task<ResponseVM> UploadResourses(IFormFile resourse, string location);
     }
 }

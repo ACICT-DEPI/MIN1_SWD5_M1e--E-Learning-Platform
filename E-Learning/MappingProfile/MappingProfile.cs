@@ -12,10 +12,10 @@ namespace E_Learning.MappingProfile
         public MappingProfile()
         {
             CreateMap<Course, GetCourseVM>().ReverseMap();
-            CreateMap<Course, CreateCourseVM>().ReverseMap();
-            CreateMap<Module,CreateModuleVM>().ReverseMap();
+            CreateMap<Course, CreateorUpdateCourseVM>().ReverseMap();
+            CreateMap<Module,CreateorUpdateModuleVM>().ReverseMap();
             CreateMap<Module,GetModuleVM>().ReverseMap();   
-            CreateMap<Lesson,CreateLessonVM>().ReverseMap();
+            CreateMap<Lesson,CreateorUpdateLessonVM>().ReverseMap();
             CreateMap<Lesson,GetLessonVM>().ReverseMap();
             CreateMap<Material, GetMaterialsVM>().ReverseMap();
             CreateMap<Progress, CreateProgressVM>().ReverseMap();

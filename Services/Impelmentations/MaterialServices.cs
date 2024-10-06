@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Services.Impelmentations
 {
-    public class MaterialServices : IMaterialServices
+    public sealed class MaterialServices : IMaterialServices
     {
         private readonly IRepositoryManger _repositoryManger;
         private readonly IMapper _mapper;
@@ -22,27 +22,7 @@ namespace Services.Impelmentations
             _repositoryManger = repositoryManger;
             _mapper = mapper;
         }
-        public async Task<ResponseVM> CreateMaterial(string path, int lessonid)
-        {
-            var newmaterial = new Material();
-            newmaterial.Path = path;
-            newmaterial.LessonId = lessonid;
-            newmaterial.Type = "Video";
-            
-            var result=await _repositoryManger.materialRepository.UploadVideo(newmaterial);
-            if (result.isSuccess) {
-                try
-                {
-                    await _repositoryManger.Save();
-                }
-                catch (Exception ex)
-                {
-                    result.message += ex.Message.ToString();
-                }
-            }
-            return result;
-        }
-
+      
         public async Task<ResponseVM> GetMaterial(int lessonid)
         {
             try
@@ -56,6 +36,52 @@ namespace Services.Impelmentations
             {
                 return new ResponseVM { isSuccess = false, message = "Failed To Get Material" };
             }
+        }
+        public async Task<ResponseVM> CreateMaterial(string[] infovideo, int lessonid)
+        {
+            var newmaterial = new Material();
+            newmaterial.Path = infovideo[0];
+            newmaterial.LessonId = lessonid;
+            newmaterial.Type = infovideo[1];
+
+            var result = await _repositoryManger.materialRepository.CreateMaterial(newmaterial);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message.ToString();
+                }
+            }
+            return result;
+        }
+
+        public Task<ResponseVM> UpdateMaterial(string path, int lessonid)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<ResponseVM> DeleteMaterial( int id)
+        {
+            var material = await _repositoryManger.materialRepository.GetMaterialById(id, false);
+            if (material == null)
+                return new ResponseVM { isSuccess = false, message = "No Found material with this id" };
+            var result = await _repositoryManger.materialRepository.DeleteMaterial(material);
+            if (result.isSuccess)
+            {
+                try
+                {
+                    await _repositoryManger.Save();
+
+                }
+                catch (Exception ex)
+                {
+                    result.message += ex.Message;
+                }
+            }
+            return result;
         }
     }
 }

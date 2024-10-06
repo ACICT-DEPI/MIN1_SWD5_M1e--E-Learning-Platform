@@ -1,5 +1,5 @@
 ﻿@using Enities.ViweModel.Course
-@model CreateCourseVM
+@model CreateorUpdateCourseVM
 @{
  List<SelectListItem> Languages  = new List<SelectListItem>
 {
@@ -41,7 +41,7 @@
 					<h4 class="mt-2">
 						Course Title
 					</h4>
-					<input type="text" asp-for="TItle" class="form-control mt-2 w-75" />
+					<input type="text" rasp-fo="TItle" class="form-control mt-2 w-75" />
 					<span asp-validation-for="TItle" class="text-danger"></span>
 					
 				</div>

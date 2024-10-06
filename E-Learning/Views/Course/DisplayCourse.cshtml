@@ -70,9 +70,13 @@
 			countlesson++;
 			var path = `/videos/${@Model.Id}/${moduleid}/${lesson.id}/`;
 			lessonrow += `
-							<div class=" d-flex flex-row  align-content-center" onclick="loadmaterial(this,'${path}',${lesson.id})" style="height:50px;background-color:white;"onmouseover="this.style.background='#d1d7dc';" onmouseout="this.style.background='white';">
+					<div class=" d-flex flex-row  align-content-center" style="height:50px;background-color:white;"onmouseover="this.style.background='#d1d7dc';" onmouseout="this.style.background='white';">
+								<div style="width:7%">
 							   <input class="form-check-input mx-2 my-auto" type="checkbox" value="" id="flexCheckDefault"  onclick="boxcheckded(this,${lesson.id})"     ${(lesson.isChecked) ? 'checked' : ''} >
-						<h6 class="mx-2 my-auto">${countlesson}. ${lesson.title} </h6>
+								</div >
+							   <div style="width:90%"  onclick="loadmaterial(this.parentNode,'${path}',${lesson.id})">
+							   <h6 class="mx-2 my-auto">${countlesson}. ${lesson.title} </h6>
+							   </div>
 					</div>
 			
 			

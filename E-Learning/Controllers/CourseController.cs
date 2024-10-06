@@ -37,7 +37,7 @@ namespace E_Learning.Controllers
             return View();
         }
         [HttpPost]
-		public async Task<IActionResult> CreateCourse(CreateCourseVM model)
+		public async Task<IActionResult> CreateCourse(CreateorUpdateCourseVM model)
 		{
             if (ModelState.IsValid)
             {

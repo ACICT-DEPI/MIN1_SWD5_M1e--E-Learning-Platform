@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Services.Impelmentations
 {
-	public class ProgressServices : IProgressServices
+	public sealed class ProgressServices : IProgressServices
 	{
 		private readonly IRepositoryManger _repositoryManger;
 		private readonly IMapper _mapper;

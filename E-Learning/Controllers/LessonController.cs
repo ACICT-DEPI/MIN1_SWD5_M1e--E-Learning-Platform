@@ -28,14 +28,40 @@ namespace E_Learning.Controllers
         }
 
         [HttpPost]
-        public async Task<string> CreateLesson(CreateLessonVM model,int moduleid )
+        public async Task<IActionResult> CreateLesson(CreateorUpdateLessonVM model,int moduleid )
         {
-            var result = await _servicesManger.lessonServices.CreateLesson(model, moduleid);
-            if (result.isSuccess)
+            if (ModelState.IsValid)
             {
-                return result.message;
+                var result = await _servicesManger.lessonServices.CreateLesson(model, moduleid);
+                if (result.isSuccess)
+                {
+                    return Ok(result.message);
+                }
+                return BadRequest( result.message);
             }
-            return result.message;
+            return BadRequest(ModelState);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateLesson(CreateorUpdateLessonVM model, int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _servicesManger.lessonServices.UpdateLesson(model, id);
+                if (result.isSuccess)
+                {
+                    return Ok(result.message);
+                }
+                return BadRequest(result.message);
+            }
+            return BadRequest(ModelState);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLesson(int id)
+        {
+            var result= await _servicesManger.lessonServices.DeleteLesson(id);
+            if(result.isSuccess)
+                return Ok(result.message);
+            return BadRequest(result.message);
         }
     }
 }

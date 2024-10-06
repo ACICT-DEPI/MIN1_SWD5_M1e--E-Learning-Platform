@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enities.ViweModel.Module
+namespace Enities.ViweModel.Lesson
 {
-	public class CreateModuleVM
-	{
+    public class CreateorUpdateLessonVM
+    {
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Description is required")]
-        public string Description { get; set; }
-	}
+
+    }
 }
