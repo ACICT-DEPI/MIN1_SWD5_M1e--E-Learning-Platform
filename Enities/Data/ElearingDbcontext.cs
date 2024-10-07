@@ -1,4 +1,5 @@
-﻿using Entites.Models;
+﻿using Enities.Models;
+using Entites.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -59,8 +60,13 @@ namespace Entites.Data
                 .WithOne(p=>p.User)
                 .HasForeignKey(f => f.UserId);
 
-            //Course Table
-            builder.Entity<Course>()
+			builder.Entity<User>()
+				.HasMany<Review>(u => u.Reviews)
+				.WithOne(r => r.User)
+				.HasForeignKey(f => f.UserId);
+
+			//Course Table
+			builder.Entity<Course>()
                 .HasMany<Enrolment>(c=>c.Enrolments)
                 .WithOne(e=>e.Course)
                 .HasForeignKey(f => f.CourseId);
@@ -85,8 +91,13 @@ namespace Entites.Data
                 .WithOne(p=>p.Course)
                 .HasForeignKey(f => f.CourseId);
 
-            //Enrollment Table
-            builder.Entity<Enrolment>()
+			builder.Entity<Course>()
+				.HasMany<Review>(c => c.Reviews)
+				.WithOne(r => r.Course)
+				.HasForeignKey(f => f.CourseId);
+
+			//Enrollment Table
+			builder.Entity<Enrolment>()
                 .HasKey(f => new { f.UserId, f.CourseId });
 
             //Module Table
@@ -124,8 +135,12 @@ namespace Entites.Data
 
             //Progress Table
             builder.Entity<Progress>()
-                .HasKey(f => new {f.UserId,f.LessonId}); 
-        }
+                .HasKey(f => new {f.UserId,f.LessonId});
+            
+            //Review Table
+			builder.Entity<Review>()
+				.HasKey(R => new { R.UserId, R.CourseId });
+		}
         public DbSet<Course> Courses { get; set; }
         public DbSet<Module> Modules { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
@@ -139,5 +154,6 @@ namespace Entites.Data
         public DbSet<Withdrow> Withdrows { get; set; }
         public DbSet<Enrolment> Enrolments { get; set; }
         public DbSet<Progress> Progresses { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }

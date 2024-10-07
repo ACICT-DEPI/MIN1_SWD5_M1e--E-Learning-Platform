@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Enities.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entites.Models
 {
@@ -17,5 +18,6 @@ namespace Entites.Models
         public virtual ICollection<Progress> Progresses { get;set ; }=new HashSet<Progress>();
         public virtual ICollection<Question> Questions { get; set; }=new HashSet<Question>();
         public virtual ICollection<Withdrow> Withdrows { get; set; } =new HashSet<Withdrow>();
-    }
+		public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+	}
 }

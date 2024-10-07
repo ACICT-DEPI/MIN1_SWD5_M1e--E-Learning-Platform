@@ -10,7 +10,50 @@
 			</video>
             
 		</div>
-		
+		<div style="width:100%;background-color:white;" >
+			<div style="width:100%;background-color:white;" >
+				<ul class="nav nav-tabs d-flex flex-row justify-content-around">
+					<li class="nav-item">
+						<a class="nav-link "  >Overview</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " >Q&A</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " >Notes</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " >Announcements</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " >Reviews</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link " >Material</a>
+					</li>
+				</ul>
+			</div>
+			<div style="width:100%;background-color:white;"  >
+				<div style="width:100%;background-color:white;" class="mx-3 my-2">
+					<div style="width:100%;background-color:white;">
+						<div style="width:100%;background-color:white;">
+							<h3 class="d-flex flex-row justify-content-start">@Model.Title</h3>
+						</div>
+						<div class="d-flex flex-row justify-content-start">
+							<div>
+								@((Model.NumberOfRating == 0d) ? 0.00 : (Model.RatingSum / Model.NumberOfRating).ToString("#.##"))
+								<span style="color:gold" class="fa fa-star "></span>
+								<p>@Model.NumberOfRating ratings</p>
+							</div>
+							<div>
+								<h3>@Model.NumberOfStudents</h3>
+								<p>Students</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="border border-1 bg-white" style="width:30%">
 		<div class="border border-1 shadow  d-flex flex-row justify-content-between  align-content-center " style="height:50px">
@@ -216,7 +259,7 @@
 		videodiv.innerHTML = `
 			<video id="courseVideo" controls="controls" width="100%" height="425" >
 					<source src= '${fullpath}' type="video/webm" />
-				    
+					<source src= '${fullpath}' type="video/mp4" />
 				</video>
 		`;
 		 }
