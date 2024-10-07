@@ -73,23 +73,28 @@ namespace Services.Impelmentations
 
         public async Task<ResponseVM> DeleteModule(int id)
         {
-            var module = await _repositoryManger.moduleRepository.GetModuleById(id, false);
+            var module = await _repositoryManger.moduleRepository.GetModuleById(id, true);
             if (module == null)
                 return new ResponseVM { isSuccess = false, message = "No Found Course with this id" };
-            var result = await _repositoryManger.moduleRepository.DeleteModule(module);
-            if (result.isSuccess)
+            module.IsDeleted = true;
+            //var result = await _repositoryManger.moduleRepository.DeleteModule(module);
+            //if (result.isSuccess)
+            //{
+            try
             {
-                try
-                {
-                    await _repositoryManger.Save();
+                await _repositoryManger.Save();
+                return new ResponseVM { isSuccess = true, message = "the process of Felete is Sucess" };
 
-                }
-                catch (Exception ex)
-                {
-                    result.message += ex.Message;
-                }
+
             }
-            return result;
+            catch (Exception ex)
+            {
+                return new ResponseVM { isSuccess = false, message = ex.Message.ToString() };
+
+                //result.message += ex.Message;
+            }
+            //}
+            //return result;
         }
     }
 }

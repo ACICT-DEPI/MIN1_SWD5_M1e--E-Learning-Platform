@@ -65,23 +65,27 @@ namespace Services.Impelmentations
         }
         public async Task<ResponseVM> DeleteMaterial( int id)
         {
-            var material = await _repositoryManger.materialRepository.GetMaterialById(id, false);
+            var material = await _repositoryManger.materialRepository.GetMaterialById(id, true);
             if (material == null)
                 return new ResponseVM { isSuccess = false, message = "No Found material with this id" };
-            var result = await _repositoryManger.materialRepository.DeleteMaterial(material);
-            if (result.isSuccess)
-            {
+            material.IsDeleted = true;
+            //var result = await _repositoryManger.materialRepository.DeleteMaterial(material);
+            //if (result.isSuccess)
+            //{
                 try
                 {
                     await _repositoryManger.Save();
+                return new ResponseVM { isSuccess = true, message = "the process of Felete is Sucess" };
 
-                }
-                catch (Exception ex)
-                {
-                    result.message += ex.Message;
-                }
             }
-            return result;
+            catch (Exception ex)
+                {
+                return new ResponseVM { isSuccess = false, message = ex.Message.ToString() };
+
+                //result.message += ex.Message;
+            }
+            //}
+            //return result;
         }
     }
 }

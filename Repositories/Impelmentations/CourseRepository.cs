@@ -25,11 +25,11 @@ namespace Repositories.Impelmentations
         public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
         {
             return await _context.Courses
-                .Include(c=>c.Modules)
-                .ThenInclude(m=>m.Lessons)
-                .ThenInclude(l=>l.Materials)
+                .Include(c=>c.Modules.Where(m=>!m.IsDeleted))
+                .ThenInclude(m=>m.Lessons.Where(l=>!l.IsDeleted))
+                .ThenInclude(l=>l.Materials.Where(m=>!m.IsDeleted))
                 .AsNoTracking()
-                .FirstOrDefaultAsync(e=>e.Id==id)
+                .FirstOrDefaultAsync(e=>e.Id==id&&!e.IsDeleted)
                 ;
 
         }

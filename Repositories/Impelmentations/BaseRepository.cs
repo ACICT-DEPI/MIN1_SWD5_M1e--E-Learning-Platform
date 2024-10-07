@@ -69,7 +69,7 @@ namespace Repositories.Impelmentations
         {
             try
             {
-                 _context.Set<T>().Remove(entity);
+                _context.Set<T>().Remove(entity);
                 return new ResponseVM { isSuccess = true, model = entity, message = "the Process od Delete Success" };
             }
             catch (Exception ex)

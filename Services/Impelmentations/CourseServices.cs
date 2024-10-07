@@ -91,20 +91,23 @@ namespace Services.Impelmentations
             var course = await _repositoryManger.courseRepository.GetCourseByIdAsync(id, true);
             if (course == null)
                 return new ResponseVM { isSuccess = false, message = "No Found Course with this id" };
-            var result = await _repositoryManger.courseRepository.DeleteCourse(course);
-            if (result.isSuccess)
-            {
+            course.IsDeleted=true;
+            //var result = await _repositoryManger.courseRepository.DeleteCourse(course);
+            //if (result.isSuccess)
+            //{
                 try
                 {
                     await _repositoryManger.Save();
+                return new ResponseVM { isSuccess = true, message = "the process of Felete is Sucess" };
 
-                }
-                catch (Exception ex)
-                {
-                    result.message += ex.Message;
-                }
+
             }
-            return result;
+            catch (Exception ex)
+                {
+                  return new ResponseVM { isSuccess = false, message =ex.Message.ToString() };
+                }
+            //}
+            //return result;
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Services.Impelmentations
 
         public async Task<ResponseVM> UpdateLesson(CreateorUpdateLessonVM model, int id)
         {
-            var lesson = await _repositoryManger.lessonRepository.GetLessonById(id, true);
+            var lesson = await _repositoryManger.lessonRepository.GetLessonById(id, false);
             if (lesson == null)
                 return new ResponseVM { isSuccess = false, message = "No Found Lesson with this id" };
             var updatedlesson = _mapper.Map<Lesson>(model);
@@ -99,20 +99,25 @@ namespace Services.Impelmentations
             var lesson = await _repositoryManger.lessonRepository.GetLessonById(id, true);
             if (lesson == null)
                 return new ResponseVM { isSuccess = false, message = "No Found Lesson with this id" };
-            var result = await _repositoryManger.lessonRepository.DeleteLesson(lesson);
-            if (result.isSuccess)
-            {
+            lesson.IsDeleted = true;
+
+            //var result = await _repositoryManger.lessonRepository.DeleteLesson(lesson);
+            //if (result.isSuccess)
+            //{
                 try
                 {
                     await _repositoryManger.Save();
+                return new ResponseVM { isSuccess = true, message = "the process of Felete is Sucess" };
 
-                }
-                catch (Exception ex)
-                {
-                    result.message += ex.Message;
-                }
             }
-            return result;
+            catch (Exception ex)
+                {
+                return new ResponseVM { isSuccess = false, message = ex.Message.ToString() };
+
+                //result.message += ex.Message;
+            }
+            //}
+            //return result;
         }
     }
 }
