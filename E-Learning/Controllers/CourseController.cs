@@ -23,7 +23,9 @@ namespace E_Learning.Controllers
         public async Task<IActionResult> ManageCourse(int id)
         {
             var course = await _servicesManger.courseServices.GetCourseByIdAsync(id,true);
-            return View(course);
+            if(course!=null)
+                return View(course);
+             return BadRequest("course not found");
         }
         [HttpGet]
         public async Task<IActionResult> DisplayCourse(int id)
@@ -44,7 +46,7 @@ namespace E_Learning.Controllers
                var result= await _servicesManger.courseServices.CreateNewCourse(model);
                 if(result.isSuccess)
                 {
-                    return View("Index");
+                    return RedirectToAction("ManageCourse",new { id = result.model.Entity.Id });
                 }
                 else
                     return View();

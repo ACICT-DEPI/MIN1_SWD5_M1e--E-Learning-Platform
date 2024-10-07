@@ -49,12 +49,13 @@ namespace Services.Impelmentations
 			{
 				try
 				{
-				 await	_repositoryManger.Save();
-
+				    await _repositoryManger.Save();
+                    
 				}
 				catch (Exception ex)
 				{
-					result.message += ex.Message;
+                    result.isSuccess = false;
+                    result.message += ex.Message;
 				}
 			}
 			return result;

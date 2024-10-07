@@ -44,8 +44,9 @@ namespace Repositories.Impelmentations
         {
             try
             {
-                await _context.Set<T>().AddAsync(entity);
-                return new ResponseVM { isSuccess = true, model = entity, message = "the Process of add Success" };
+                var newEntity=await _context.Set<T>().AddAsync(entity);
+
+                return new ResponseVM { isSuccess = true, model = newEntity, message = "the Process of add Success" };
             }
             catch (Exception ex) {
                 return new ResponseVM { isSuccess = false, model = entity, message = ex.Message.ToString() };
@@ -56,8 +57,8 @@ namespace Repositories.Impelmentations
         {
             try
             {
-                _context.Set<T>().Update(entity);
-                return new ResponseVM { isSuccess = true, model = entity, message = "the Process od Delete Success" };
+                var updatedEntity = _context.Set<T>().Update(entity);
+                return new ResponseVM { isSuccess = true, model = updatedEntity, message = "the Process od update Success" };
             }
             catch (Exception ex)
             {
