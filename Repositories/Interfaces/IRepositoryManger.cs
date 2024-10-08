@@ -8,6 +8,7 @@ namespace Repositories.Interfaces
         ILessonRepository lessonRepository { get; }
         IMaterialRepository materialRepository { get; }
         IProgressRepository progressRepository { get; }
+        INoteRepository noteRepository { get; }
 
         Task Save();
     }
