@@ -13,5 +13,8 @@ namespace Repositories.Interfaces
         public Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked);
         public Task<IQueryable<Question>> GetAllQuestionsByLessonId(int id, bool isTracked);
         public Task<ResponseVM> CreateQuestion(Question question);
+        public Task<ResponseVM> UpdateQuestion(Question question);
+        public Task<ResponseVM> DeleteQuestion(Question question);
+
     }
 }
