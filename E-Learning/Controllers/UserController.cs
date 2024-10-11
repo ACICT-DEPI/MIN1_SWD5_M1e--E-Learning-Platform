@@ -6,10 +6,14 @@ namespace E_Learning.Controllers
 {
     public class UserController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View("Login");
         }
-    }
+		public IActionResult Register()
+		{
+			return View("Register");
+		}
+	}
 
 }
