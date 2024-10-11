@@ -4,6 +4,12 @@ namespace Repositories.Interfaces
     public interface IRepositoryManger
     {
         ICourseRepository courseRepository { get; }
-        void Save();
+        IModuleRepository moduleRepository { get; }
+        ILessonRepository lessonRepository { get; }
+        IMaterialRepository materialRepository { get; }
+        IProgressRepository progressRepository { get; }
+        INoteRepository noteRepository { get; }
+
+        Task Save();
     }
 }

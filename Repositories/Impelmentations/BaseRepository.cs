@@ -2,6 +2,7 @@
 using Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Enities.ViweModel;
 
 
 
@@ -12,10 +13,10 @@ namespace Repositories.Impelmentations
         private readonly ElearingDbcontext _context;
         public BaseRepository(ElearingDbcontext context)
         {
-            context = _context;
+            _context = context;
         }
 
-        public IQueryable<T> FindAll(bool istracked)
+        public async Task<IQueryable<T>> FindAll(bool istracked)
         {
             return !istracked? 
                 _context.Set<T>()
@@ -23,27 +24,60 @@ namespace Repositories.Impelmentations
                 _context.Set<T>();
         }
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> condition, bool istracked)
+        public async Task <IQueryable<T>> FindByCondition(Expression<Func<T, bool>> condition, bool istracked)
         {
             return !istracked?
-                _context.Set<T>()
+                 _context.Set<T>()
                 .Where(condition)
                 .AsNoTracking():
                 _context.Set<T>()
                 .Where(condition);
         }
-        public void Create(T entity)
+		public  Task<T> FindById(Expression<Func<T,bool>> condition)
+		{
+            var entity =  _context.Set<T>().SingleOrDefaultAsync(condition);
+
+			return entity;
+			   
+		}
+		public async Task<ResponseVM> Create(T entity)
         {
-            _context.Set<T>().AddAsync(entity);
+            try
+            {
+                var newEntity=await _context.Set<T>().AddAsync(entity);
+
+                return new ResponseVM { isSuccess = true, model = newEntity, message = "the Process of add Success" };
+            }
+            catch (Exception ex) {
+                return new ResponseVM { isSuccess = false, model = entity, message = ex.Message.ToString() };
+
+            }
         }
-        public void Update(T entity)
+        public async Task<ResponseVM> Update(T entity)
         {
-           _context.Set<T>().Update(entity);
+            try
+            {
+                var updatedEntity = _context.Set<T>().Update(entity);
+                return new ResponseVM { isSuccess = true, model = updatedEntity, message = "the Process od update Success" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseVM { isSuccess = false, model = entity, message = ex.Message.ToString() };
+            }
         }
-        public void Delete(T entity)
+        public async Task<ResponseVM> Delete(T entity)
         {
-            _context.Set<T>().Remove(entity);
+            try
+            {
+                _context.Set<T>().Remove(entity);
+                return new ResponseVM { isSuccess = true, model = entity, message = "the Process od Delete Success" };
+            }
+            catch (Exception ex)
+            {
+                return new ResponseVM { isSuccess = false,model=entity, message = ex.Message.ToString() };
+            }
         }
-       
-    }
+
+		
+	}
 }

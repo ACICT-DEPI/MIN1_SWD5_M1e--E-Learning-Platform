@@ -4,6 +4,8 @@ using Entites.Data;
 using Entites.Models;
 using Repositories.Interfaces;
 using Repositories.Impelmentations;
+using Services.Interfaces;
+using Services.Impelmentations;
 
 namespace E_Learning
 {
@@ -18,9 +20,14 @@ namespace E_Learning
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ElearingDbcontext>();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
+            builder.Services.AddTransient<IServicesManger, ServicesManger>();
+            //builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddHttpContextAccessor();
+
             builder.Services.AddDbContext<ElearingDbcontext>(opion =>
             {
-                opion.UseSqlServer(builder.Configuration.GetConnectionString("DefeultConnection"));
+                opion.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));
             });
             var app = builder.Build();
 
