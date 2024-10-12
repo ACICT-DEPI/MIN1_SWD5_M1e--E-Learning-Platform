@@ -18,27 +18,28 @@ namespace Repositories.Impelmentations
 
 		public Task<ResponseVM> CreateQuestion(Question question)
 		{
-			throw new NotImplementedException();
-		}
-
-		public Task<ResponseVM> DeleteQuestion(Question question)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<IQueryable<Question>> GetAllQuestionsByLessonId(int id, bool isTracked)
-		{
-			throw new NotImplementedException();
+			return Create(question);
 		}
 
 		public Task<ResponseVM> UpdateQuestion(Question question)
 		{
-			throw new NotImplementedException();
+			return Update(question);
 		}
+
+		public Task<ResponseVM> DeleteQuestion(Question question)
+		{
+			return Delete(question);
+		}
+
+		public Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked)
+		{
+			return FindByCondition(q => q.CourseId == id, isTracked);
+		}
+
+		public Task<IQueryable<Question>> GetAllQuestionsByLessonId(int id, bool isTracked)
+		{
+			return FindByCondition(q => q.LessonId == id, isTracked);
+		}
+
 	}
 }
