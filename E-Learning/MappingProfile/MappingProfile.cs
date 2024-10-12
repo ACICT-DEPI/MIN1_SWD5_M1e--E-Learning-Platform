@@ -5,6 +5,7 @@ using Enities.ViweModel.Module;
 using Enities.ViweModel.Lesson;
 using Enities.ViweModel.Material;
 using Enities.ViweModel.Progress;
+using Enities.ViweModel.User;
 namespace E_Learning.MappingProfile
 {
     public class MappingProfile:Profile
@@ -20,6 +21,7 @@ namespace E_Learning.MappingProfile
             CreateMap<Material, GetMaterialsVM>().ReverseMap();
             CreateMap<Progress, CreateProgressVM>().ReverseMap();
             CreateMap<Progress, GetProgressVM>().ReverseMap();
-        }
+			CreateMap<User, LoginVM>().ReverseMap();
+		}
     }
 }

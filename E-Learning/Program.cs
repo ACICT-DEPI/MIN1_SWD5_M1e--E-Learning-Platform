@@ -21,8 +21,8 @@ namespace E_Learning
                 .AddEntityFrameworkStores<ElearingDbcontext>();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddTransient<IServicesManger, ServicesManger>();
-            //builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
-            builder.Services.AddAutoMapper(typeof(Program));
+			//builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+		    builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddDbContext<ElearingDbcontext>(opion =>
