@@ -9,7 +9,7 @@ namespace Repositories.Interfaces
         IMaterialRepository materialRepository { get; }
         IProgressRepository progressRepository { get; }
         INoteRepository noteRepository { get; }
-
+        IPaymentRepository paymentRepository { get; }
         Task Save();
     }
 }

@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public DateTime PaymentDate { get; set; }=DateTime.Now;
         public string UserId { get; set; }
         public int CourseId { get; set; }
         public virtual User? User { get; set; }
