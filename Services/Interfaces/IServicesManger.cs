@@ -8,5 +8,6 @@
         IUploadFileService uploadFileServices { get; }
         IMaterialServices materialServices { get; }
         IProgressServices progressServices { get; }
+        INoteServices noteServices { get; }
     }
 }
