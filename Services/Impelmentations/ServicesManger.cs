@@ -18,6 +18,7 @@ namespace Services.Impelmentations
         private readonly Lazy<IUploadFileService> _uploadFileServices;
         private readonly Lazy<IMaterialServices> _materialServices;
         private readonly Lazy<IProgressServices> _progressServices;
+        private readonly Lazy<INoteServices> _noteServices;
         public ServicesManger(IRepositoryManger repositoryManger,IMapper mapper,IHttpContextAccessor httpContext) {
             _repositoryManger = repositoryManger;
             _mapper = mapper;
@@ -34,6 +35,8 @@ namespace Services.Impelmentations
             new MaterialServices(_repositoryManger,_mapper));
             _progressServices = new Lazy<IProgressServices>(() =>
             new ProgressServices(_repositoryManger, _mapper));
+            _noteServices = new Lazy<INoteServices>(() =>
+            new NoteServices(_repositoryManger, _mapper));
         }
         public ICourseServices courseServices => _courseServices.Value;
         public IModuleServices moduleServices => _moduleServices.Value;
@@ -45,5 +48,7 @@ namespace Services.Impelmentations
         public IMaterialServices materialServices => _materialServices.Value;
 
 		public IProgressServices progressServices => _progressServices.Value;
-	}
+
+        public INoteServices noteServices => _noteServices.Value;
+    }
 }
