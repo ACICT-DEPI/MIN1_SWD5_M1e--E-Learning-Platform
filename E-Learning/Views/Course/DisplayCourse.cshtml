@@ -33,7 +33,46 @@
 					</li>
 				</ul>
 			</div>
-			<div style="width:100%;background-color:white;">
+			<div style="width:100%;background-color:black;">
+				<div class="row mx-3 my-2">
+					<div class="col-md-12 my-2">
+						<!-- Text Editor -->
+						<div class="form-group">
+							<label for="noteTextarea">Add a new note:</label>
+							<textarea id="noteTextarea" class="form-control" rows="3" placeholder="Write your note here..."></textarea>
+							<div class="d-flex justify-content-end align-items-center mt-2">
+
+								<button class="btn btn-success" onclick="SaveNote">Save note</button>
+							</div>
+						</div>
+						<hr>
+
+						<!-- Dropdowns -->
+						<div class="d-flex justify-content-start mt-2">
+							<select class="form-control w-25 mx-1">
+								<option>All lectures</option>
+								<option>Current lecture</option>
+
+							</select>
+							<select class="form-control w-25 mx-1">
+								<option>Sort by most recent</option>
+								<option>Sort by oldest</option>
+							</select>
+						</div>
+						<hr>
+
+						<!-- Existing Notes -->
+						<h5>All Notes</h5>
+						<div class="note-item d-flex justify-content-between align-items-center">
+							<div class="note-timestamp">0:04</div>
+							<div class="note-text">Introduction to Course</div>
+							<div class="note-actions">
+								<i class="fa-solid fa-pen mx-1" onclick="editmodule(this.parentNode.parentNode.parentNode.parentNode,1,'0','0')"></i>
+								<i class="fa-solid fa-trash mx-1" onclick="editmodule(this.parentNode.parentNode.parentNode.parentNode)"></i>
+							</div>
+						</div>
+					</div>
+				</div>
 
 
 			</div>
