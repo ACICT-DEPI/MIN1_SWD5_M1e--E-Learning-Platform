@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace Repositories.Impelmentations
 {
-    internal class NoteRepository : BaseRepository<Note>, INoteRepository
+    public sealed class NoteRepository : BaseRepository<Note>, INoteRepository
 
     {
         public NoteRepository(ElearingDbcontext context) : base(context)
         {
         }
-        public Task<IQueryable<Note>> GetAllNotesByCourseId(int courseId, bool istracked)
+        public async Task<Note> GetNoteById(int noteId, bool istracked)
         {
-            throw new NotImplementedException();
+            var note = await FindByCondition(e=>e.Id == noteId, istracked);
+            return  note.First();
         }
 
         public async Task<IQueryable<Note>> GetAllNotesByLessonId(int lessonId, bool istracked)

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Enities.ViweModel.Note
 {
-    public class CreateNoteVM
+    public class UpdateNoteVM
     {
+        public int Id { get; set; }
         public string Text { get; set; }
-        public int LessonId { get; set; }
-        
+        public DateTime NoteDate { get; set; } = DateTime.Now;
+
     }
 }
