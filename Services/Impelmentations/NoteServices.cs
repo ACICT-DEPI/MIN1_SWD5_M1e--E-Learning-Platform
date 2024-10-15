@@ -71,10 +71,11 @@ namespace Services.Impelmentations
 
         public async Task<ResponseVM> UpdateNote(UpdateNoteVM note)
         {
-            var oldNote = await _repositoryManger.noteRepository.GetNoteById(note.Id, true);
+            var oldNote = await _repositoryManger.noteRepository.GetNoteById(note.Id, false);
             if (oldNote != null)
             {
-                oldNote = _mapper.Map<Note>(note);
+                oldNote.Text = note.Text;
+                oldNote.NoteDate = note.NoteDate;
                 var result = await _repositoryManger.noteRepository.UpdateNote(oldNote);
 
                 if (result.isSuccess)

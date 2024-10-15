@@ -33,6 +33,20 @@ namespace E_Learning.Controllers
 			}
 			return BadRequest(ModelState);
 		}
+		[HttpPost]
+		public async Task<IActionResult> UpdateNote(UpdateNoteVM updateNote)
+		{
+			if (ModelState.IsValid) 
+			{ 
+				var result = await _servicesManger.noteServices.UpdateNote(updateNote);
+				if (result.isSuccess)
+				{
+					return Ok(result.message);
+				}
+				return BadRequest(result.message);
+			}
+			return BadRequest(ModelState);
+		}
 
 		public async Task<IActionResult> DeleteNote(int id) 
 		{
