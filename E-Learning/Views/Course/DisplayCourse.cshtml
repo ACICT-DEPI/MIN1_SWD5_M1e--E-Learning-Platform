@@ -1,4 +1,26 @@
 ﻿@model Course
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title fs-5" id="exampleModalLabel">Delete Note</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+			you will delete this note
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="deleteNote()" data-bs-dismiss="modal">delete</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>var x = 0; var idDeleteNote = -1;</script>
 <div class="d-flex d-flex-row justify-content-between">
 	<div class="d-flex flex-column bg-white" style="width:70%">
 		<div style="width:100%;background-color:#2d2f31;" id="videodiv">
@@ -20,7 +42,7 @@
 						<a class="nav-link " >Q&A</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " >Notes</a>
+						<a class="nav-link " onclick="getNotes()">Notes</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link " >Announcements</a>
@@ -33,7 +55,9 @@
 					</li>
 				</ul>
 			</div>
-			<div style="width:100%;background-color:white;"  >
+
+			<div style="width:100%;background-color:white;"  id="content-of-lesson">
+			
 				<div style="width:100%;background-color:white;" class="mx-3 my-2">
 					<div style="width:100%;background-color:white;">
 						<div style="width:100%;background-color:white;">
@@ -229,13 +253,11 @@
 		}
 	}
 	function loadmaterial(input,path, lessonId) {
-
-		const url = `/Material/GetMaterialByLessonId/${lessonId}`;
-		console.log("Request URL: ", url); 
 		$.ajax({
 			url: `/Material/GetMaterialByLessonId?lessonId=${lessonId}`,
 			type: 'GET',
 			success: function (material) {
+				x = lessonId;
 				displayvideo(input, path, material);
 			},
 			error: function (request, status, error) {
@@ -265,5 +287,154 @@
 				</video>
 		`;
 		 }
+
 	}
+	function getNotes() {
+		$.ajax({
+			url: `/Note/GetAllNotesByLessonId/${x}`,
+			type: 'GET',
+			success: function (notes) {
+				var addNotes = document.getElementById('content-of-lesson');
+				var allNotes = ''; 
+				  notes.forEach(note => {
+					  allNotes += `
+					  <div>
+					  <div class="note-item d-flex justify-content-between align-items-center my-1">
+						<div class="note-text">${note.text}</div>
+						<div class="note-actions">
+							<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${note.id},'${note.text}')"></i>
+							<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${note.id})"></i>
+						</div>
+					</div>
+					</div>
+					
+					`;
+				});
+	
+
+				addNotes.innerHTML = `
+					<div class="mx-3 my-2">
+		<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+			<!-- Text Editor -->
+			<div class="form-group">
+				<label for="noteTextarea">Add a new note:</label>
+				<textarea id="noteTextarea" class="form-control" rows="3" placeholder="Write your note here..."></textarea>
+				<div class="d-flex justify-content-end align-items-center mt-2">
+
+					<button class="btn btn-success" onclick="saveNote()">Save note</button>
+				</div>
+			</div>
+
+
+			<!-- Existing Notes -->
+			<div>
+				<h5>All Notes</h5>
+				${allNotes}
+			</div>
+		</div>
+	</div>
+
+				`;
+			},
+			error: function (request, status, error) {
+				alert('Failed to load Notes: ' + request.responseText);
+			}
+		});
+	}
+		
+	function saveNote(){
+		var formdata = new FormData();
+		formdata.append("LessonId", x);
+		formdata.append("Text", document.getElementById("noteTextarea").value);
+		$.ajax({
+			url: '/Note/CreateNote',
+			type: 'POST',
+			data: formdata,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				console.log("Progress created successfully.");
+				getNotes();
+			},
+			error: function (request, error) {
+				alert('Error: ' + request.responseText);
+			}
+		});
+		
+	}
+	function deleteNote() {
+
+		$.ajax({
+			url: `/Note/DeleteNote/${idDeleteNote}`,
+			type:'GET',
+			success: function (response) {
+				getNotes();
+			},
+			error: function (request, error) {
+				alert('Error: ' + request.responseText);
+			}
+		
+		});
+	}
+	function confirmDeleteNote(noteId) {
+		idDeleteNote = noteId;
+	}
+
+	function editNote(noteLocation,noteId,noteText) {
+		noteLocation.innerHTML = 
+		`
+
+		<div class="mx-3 my-2">
+			<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+				<!-- Text Editor -->
+				<div class="form-group">
+					<label for="noteTextarea">Add a new note:</label>
+						<textarea id="noteTextarea${noteId}" class="form-control" rows="3" >${noteText}</textarea>
+					<div class="d-flex justify-content-end align-items-center mt-2">
+
+							<button class="btn btn-light mx-1" onclick="cancelEditNote(this.parentNode.parentNode.parentNode.parentNode.parentNode,${noteId},'${noteText}')">Cancel</button>
+							<button class="btn btn-dark mx-1" onclick="updateNote(${noteId})">update note</button>
+					</div>
+				</div>
+					</div>
+				</div>
+
+	`;
+	}
+
+	function cancelEditNote(noteLocation, noteId, noteText) {
+		noteLocation.innerHTML =
+			`
+			  <div class="note-item d-flex justify-content-between align-items-center my-1">
+					<div class="note-text">${noteText}</div>
+					<div class="note-actions">
+						<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${noteId},'${noteText}')"></i>
+						<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${noteId})"></i>
+					</div>
+				</div>
+		
+		`;
+
+	}
+	function updateNote(noteId){
+		var formdata = new FormData();
+		formdata.append("Id", noteId);
+		formdata.append("Text", document.getElementById(`noteTextarea${noteId}`).value);
+		$.ajax({
+			url: '/Note/UpdateNote',
+			type: 'POST',
+			data: formdata,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				console.log("Progress created successfully.");
+				getNotes();
+			},
+			error: function (request, error) {
+				alert('Error: ' + request.responseText);
+			}
+		});
+	
+	}
+
 </script>

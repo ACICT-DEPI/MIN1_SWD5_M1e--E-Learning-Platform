@@ -23,6 +23,7 @@ namespace E_Learning
                 .AddEntityFrameworkStores<ElearingDbcontext>();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddTransient<IServicesManger, ServicesManger>();
+
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddHttpContextAccessor();
             
