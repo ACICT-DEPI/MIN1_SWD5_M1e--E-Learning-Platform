@@ -51,6 +51,7 @@ namespace Services.Impelmentations
         }
         public async Task<ResponseVM> CreatePayment(CreatePaymentVM model)
         {
+
             var payment= _mapper.Map<Payment>(model);
             payment.UserId = "new-id";
             var result = await _repositoryManger.paymentRepository.CreatePayment(payment);

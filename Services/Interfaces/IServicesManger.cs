@@ -8,5 +8,8 @@
         IUploadFileService uploadFileServices { get; }
         IMaterialServices materialServices { get; }
         IProgressServices progressServices { get; }
+        IPaymentServices paymentServices { get; }
+        IStripeServices stripeServices { get; }
+        IPayPalServices payPalServices { get; }
     }
 }
