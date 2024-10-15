@@ -294,14 +294,18 @@
 				var addNotes = document.getElementById('content-of-lesson');
 				var allNotes = ''; 
 				  notes.forEach(note => {
-					  allNotes += `					  
+					  allNotes += `
+					  <div>
 					  <div class="note-item d-flex justify-content-between align-items-center my-1">
 						<div class="note-text">${note.text}</div>
 						<div class="note-actions">
-							<i class="fa-solid fa-pen mx-1" onclick="editmodule(this.parentNode.parentNode.parentNode.parentNode,1,'0','0')"></i>
-										<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${note.id})"></i>
+							<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${note.id},'${note.text}')"></i>
+							<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${note.id})"></i>
 						</div>
-					</div>`;
+					</div>
+					</div>
+					
+					`;
 				});
 	
 
@@ -371,6 +375,63 @@
 	}
 	function confirmDeleteNote(noteId) {
 		idDeleteNote = noteId;
+	}
+
+	function editNote(noteLocation,noteId,noteText) {
+		noteLocation.innerHTML = 
+		`
+
+		<div class="mx-3 my-2">
+			<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+				<!-- Text Editor -->
+				<div class="form-group">
+					<label for="noteTextarea">Add a new note:</label>
+						<textarea id="noteTextarea${noteId}" class="form-control" rows="3" >${noteText}</textarea>
+					<div class="d-flex justify-content-end align-items-center mt-2">
+
+							<button class="btn btn-light mx-1" onclick="cancelEditNote(this.parentNode.parentNode.parentNode.parentNode.parentNode,${noteId},'${noteText}')">Cancel</button>
+							<button class="btn btn-dark mx-1" onclick="updateNote(${noteId})">update note</button>
+					</div>
+				</div>
+					</div>
+				</div>
+
+	`;
+	}
+
+	function cancelEditNote(noteLocation, noteId, noteText) {
+		noteLocation.innerHTML =
+			`
+			  <div class="note-item d-flex justify-content-between align-items-center my-1">
+					<div class="note-text">${noteText}</div>
+					<div class="note-actions">
+						<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${noteId},'${noteText}')"></i>
+						<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${noteId})"></i>
+					</div>
+				</div>
+		
+		`;
+
+	}
+	function updateNote(noteId){
+		var formdata = new FormData();
+		formdata.append("Id", noteId);
+		formdata.append("Text", document.getElementById(`noteTextarea${noteId}`).value);
+		$.ajax({
+			url: '/Note/UpdateNote',
+			type: 'POST',
+			data: formdata,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				console.log("Progress created successfully.");
+				getNotes();
+			},
+			error: function (request, error) {
+				alert('Error: ' + request.responseText);
+			}
+		});
+	
 	}
 
 </script>
