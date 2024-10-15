@@ -8,6 +8,7 @@ namespace Entites.Models
         public string FirstName {  get; set; }
         public string LastName { get; set; }
         public decimal Balance { get; set; }
+        public string? StripId {  get; set; }
         public string image { get; set; }
         public virtual ICollection<Course> Courses { get; set; }=new HashSet<Course>();
         public virtual ICollection<Answer> Answers { get;set; }=new HashSet<Answer>();
