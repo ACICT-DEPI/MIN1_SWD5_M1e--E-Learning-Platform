@@ -1,5 +1,6 @@
 ﻿using Enities.ViweModel;
-using Enities.ViweModel.User;
+using Enities.ViweModel;
+using Entites.ViewModel.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

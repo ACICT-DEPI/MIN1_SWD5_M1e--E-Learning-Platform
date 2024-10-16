@@ -4,6 +4,7 @@ using Entites.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_Learning.Migrations
 {
     [DbContext(typeof(ElearingDbcontext))]
-    partial class ElearingDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20241014231617_updatesomepropertyinuser")]
+    partial class updatesomepropertyinuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -402,7 +405,7 @@ namespace E_Learning.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Balance")
+                    b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -455,6 +458,7 @@ namespace E_Learning.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("image")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")

@@ -1,15 +1,19 @@
 using Entites.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace E_Learning.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly UserManager<User> userManager;
+        public HomeController(ILogger<HomeController> logger,UserManager<User> userManager)
         {
+            this.userManager = userManager;
             _logger = logger;
         }
 
@@ -17,7 +21,7 @@ namespace E_Learning.Controllers
         {
             return View();
         }
-
+        [Authorize]  
         public IActionResult Privacy()
         {
             return View();

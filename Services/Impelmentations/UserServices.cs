@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Enities.ViweModel;
-using Enities.ViweModel.User;
 using Entites.Models;
+using Entites.ViewModel.User;
 using Microsoft.AspNetCore.Identity;
 using Services.Interfaces;
 using System;

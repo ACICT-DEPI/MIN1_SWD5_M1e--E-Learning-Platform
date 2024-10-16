@@ -5,10 +5,12 @@ namespace Entites.Models
 {
     public class User:IdentityUser
     {
-        public string FirstName {  get; set; }
-        public string LastName { get; set; }
-        public decimal Balance { get; set; }
-        public string image { get; set; }
+        public string Name {  get; set; }
+        public string Email { get; set; }
+        public string password { get; set; }
+        public decimal? Balance { get; set; }
+        
+        public string? image { get; set; }
         public virtual ICollection<Course> Courses { get; set; }=new HashSet<Course>();
         public virtual ICollection<Answer> Answers { get;set; }=new HashSet<Answer>();
         public virtual ICollection<Deposit> Deposits { get;set;}=new HashSet<Deposit>();

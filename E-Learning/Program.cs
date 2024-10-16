@@ -6,6 +6,7 @@ using Repositories.Interfaces;
 using Repositories.Impelmentations;
 using Services.Interfaces;
 using Services.Impelmentations;
+using Microsoft.CodeAnalysis.Options;
 
 namespace E_Learning
 {
@@ -17,8 +18,17 @@ namespace E_Learning
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ElearingDbcontext>();
+            builder.Services.AddIdentity<User, IdentityRole>(
+                Options=>
+                {
+                    Options.Password.RequiredUniqueChars = 0;
+                    Options.Password.RequireUppercase = false;
+                    Options.Password.RequiredLength = 8;
+                    Options.Password.RequireNonAlphanumeric = false;
+                    Options.Password.RequireLowercase = false;
+                }
+                )
+                .AddEntityFrameworkStores<ElearingDbcontext>().AddDefaultTokenProviders();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddTransient<IServicesManger, ServicesManger>();
 			//builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
