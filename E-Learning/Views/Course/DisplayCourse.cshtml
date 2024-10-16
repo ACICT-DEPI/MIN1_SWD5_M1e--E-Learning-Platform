@@ -109,10 +109,11 @@
 		</div>
 	</div>
 </div>
+@{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 <script>
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+	
 	function loadlesson(input,modulename,moduleid,modulenum,lessonnum) {
 
 		const url = `/Lesson/GetLessonByModuleId?moduleid=${moduleid}`;
