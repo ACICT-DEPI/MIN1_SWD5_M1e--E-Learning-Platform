@@ -13,6 +13,7 @@ namespace Repositories.Impelmentations
         private readonly Lazy<IMaterialRepository> _materialRepository; 
         private readonly Lazy<IProgressRepository> _progressRepository;
         private readonly Lazy<INoteRepository> _noteRepository;
+        private readonly Lazy<IPaymentRepository> _paymentRepository;
         public RepositoryManger(ElearingDbcontext context)
         {
             _context = context;
@@ -28,6 +29,8 @@ namespace Repositories.Impelmentations
             new ProgressRepository(context));
             _noteRepository=new Lazy<INoteRepository>(()=>
             new NoteRepository(context));
+            _paymentRepository=new Lazy<IPaymentRepository>(()=>
+            new PaymentRepository(context));
 
         }
         public ICourseRepository courseRepository => _courseRepository.Value;
@@ -41,6 +44,8 @@ namespace Repositories.Impelmentations
 		public IProgressRepository progressRepository =>_progressRepository.Value;
 
         public INoteRepository noteRepository => _noteRepository.Value;
+
+        public IPaymentRepository paymentRepository => _paymentRepository.Value;
 
         public async Task Save()
         {

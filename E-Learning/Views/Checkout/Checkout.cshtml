@@ -1,0 +1,68 @@
+﻿@page
+@using Enities.ViweModel.Payment
+@model CreateCheckoutVM
+
+<form id="payment-form">
+    <div class="form-group pt-2">
+        <label for="title">course Title</label>
+        <input type="text" class="form-control" id="productName" name="productName" placeholder="Enter product name" required>
+    </div>
+    <div class="form-group pt-2">
+        <label for="Description">Product Description</label>
+        <input type="text" class="form-control" id="productDescription" name="productDescription" placeholder="Enter product description" required>
+    </div>
+    <div class="form-group pt-2">
+        <label for="Price">Amount (in cents)</label>
+        <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+    </div>
+    <div class="form-group pt-2">
+        <label for="currency">Currency</label>
+        <select class="form-control" id="currency" name="currency" required>
+            <option value="inr">INR</option>
+            <!-- Add more currencies as needed -->
+        </select>
+    </div>
+    <button type="button" class="btn btn-primary mt-2" id="checkout-button">Checkout</button>
+</form>
+@section scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('pk_test_51Ps9ncRvgIYJumtUcquqzAQA44GKB06TmzxXc44xwhTsMriHSWI7nq1DhxrKLygovcD7lvlF2QVjtQAzca15qcTQ00VBmrz2Gb');
+        document.getElementById('checkout-button').addEventListener('click', function () {
+            // Make a POST request to your server to create a Stripe Checkout session
+            fetch('/Checkout/Checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Title: document.getElementById('productName').value,
+                    Description: document.getElementById('productDescription').value,
+                    Price: document.getElementById('amount').value
+                })
+            })
+                .then(function (response) {
+                   
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(function (session) {                   
+                    return stripe.redirectToCheckout({ sessionId: session.sessionId });
+                })
+                .then(function (result) {                   
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {                  
+                    console.log(error.message);
+                });
+        });
+   
+    </script>
+}

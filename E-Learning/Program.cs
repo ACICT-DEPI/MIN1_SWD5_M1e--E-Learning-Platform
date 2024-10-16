@@ -7,6 +7,8 @@ using Repositories.Impelmentations;
 using Services.Interfaces;
 using Services.Impelmentations;
 using Microsoft.CodeAnalysis.Options;
+using Enities.Models;
+using Stripe;
 
 namespace E_Learning
 {
@@ -31,14 +33,19 @@ namespace E_Learning
                 .AddEntityFrameworkStores<ElearingDbcontext>().AddDefaultTokenProviders();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddTransient<IServicesManger, ServicesManger>();
-			//builder.Services.AddTransient(typeof(IBaseRepository<>),typeof(BaseRepository<>));
-		    builder.Services.AddAutoMapper(typeof(Program));
+
+            builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddHttpContextAccessor();
+            
 
             builder.Services.AddDbContext<ElearingDbcontext>(opion =>
             {
                 opion.UseSqlServer(builder.Configuration.GetConnectionString("sqlConnection"));
             });
+
+            builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("Stripe"));
+            builder.Services.Configure<PayPalSetting>(builder.Configuration.GetSection("PayPal"));
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
