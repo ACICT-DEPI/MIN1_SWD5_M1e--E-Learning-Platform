@@ -8,6 +8,7 @@ using Enities.ViweModel.Progress;
 using Enities.ViweModel;
 using Enities.ViweModel.User;
 using Enities.ViweModel.Note;
+using Entites.ViewModel.User;
 namespace E_Learning.MappingProfile
 {
     public class MappingProfile:Profile
