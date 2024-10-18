@@ -14,16 +14,20 @@ namespace Services.Impelmentations
         private readonly IRepositoryManger _repositoryManger;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly UserManager<User> _userManager;
 
-        public CourseServices(IRepositoryManger repositoryManger,IMapper mapper,IHttpContextAccessor httpContext)
+        public CourseServices(IRepositoryManger repositoryManger,IMapper mapper,IHttpContextAccessor httpContext,
+            UserManager<User> userManager)
         {
             _repositoryManger = repositoryManger;
             _mapper = mapper;
             _httpContext = httpContext;
+            _userManager = userManager;
         }
-        private string GetUserId() 
+        private async Task<string> GetUserId() 
         {
-            return _httpContext.HttpContext.User.Identity.Name;
+            var user= await _userManager.FindByNameAsync(_httpContext.HttpContext.User.Identity.Name);
+            return user.Id;
         }
 
         public async Task<List<Course>> GetAllCourcesAsync(bool istraked)
@@ -39,11 +43,16 @@ namespace Services.Impelmentations
             
             return course;
         }
+        public async Task<List<Course>> GetCourseByUserId(string id, bool istracked)
+        {
+            throw new NotImplementedException();
+          
+        }
 
         public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
         {
             Course newcourse=_mapper.Map<Course>(course);
-            newcourse.InstractourId= "new-id";
+            newcourse.InstractourId=await GetUserId();
            ResponseVM result= await _repositoryManger.courseRepository.CreateNewCourse(newcourse);
 			if (result.isSuccess)
 			{
@@ -109,5 +118,7 @@ namespace Services.Impelmentations
             //}
             //return result;
         }
+
+       
     }
 }

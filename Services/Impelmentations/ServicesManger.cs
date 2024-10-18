@@ -41,7 +41,7 @@ namespace Services.Impelmentations
 			_userManager = userManager;
 			_payPalSetting = payPalSetting;
 			_courseServices = new Lazy<ICourseServices>(() =>
-			new CourseServices(_repositoryManger, _mapper, _httpContext));
+			new CourseServices(_repositoryManger, _mapper, _httpContext,_userManager));
 			_moduleServices = new Lazy<IModuleServices>(() =>
 			new ModuleServices(_repositoryManger, _mapper));
 			_lessonService = new Lazy<ILessonService>(() =>
