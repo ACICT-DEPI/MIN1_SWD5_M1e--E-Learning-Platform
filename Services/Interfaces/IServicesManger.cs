@@ -12,6 +12,6 @@
         IStripeServices stripeServices { get; }
         IPayPalServices payPalServices { get; }
         INoteServices noteServices { get; }
-
+        IEnrollmentServices enrollmentServices { get; }
     }
 }

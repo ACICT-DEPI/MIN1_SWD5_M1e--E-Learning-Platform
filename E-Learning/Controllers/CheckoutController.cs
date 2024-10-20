@@ -19,8 +19,16 @@ namespace E_Learning.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout([FromBody] CreateCheckoutVM createCheckout)
         {
-            var session = await _servicesManger.stripeServices.CreateCheckout(createCheckout);
-            return Ok(new { sessionId = session.Id });
+            try
+            {
+                var session = await _servicesManger.stripeServices.CreateCheckout(createCheckout);
+
+                return Ok(new { sessionId = session.Id });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet]
         public IActionResult Success()

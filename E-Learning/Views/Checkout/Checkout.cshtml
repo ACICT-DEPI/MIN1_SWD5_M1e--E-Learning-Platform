@@ -54,7 +54,8 @@
                 .then(function (session) {                   
                     return stripe.redirectToCheckout({ sessionId: session.sessionId });
                 })
-                .then(function (result) {                   
+                .then(function (result) {
+                    
                     if (result.error) {
                         alert(result.error.message);
                     }
@@ -63,6 +64,12 @@
                     console.log(error.message);
                 });
         });
-   
+       function createPayment()
+       {
+          
+       }
+       function createEnrollment()
+        { 
+        }
     </script>
 }

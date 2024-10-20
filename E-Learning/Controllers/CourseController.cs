@@ -20,6 +20,19 @@ namespace E_Learning.Controllers
             return View(courses);
         }
         [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            try
+            {
+                var course = await _servicesManger.courseServices.GetCourseByIdAsync(id, false);
+                return View(course);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
         public async Task<IActionResult> ManageCourse(int id)
         {
             var course = await _servicesManger.courseServices.GetCourseByIdAsync(id,true);

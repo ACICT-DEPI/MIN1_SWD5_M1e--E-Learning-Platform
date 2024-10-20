@@ -9,6 +9,7 @@ using Services.Impelmentations;
 using Microsoft.CodeAnalysis.Options;
 using Enities.Models;
 using Stripe;
+using System.Net;
 
 namespace E_Learning
 {
@@ -33,7 +34,7 @@ namespace E_Learning
                 .AddEntityFrameworkStores<ElearingDbcontext>().AddDefaultTokenProviders();
             builder.Services.AddTransient<IRepositoryManger, RepositoryManger>();
             builder.Services.AddTransient<IServicesManger, ServicesManger>();
-
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             builder.Services.AddAutoMapper(typeof(Program));
             builder.Services.AddHttpContextAccessor();
             

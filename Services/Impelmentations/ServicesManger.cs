@@ -29,6 +29,7 @@ namespace Services.Impelmentations
 		private readonly Lazy<IStripeServices> _stripeServices;
 		private readonly Lazy<IPayPalServices> _payPalServices;
 		private readonly Lazy<INoteServices> _noteServices;
+		private readonly Lazy<IEnrollmentServices> _enrollmentServices;
 
 		public ServicesManger(IRepositoryManger repositoryManger, IMapper mapper, IHttpContextAccessor httpContext,
 				IOptions<StripeSetting> stripeSetting, UserManager<User> userManager, IOptions<PayPalSetting> payPalSetting)
@@ -53,13 +54,15 @@ namespace Services.Impelmentations
 			_progressServices = new Lazy<IProgressServices>(() =>
 			new ProgressServices(_repositoryManger, _mapper));
 			_paymentServices = new Lazy<IPaymentServices>(() =>
-			new PaymentServices(_repositoryManger, _mapper));
+			new PaymentServices(_repositoryManger, _mapper,_userManager,_httpContext));
 			_stripeServices = new Lazy<IStripeServices>(() =>
 			new StripeServices(httpContext, _stripeSetting, _userManager));
 			_payPalServices = new Lazy<IPayPalServices>(() =>
 			new PayPalServices(_payPalSetting, httpContext));
 			_noteServices = new Lazy<INoteServices>(() =>
 			new NoteServices(_repositoryManger, _mapper));
+			_enrollmentServices=new Lazy<IEnrollmentServices>(()=>
+			new EnrollmentServices(_repositoryManger, _mapper,_userManager,_httpContext));
 
 		}
 		public ICourseServices courseServices => _courseServices.Value;
@@ -80,5 +83,6 @@ namespace Services.Impelmentations
 		public IPayPalServices payPalServices => _payPalServices.Value;
 		public INoteServices noteServices => _noteServices.Value;
 
-	}
+        public IEnrollmentServices enrollmentServices => _enrollmentServices.Value;
+    }
 }

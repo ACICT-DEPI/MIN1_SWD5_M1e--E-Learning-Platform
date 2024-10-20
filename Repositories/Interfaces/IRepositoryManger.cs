@@ -10,6 +10,7 @@ namespace Repositories.Interfaces
         IProgressRepository progressRepository { get; }
         INoteRepository noteRepository { get; }
         IPaymentRepository paymentRepository { get; }
+        IEnrollmentRepository enrollmentRepository { get; }
         Task Save();
     }
 }
