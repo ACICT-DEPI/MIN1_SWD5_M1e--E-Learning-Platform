@@ -11,6 +11,7 @@ namespace Repositories.Interfaces
         INoteRepository noteRepository { get; }
         IPaymentRepository paymentRepository { get; }
         IEnrollmentRepository enrollmentRepository { get; }
-        Task Save();
+		IQuestionRepository questionRepository { get; }
+		Task Save();
     }
 }
