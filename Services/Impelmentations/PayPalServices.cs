@@ -27,6 +27,8 @@ namespace Services.Impelmentations
                 new SandboxEnvironment(_paypalsetting.Value.ClinId, _paypalsetting.Value.SecretKey)
                 : new LiveEnvironment(_paypalsetting.Value.ClinId, _paypalsetting.Value.SecretKey);
             _payPalHttpClient = new PayPalHttpClient(_payPalEnvironment);
+            _payPalHttpClient.SetConnectTimeout(TimeSpan.FromSeconds(120));
+           
         }
         public async Task<Order> CreateOrder(int ammount)
         {
@@ -54,7 +56,7 @@ namespace Services.Impelmentations
                     CancelUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/cancel",
                 }
             });
-
+           // _payPalHttpClient.SetConnectTimeout = TimeSpan.FromMinutes(2);
             var response = await _payPalHttpClient.Execute(orderRequest);
             var result = response.Result<Order>();
             return result;

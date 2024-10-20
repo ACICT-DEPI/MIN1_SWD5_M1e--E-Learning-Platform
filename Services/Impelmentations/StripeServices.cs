@@ -83,19 +83,28 @@ namespace Services.Impelmentations
                 Mode = "payment",
                 SuccessUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/success",
                 CancelUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/cancel",
-                //PaymentIntentData = new SessionPaymentIntentDataOptions
-                //{
-                //    ApplicationFeeAmount = (long)((createCheckout.Price * 100) * 0.05),
-                //    TransferData = new SessionPaymentIntentDataTransferDataOptions
-                //    {
-                //        Destination = "ac_R1vekr15At5HfrvdaL2xKWxrhUrHm1F5",
-                //        Amount = (long)((createCheckout.Price * 100) - (long)((createCheckout.Price * 100) * 0.05))
-                //    }
-                //}
+                PaymentIntentData = new SessionPaymentIntentDataOptions
+                {
+                    ApplicationFeeAmount = (long)((createCheckout.Price * 100) * 0.05),
+                    TransferData = new SessionPaymentIntentDataTransferDataOptions
+                    {
+                        Destination = "acct_1Q9tScRp9y76TLwH",
+                        //Amount = (long)((createCheckout.Price * 100) - (long)((createCheckout.Price * 100) * 0.05))
+                    }
+                }
             };
+            
             var service = new SessionService();
-            var session =await  service.CreateAsync(options);
-           return  session;
+            try
+            {
+                var session = await service.CreateAsync(options);
+                return session;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception();
+            }
+          
         }
 
         public  Task<string> GenerateStripeOAuthLink()

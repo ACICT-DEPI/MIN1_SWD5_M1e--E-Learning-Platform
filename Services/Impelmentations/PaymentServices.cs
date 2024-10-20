@@ -2,6 +2,8 @@
 using Enities.ViweModel;
 using Enities.ViweModel.Payment;
 using Entites.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Repositories.Interfaces;
 using Services.Interfaces;
 using System;
@@ -16,11 +18,21 @@ namespace Services.Impelmentations
     {
         private readonly IRepositoryManger _repositoryManger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public PaymentServices(IRepositoryManger repositoryManger,IMapper mapper)
+        public PaymentServices(IRepositoryManger repositoryManger,IMapper mapper,UserManager<User> userManager,
+            IHttpContextAccessor httpContextAccessor)
         {
             _repositoryManger = repositoryManger;
             _mapper = mapper;
+            _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
+        }
+        private async Task<string> GetUserId()
+        {
+            var user = await _userManager.FindByNameAsync(_httpContextAccessor.HttpContext.User.Identity.Name);
+            return user.Id;
         }
         public async Task<List<GetPaymentVM>> GetAllPayments()
         {
@@ -53,7 +65,7 @@ namespace Services.Impelmentations
         {
 
             var payment= _mapper.Map<Payment>(model);
-            payment.UserId = "new-id";
+            payment.UserId = await GetUserId();
             var result = await _repositoryManger.paymentRepository.CreatePayment(payment);
             if(result.isSuccess)
             {

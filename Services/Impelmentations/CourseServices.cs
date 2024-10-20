@@ -43,12 +43,6 @@ namespace Services.Impelmentations
             
             return course;
         }
-        public async Task<List<Course>> GetCourseByUserId(string id, bool istracked)
-        {
-            throw new NotImplementedException();
-          
-        }
-
         public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
         {
             Course newcourse=_mapper.Map<Course>(course);

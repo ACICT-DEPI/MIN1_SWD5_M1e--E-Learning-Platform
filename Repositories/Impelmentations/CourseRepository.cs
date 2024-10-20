@@ -19,12 +19,19 @@ namespace Repositories.Impelmentations
         public async Task<IQueryable<Course>> GetAllCourcesAsync(bool istracked)
         {
 
-            return await FindByCondition(c=>!c.IsDeleted,istracked);
+            return  _context.Courses
+                .Include(c=>c.User)
+                .Include(c => c.Modules.Where(m => !m.IsDeleted))
+                .ThenInclude(m => m.Lessons.Where(l => !l.IsDeleted))
+                .ThenInclude(l => l.Materials.Where(m => !m.IsDeleted))
+                .AsNoTracking()
+                ;
         }
 
-        public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
+        public async Task<Course> GetCourseByIdAsync(int id,bool istracked)
         {
             return await _context.Courses
+                .Include(c=>c.User)
                 .Include(c=>c.Modules.Where(m=>!m.IsDeleted))
                 .ThenInclude(m=>m.Lessons.Where(l=>!l.IsDeleted))
                 .ThenInclude(l=>l.Materials.Where(m=>!m.IsDeleted))
@@ -34,6 +41,7 @@ namespace Repositories.Impelmentations
 
         }
 
+        
         public async Task<ResponseVM> CreateNewCourse(Course course)
         {
            return await Create(course);

@@ -98,7 +98,7 @@
                 <ul>
                     <li><a href="index.html" class="active">Home<br></a></li>
                     <li><a href="about.html">About</a></li>
-                    <li><a href="courses.html">Courses</a></li>
+                    <li><a href="/Course/Index">Courses</a></li>
                     <li><a href="contact.html">Contact</a></li>
 
                     @if (!User.Identity.IsAuthenticated)
@@ -108,7 +108,7 @@
                     }
                     else
                     {
-                        <li><a href="/User/Logout">My Lerning</a></li>
+                        <li><a href="/Enrollment/GetEnrollmentsForUser">My Lerning</a></li>
                         <li><a href="contact.html">@User.Identity.Name</a></li>
                         <li><a href="/User/Logout">Logout</a></li>
                     }
