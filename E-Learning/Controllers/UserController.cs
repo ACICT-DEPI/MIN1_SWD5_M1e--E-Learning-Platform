@@ -21,7 +21,10 @@ namespace E_Learning.Controllers
 			this.userManager = userManager;
         }
 
-        
+        public IActionResult UserProfile()
+        {
+            return View("profile");
+        }
         public IActionResult Login()
         {
             return View();

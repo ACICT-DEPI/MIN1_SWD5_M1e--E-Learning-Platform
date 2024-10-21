@@ -17,6 +17,10 @@ namespace E_Learning.Controllers
             _logger = logger;
         }
 
+        public IActionResult About()
+        {
+            return View("about");
+        }
         public IActionResult Index()
         {
             return View();
