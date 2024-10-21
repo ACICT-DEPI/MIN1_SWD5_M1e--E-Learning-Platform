@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,11 +62,16 @@ namespace Services.Impelmentations
                 return new List<GetPaymentVM>();
             }
         }
-        public async Task<ResponseVM> CreatePayment(CreatePaymentVM model)
+        public async Task<ResponseVM> CreatePayment(Session session)
         {
-
-            var payment= _mapper.Map<Payment>(model);
-            payment.UserId = await GetUserId();
+            var payment = new Payment
+            {
+                Amount = ((decimal)session.AmountTotal),
+                CourseId = int.Parse(session.Metadata["CourseId"]),
+                UserId = session.Metadata["UserId"],
+                PaymentDate = DateTime.Now
+            };
+          
             var result = await _repositoryManger.paymentRepository.CreatePayment(payment);
             if(result.isSuccess)
             {

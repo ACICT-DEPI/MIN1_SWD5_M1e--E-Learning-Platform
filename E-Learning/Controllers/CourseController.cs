@@ -62,6 +62,7 @@ namespace E_Learning.Controllers
                     return RedirectToAction("ManageCourse",new { id = result.model.Entity.Id });
                 }
                 else
+               
                     return View();
             }
 			return View();

@@ -1,17 +1,6 @@
 ﻿@model List<Course>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses - E-Learning</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="~/assets/css/main.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-</head>
-<body>
+
 
     <!-- Page Title -->
     <div class="page-title py-5" data-aos="fade">
@@ -24,7 +13,7 @@
         <nav class="breadcrumbs mt-3">
             <div class="container">
                 <ol class="breadcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Courses</li>
                 </ol>
             </div>
@@ -40,12 +29,13 @@
                     <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
                         <div class="card course-item shadow-sm">
                             <img src="~/assets/img/course-1.jpg" class="card-img-top" alt="Course Image">
-                            <div class="card-body">
+                            <div class="card-body" >
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="badge bg-primary">Web Development</span>
+                                    <a href="/course/details/@item.Id"><span class="badge bg-success ">@item.Title</span></a>
+                                    
                                     <span class="text-muted">$@item.Price</span>
                                 </div>
-                                <h5 class="card-title"><a href="course-details.html" class="text-decoration-none">@item.Title</a></h5>
+                                  @* <h5 class="card-title"><a href="course-details.html" class="text-decoration-none">@item.Title</a></h5> *@
                                 <p class="card-text">@item.Description</p>
                                 <div class="trainer d-flex justify-content-between align-items-center">
                                     <div class="trainer-profile d-flex align-items-center">
@@ -65,12 +55,4 @@
             </div>
         </div>
     </section>
-    <!-- End Courses Section -->
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>
-</body>
-</html>
+
