@@ -16,7 +16,10 @@ namespace E_Learning.Controllers
             this.userManager = userManager;
             _logger = logger;
         }
-
+        public IActionResult ReadMore()
+        {
+            return View("readmore");
+        }
         public IActionResult About()
         {
             return View("about");
