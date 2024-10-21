@@ -9,6 +9,7 @@ using Enities.ViweModel;
 using Enities.ViweModel.User;
 using Enities.ViweModel.Note;
 using Entites.ViewModel.User;
+using Enities.ViweModel.Anouncment;
 namespace E_Learning.MappingProfile
 {
     public class MappingProfile:Profile
@@ -29,6 +30,7 @@ namespace E_Learning.MappingProfile
             CreateMap<Note, GetNoteVM>().ReverseMap();
             CreateMap<Note, CreateNoteVM>().ReverseMap();
             CreateMap<Note, UpdateNoteVM>().ReverseMap();
+            CreateMap<Anouncment, GetAnouncmentForStudentVM>().ReverseMap();
 
 		}
     }

@@ -12,6 +12,7 @@ namespace Repositories.Interfaces
         IPaymentRepository paymentRepository { get; }
         IEnrollmentRepository enrollmentRepository { get; }
 		IQuestionRepository questionRepository { get; }
+        IAnouncmentRepository anouncmentRepository { get; }
 		Task Save();
     }
 }

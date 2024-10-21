@@ -9,6 +9,6 @@ namespace Services.Interfaces
 {
     public interface IAnouncmentServices
     {
-        public Task<GetAnouncmentForStudentVM> ff();
+        public Task<List<GetAnouncmentForStudentVM>> GetAnouncmentForStudent(int courseId);
     }
 }

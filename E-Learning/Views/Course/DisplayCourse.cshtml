@@ -10,7 +10,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-			you will delete this note
+				you will delete this note
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -24,40 +24,40 @@
 <div class="d-flex d-flex-row justify-content-between">
 	<div class="d-flex flex-column bg-white" style="width:70%">
 		<div style="width:100%;background-color:#2d2f31;" id="videodiv">
-			
-			<video id="courseVideo" controls="controls" width="100%" height="425" >
+
+			<video id="courseVideo" controls="controls" width="100%" height="425">
 				<source src="/videos/kkk/bbbb/cxxxxxx/Recording-20241002_042013.webm" type="video/webm" />
 				<source src="movie.mp4" type="video/mp4">
 				<source src="movie.ogg" type="video/ogg">
 			</video>
-            
+
 		</div>
-		<div style="width:100%;background-color:white;" >
-			<div style="width:100%;background-color:white;" >
+		<div style="width:100%;background-color:white;">
+			<div style="width:100%;background-color:white;">
 				<ul class="nav nav-tabs d-flex flex-row justify-content-around">
 					<li class="nav-item">
-						<a class="nav-link "  >Overview</a>
+						<a class="nav-link ">Overview</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " >Q&A</a>
+						<a class="nav-link ">Q&A</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link " onclick="getNotes()">Notes</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " >Announcements</a>
+						<a class="nav-link " onclick="getAnnouncements(@Model.Id)">Announcements</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " >Reviews</a>
+						<a class="nav-link ">Reviews</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link " >Material</a>
+						<a class="nav-link ">Material</a>
 					</li>
 				</ul>
 			</div>
 
-			<div style="width:100%;background-color:white;"  id="content-of-lesson">
-			
+			<div style="width:100%;background-color:white;" id="content-of-lesson">
+
 				<div style="width:100%;background-color:white;" class="mx-3 my-2">
 					<div style="width:100%;background-color:white;">
 						<div style="width:100%;background-color:white;">
@@ -89,21 +89,21 @@
 				var sectionnumber = 0;
 				var lessonnumber = 0;
 			}
-			@foreach(var moduel in Model.Modules)
+			@foreach (var moduel in Model.Modules)
 			{
 				sectionnumber++;
 				<div class="par">
 					<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="loadlesson(this.parentNode,'@moduel.Title',@moduel.Id,@sectionnumber,@lessonnumber)">
 
-					<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
-					<h4 class="my-auto mx-2"> Section @sectionnumber : @moduel.Title</h4>
-					<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px' ></i>
-				   </div>
-				</div>
-			    @{
-					lessonnumber+=moduel.Lessons.Count();
-                 }
-				
+						<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%">
+							<h4 class="my-auto mx-2"> Section @sectionnumber : @moduel.Title</h4>
+							<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px'></i>
+						</div>
+					</div>
+					@{
+						lessonnumber += moduel.Lessons.Count();
+					}
+
 				</div>
 			}
 		</div>
@@ -113,19 +113,19 @@
 	await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
 <script>
-	
-	function loadlesson(input,modulename,moduleid,modulenum,lessonnum) {
+
+	function loadlesson(input, modulename, moduleid, modulenum, lessonnum) {
 
 		const url = `/Lesson/GetLessonByModuleId?moduleid=${moduleid}`;
 		console.log(url);
 		$.ajax({
-			
-			url:url ,
-			type:'GET',
+
+			url: url,
+			type: 'GET',
 			dataType: 'json',
-			success:function(lessons){
+			success: function (lessons) {
 				console.log(lessons);
-				displaylesson(input, modulename, moduleid, modulenum, lessonnum,lessons);
+				displaylesson(input, modulename, moduleid, modulenum, lessonnum, lessons);
 			},
 			error: function (request) {
 				alert('Failed to load lessons: ' + request.responseText);
@@ -135,51 +135,50 @@
 	function displaylesson(input, modulename, moduleid, modulenum, lessonnum, lessons) {
 		console.log(lessons)
 		var countlesson = lessonnum;
-		let lessonrow =``;
+		let lessonrow = ``;
 		lessons.forEach(lesson => {
 			countlesson++;
 			var path = `/videos/${@Model.Id}/${moduleid}/${lesson.id}/`;
 			lessonrow += `
-					<div class=" d-flex flex-row  align-content-center" style="height:50px;background-color:white;"onmouseover="this.style.background='#d1d7dc';" onmouseout="this.style.background='white';">
-								<div style="width:7%">
-							   <input class="form-check-input mx-2 my-auto" type="checkbox" value="" id="flexCheckDefault"  onclick="boxcheckded(this,${lesson.id})"     ${(lesson.isChecked) ? 'checked' : ''} >
-								</div >
-							   <div style="width:90%"  onclick="loadmaterial(this.parentNode,'${path}',${lesson.id})">
-							   <h6 class="mx-2 my-auto">${countlesson}. ${lesson.title} </h6>
-							   </div>
-					</div>
-			
-			
-			`;
-		});
-			input.innerHTML = `
-					<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="canceldisplaylesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
+						<div class=" d-flex flex-row  align-content-center" style="height:50px;background-color:white;"onmouseover="this.style.background='#d1d7dc';" onmouseout="this.style.background='white';">
+									<div style="width:7%">
+								   <input class="form-check-input mx-2 my-auto" type="checkbox" value="" id="flexCheckDefault"  onclick="boxcheckded(this,${lesson.id})"     ${(lesson.isChecked) ? 'checked' : ''} >
+									</div >
+								   <div style="width:90%"  onclick="loadmaterial(this.parentNode,'${path}',${lesson.id})">
+								   <h6 class="mx-2 my-auto">${countlesson}. ${lesson.title} </h6>
+								   </div>
+						</div>
 
-						<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
-						<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
-						<i class='fas fa-angle-up mx-3 my-auto' style='font-size:20px' ></i>
-					   </div>
-					</div>
-					${lessonrow}	
-			`;
+
+				`;
+		});
+		input.innerHTML = `
+						<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="canceldisplaylesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
+
+							<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
+							<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
+							<i class='fas fa-angle-up mx-3 my-auto' style='font-size:20px' ></i>
+						   </div>
+						</div>
+						${lessonrow}
+				`;
 
 	}
 	function canceldisplaylesson(input, modulename, moduleid, modulenum, lessonnum) {
 		input.innerHTML = `
-							<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="loadlesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
+								<div class="border border-1" style="height:70px;background-color:#f7f9fa;" onclick="loadlesson(this.parentNode,'${modulename}',${moduleid},${modulenum},${lessonnum})">
 
-							<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
-							<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
-							<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px' ></i>
-						   </div>
-						</div>
-						
-				`;
+								<div class="d-flex flex-row justify-content-between  align-content-center" style="background-color:#f7f9fa;height:100%" >
+								<h4 class="my-auto mx-2"> Section ${modulenum} : ${modulename}</h4>
+								<i class='fas fa-angle-down mx-3 my-auto' style='font-size:20px' ></i>
+							   </div>
+							</div>
+
+					`;
 	}
-	function trackprogress(input,lessonid) 
-	{
+	function trackprogress(input, lessonid) {
 		let video = document.getElementById('courseVideo');
-		let lessonId = lessonid; 
+		let lessonId = lessonid;
 
 		// Triggered when the user moves to a new time in the video
 		video.ontimeupdate = function () {
@@ -220,14 +219,14 @@
 		console.log(lessonid);
 		var formdata = new FormData();
 		formdata.append("LessonId", lessonid);
-		formdata.append("IsChecked", check.checked);  
+		formdata.append("IsChecked", check.checked);
 		if (check.checked) {
 			$.ajax({
 				url: '/Progress/CreateProgress',
 				type: 'POST',
 				data: formdata,
-				contentType: false,  
-				processData: false,  
+				contentType: false,
+				processData: false,
 				success: function (response) {
 					console.log("Progress created successfully.");
 				},
@@ -236,14 +235,13 @@
 				}
 			});
 		}
-		else
-		{
+		else {
 			$.ajax({
 				url: `/Progress/DeleteProgress?lessonid=${lessonid}`,
 				type: 'DELETE',
 				data: formdata,
-				contentType: false,  
-				processData: false,  
+				contentType: false,
+				processData: false,
 				success: function (response) {
 					console.log("Progress Deleted successfully.");
 				},
@@ -253,7 +251,7 @@
 			});
 		}
 	}
-	function loadmaterial(input,path, lessonId) {
+	function loadmaterial(input, path, lessonId) {
 		$.ajax({
 			url: `/Material/GetMaterialByLessonId?lessonId=${lessonId}`,
 			type: 'GET',
@@ -268,26 +266,25 @@
 	}
 	function displayvideo(input, path, materials) {
 		console.log(materials);
-		var videoname='';
+		var videoname = '';
 		materials.forEach(material => {
 			if (material.type == 'Video')
-				videoname =  material.path ;
+				videoname = material.path;
 			console.log(videoname);
 		});
-		if(videoname=='')
-		 alert("this lesson did not have video")
-		 else
-		 {
-		console.log(videoname);
-		var fullpath = path+videoname;
-		var videodiv = document.getElementById('videodiv');
-		videodiv.innerHTML = `
-			<video id="courseVideo" controls="controls" width="100%" height="425" >
-					<source src= '${fullpath}' type="video/webm" />
-					<source src= '${fullpath}' type="video/mp4" />
-				</video>
-		`;
-		 }
+		if (videoname == '')
+			alert("this lesson did not have video")
+		else {
+			console.log(videoname);
+			var fullpath = path + videoname;
+			var videodiv = document.getElementById('videodiv');
+			videodiv.innerHTML = `
+				<video id="courseVideo" controls="controls" width="100%" height="425" >
+						<source src= '${fullpath}' type="video/webm" />
+						<source src= '${fullpath}' type="video/mp4" />
+					</video>
+			`;
+		}
 
 	}
 	function getNotes() {
@@ -296,54 +293,54 @@
 			type: 'GET',
 			success: function (notes) {
 				var addNotes = document.getElementById('content-of-lesson');
-				var allNotes = ''; 
-				  notes.forEach(note => {
-					  allNotes += `
-					  <div>
-					  <div class="note-item d-flex justify-content-between align-items-center my-1">
-						<div class="note-text">${note.text}</div>
-						<div class="note-actions">
-							<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${note.id},'${note.text}')"></i>
-							<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${note.id})"></i>
+				var allNotes = '';
+				notes.forEach(note => {
+					allNotes += `
+						  <div>
+						  <div class="note-item d-flex justify-content-between align-items-center my-1">
+							<div class="note-text">${note.text}</div>
+							<div class="note-actions">
+								<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${note.id},'${note.text}')"></i>
+								<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${note.id})"></i>
+							</div>
 						</div>
-					</div>
-					</div>
-					
-					`;
+						</div>
+
+						`;
 				});
-	
+
 
 				addNotes.innerHTML = `
-					<div class="mx-3 my-2">
-		<div class="d-flex flex-column justify-content-around col-md-12 my-2">
-			<!-- Text Editor -->
-			<div class="form-group">
-				<label for="noteTextarea">Add a new note:</label>
-				<textarea id="noteTextarea" class="form-control" rows="3" placeholder="Write your note here..."></textarea>
-				<div class="d-flex justify-content-end align-items-center mt-2">
+						<div class="mx-3 my-2">
+			<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+				<!-- Text Editor -->
+				<div class="form-group">
+					<label for="noteTextarea">Add a new note:</label>
+					<textarea id="noteTextarea" class="form-control" rows="3" placeholder="Write your note here..."></textarea>
+					<div class="d-flex justify-content-end align-items-center mt-2">
 
-					<button class="btn btn-success" onclick="saveNote()">Save note</button>
+						<button class="btn btn-success" onclick="saveNote()">Save note</button>
+					</div>
+				</div>
+
+
+				<!-- Existing Notes -->
+				<div>
+					<h5>All Notes</h5>
+					${allNotes}
 				</div>
 			</div>
-
-
-			<!-- Existing Notes -->
-			<div>
-				<h5>All Notes</h5>
-				${allNotes}
-			</div>
 		</div>
-	</div>
 
-				`;
+					`;
 			},
 			error: function (request, status, error) {
 				alert('Failed to load Notes: ' + request.responseText);
 			}
 		});
 	}
-		
-	function saveNote(){
+
+	function saveNote() {
 		var formdata = new FormData();
 		formdata.append("LessonId", x);
 		formdata.append("Text", document.getElementById("noteTextarea").value);
@@ -361,63 +358,63 @@
 				alert('Error: ' + request.responseText);
 			}
 		});
-		
+
 	}
 	function deleteNote() {
 
 		$.ajax({
 			url: `/Note/DeleteNote/${idDeleteNote}`,
-			type:'GET',
+			type: 'GET',
 			success: function (response) {
 				getNotes();
 			},
 			error: function (request, error) {
 				alert('Error: ' + request.responseText);
 			}
-		
+
 		});
 	}
 	function confirmDeleteNote(noteId) {
 		idDeleteNote = noteId;
 	}
 
-	function editNote(noteLocation,noteId,noteText) {
-		noteLocation.innerHTML = 
-		`
+	function editNote(noteLocation, noteId, noteText) {
+		noteLocation.innerHTML =
+			`
 
-		<div class="mx-3 my-2">
-			<div class="d-flex flex-column justify-content-around col-md-12 my-2">
-				<!-- Text Editor -->
-				<div class="form-group">
-					<label for="noteTextarea">Add a new note:</label>
-						<textarea id="noteTextarea${noteId}" class="form-control" rows="3" >${noteText}</textarea>
-					<div class="d-flex justify-content-end align-items-center mt-2">
+			<div class="mx-3 my-2">
+				<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+					<!-- Text Editor -->
+					<div class="form-group">
+						<label for="noteTextarea">Add a new note:</label>
+							<textarea id="noteTextarea${noteId}" class="form-control" rows="3" >${noteText}</textarea>
+						<div class="d-flex justify-content-end align-items-center mt-2">
 
-							<button class="btn btn-light mx-1" onclick="cancelEditNote(this.parentNode.parentNode.parentNode.parentNode.parentNode,${noteId},'${noteText}')">Cancel</button>
-							<button class="btn btn-dark mx-1" onclick="updateNote(${noteId})">update note</button>
+								<button class="btn btn-light mx-1" onclick="cancelEditNote(this.parentNode.parentNode.parentNode.parentNode.parentNode,${noteId},'${noteText}')">Cancel</button>
+								<button class="btn btn-dark mx-1" onclick="updateNote(${noteId})">update note</button>
+						</div>
 					</div>
-				</div>
+						</div>
 					</div>
-				</div>
 
-	`;
+		`;
 	}
 
 	function cancelEditNote(noteLocation, noteId, noteText) {
 		noteLocation.innerHTML =
 			`
-			  <div class="note-item d-flex justify-content-between align-items-center my-1">
-					<div class="note-text">${noteText}</div>
-					<div class="note-actions">
-						<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${noteId},'${noteText}')"></i>
-						<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${noteId})"></i>
+				  <div class="note-item d-flex justify-content-between align-items-center my-1">
+						<div class="note-text">${noteText}</div>
+						<div class="note-actions">
+							<i class="fa-solid fa-pen mx-1" onclick="editNote(this.parentNode.parentNode.parentNode,${noteId},'${noteText}')"></i>
+							<i class="fa-solid fa-trash mx-1"  data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick="confirmDeleteNote(${noteId})"></i>
+						</div>
 					</div>
-				</div>
-		
-		`;
+
+			`;
 
 	}
-	function updateNote(noteId){
+	function updateNote(noteId) {
 		var formdata = new FormData();
 		formdata.append("Id", noteId);
 		formdata.append("Text", document.getElementById(`noteTextarea${noteId}`).value);
@@ -435,7 +432,49 @@
 				alert('Error: ' + request.responseText);
 			}
 		});
-	
+
+	}
+
+	function getAnnouncements(courseId){
+		$.ajax({
+			url: `/Anouncment/GetAnouncmentForStudent/${courseId}`,
+			type: 'GET',
+			success: function (anouncments) {
+				var addAnouncment = document.getElementById('content-of-lesson');
+				var allAnouncment = '';
+				anouncments.forEach(anouncment => {
+					allAnouncment += `
+							  <div>
+							  <div class="note-item d-flex justify-content-between align-items-center my-1">
+									<div class="note-text">${anouncment.text}</div>
+								<div class="note-actions">
+							</div>
+							</div>
+							</div>
+
+							`;
+				});
+
+
+				addAnouncment.innerHTML = `
+							<div class="mx-3 my-2">
+				<div class="d-flex flex-column justify-content-around col-md-12 my-2">
+
+						<!-- Existing Anouncments -->
+					<div>
+							<h5>All Anouncment</h5>
+							${allAnouncment}
+					</div>
+				</div>
+			</div>
+
+						`;
+			},
+			error: function (request, error) {
+				alert('Error: ' + request.responseText);
+			}
+
+		});
 	}
 
 </script>
