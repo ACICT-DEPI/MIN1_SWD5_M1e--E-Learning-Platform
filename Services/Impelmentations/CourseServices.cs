@@ -32,7 +32,7 @@ namespace Services.Impelmentations
 
         public async Task<List<Course>> GetAllCourcesAsync(bool istraked)
         {
-            var courses = await _repositoryManger.courseRepository.GetAllCourcesAsync(istraked);
+            var courses = await _repositoryManger.courseRepository.GetAllCourcesAsync(istraked);          
             var Coursesdto= _mapper.Map<List<Course>>(courses);
             return Coursesdto;
         }
@@ -40,7 +40,6 @@ namespace Services.Impelmentations
         public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
         {
             var course =await _repositoryManger.courseRepository.GetCourseByIdAsync(id,istracked);
-            
             return course;
         }
         public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
@@ -52,8 +51,7 @@ namespace Services.Impelmentations
 			{
 				try
 				{
-				    await _repositoryManger.Save();
-                    
+				    await _repositoryManger.Save();                  
 				}
 				catch (Exception ex)
 				{

@@ -1,6 +1,7 @@
 ﻿using Enities.ViweModel.Payment;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
+using Stripe.Checkout;
 
 namespace E_Learning.Controllers
 {
@@ -31,9 +32,29 @@ namespace E_Learning.Controllers
             }
         }
         [HttpGet]
-        public IActionResult Success()
+        public async Task<IActionResult> Success(string session_id)
         {
-            return View();
+            if (string.IsNullOrEmpty(session_id))
+            {
+                return BadRequest("Session ID is missing.");
+            }
+
+            try
+            {
+                // Retrieve the session from Stripe
+                var service = new SessionService();
+                var session = await service.GetAsync(session_id);
+
+                // Perform your business logic here (e.g., saving the payment and enrollment data)
+                await _servicesManger.paymentServices.CreatePayment(session);
+                await _servicesManger.enrollmentServices.CreateEnrollment(session);
+
+                return View("Success");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error processing payment: {ex.Message}");
+            }
         }
         [HttpGet]
         public IActionResult Cancel()

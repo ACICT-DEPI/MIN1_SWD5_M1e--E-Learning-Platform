@@ -1,6 +1,7 @@
 ﻿using Enities.ViweModel;
 using Enities.ViweModel.Payment;
 using Entites.Models;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Services.Interfaces
     {
         public Task<List<GetPaymentVM>> GetAllPaymentsByUserId(string userId);
         public Task<List<GetPaymentVM>> GetAllPayments();
-        public Task<ResponseVM> CreatePayment(CreatePaymentVM model);
+        public Task<ResponseVM> CreatePayment(Session session);
         public Task<ResponseVM> DeletePayment(int id);
     }
 }

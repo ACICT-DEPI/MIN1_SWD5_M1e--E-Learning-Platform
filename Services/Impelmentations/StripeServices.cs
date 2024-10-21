@@ -24,6 +24,11 @@ namespace Services.Impelmentations
             _userManager = userManager;
             _stripeSetting = stripeSetting.Value;
         }
+        private async Task<string> GetUserId()
+        {
+            var user = await _userManager.FindByNameAsync(_httpContextAccessor.HttpContext.User.Identity.Name);
+            return user.Id;
+        }
         public async Task<Account> CreateConnectedAccount(string email="hasnm2287@gmail.com")
         {
             StripeConfiguration.ApiKey = _stripeSetting.SecretKey;
@@ -81,8 +86,13 @@ namespace Services.Impelmentations
 
                 },
                 Mode = "payment",
-                SuccessUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/success",
+                SuccessUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/success?session_id={{CHECKOUT_SESSION_ID}}",
                 CancelUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Checkout/cancel",
+                Metadata = new Dictionary<string, string>
+                {
+                    { "CourseId", createCheckout.CourseId.ToString() },
+                    { "UserId", await GetUserId()}
+                },
                 PaymentIntentData = new SessionPaymentIntentDataOptions
                 {
                     ApplicationFeeAmount = (long)((createCheckout.Price * 100) * 0.05),

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,15 +41,31 @@ namespace Services.Impelmentations
             var enrollmentdto = _mapper.Map<List<Enrolment>>(enrollment);
             return enrollmentdto;
         }
-        public async Task<ResponseVM> CreateEnrollment(CreateEnrollmentVM enrolment)
+        public async Task<ResponseVM> CreateEnrollment(Session session)
         {
-            var newenrollment = _mapper.Map<Enrolment>(enrolment);
-            newenrollment.UserId = await GetUserId();
+            var enrollment = new Enrolment
+            {
+                
+                CourseId =int.Parse(session.Metadata["CourseId"]),
+                UserId = session.Metadata["UserId"] ,
+                EnrollmentDate = DateTime.Now
+            };
+
             try
             {
-               var result= await _repositoryManger.enrollmentRepository.CreateEnrollment(newenrollment);
+                var result = await _repositoryManger.enrollmentRepository.CreateEnrollment(enrollment);
                 if (result.isSuccess)
                 {
+
+                    try
+                    {
+                        await _repositoryManger.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        result.isSuccess = false;
+                        result.message = ex.Message.ToString();
+                    }
                     return result;
                 }
                 result.isSuccess = false;
@@ -57,7 +74,7 @@ namespace Services.Impelmentations
             }
             catch (Exception ex)
             {
-                return new ResponseVM { isSuccess = false ,message=ex.Message};
+                return new ResponseVM { isSuccess = false, message = ex.Message };
             }
         }
 

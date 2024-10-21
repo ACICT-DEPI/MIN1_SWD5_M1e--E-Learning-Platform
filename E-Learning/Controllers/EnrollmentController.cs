@@ -25,20 +25,20 @@ namespace E_Learning.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateEnrollment(CreateEnrollmentVM createEnrollmentVM)
-        {
-            try
-            {
-                var result = await _servicesManger.enrollmentServices.CreateEnrollment(createEnrollmentVM);
-                if (result.isSuccess)
-                    return Ok();
-                return BadRequest(result.message);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> CreateEnrollment(CreateEnrollmentVM createEnrollmentVM)
+        //{
+        //    try
+        //    {
+        //        var result = await _servicesManger.enrollmentServices.CreateEnrollment(createEnrollmentVM);
+        //        if (result.isSuccess)
+        //            return Ok();
+        //        return BadRequest(result.message);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

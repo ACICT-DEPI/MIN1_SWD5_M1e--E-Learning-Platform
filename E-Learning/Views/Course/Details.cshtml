@@ -1,4 +1,6 @@
 ﻿@model Course
+
+
  <!-- Page Title -->
 <div class="page-title" data-aos="fade">
     <div class="heading">
@@ -14,7 +16,7 @@
     <nav class="breadcrumbs">
         <div class="container">
             <ol>
-                <li><a href="index.html">Home</a></li>
+                <li><a href="home/index">Home</a></li>
                 <li class="current">Course Details</li>
             </ol>
         </div>
@@ -44,7 +46,8 @@
                     <h5>Course Fee</h5>
                     <p id="amount">@Model.Price</p>
                 </div>
-                <div class="course-info d-flex justify-content-between align-items-center " id="checkout-button">
+
+                <div class="course-info d-flex justify-content-center align-items-center " id="checkout-button">
                     <button type="button" class="btn btn-success">Buy Now</button>
                 </div>
 
@@ -53,7 +56,7 @@
 
     </div>
 
-</section><!-- /Courses Course Details Section -->
+</section>
 
 @section scripts {
     @{
@@ -61,7 +64,7 @@
     }
     <script src="https://js.stripe.com/v3/"></script>
     <script>
-
+        
          var stripe = Stripe('pk_test_51Ps9ncRvgIYJumtUcquqzAQA44GKB06TmzxXc44xwhTsMriHSWI7nq1DhxrKLygovcD7lvlF2QVjtQAzca15qcTQ00VBmrz2Gb');
          document.getElementById('checkout-button').addEventListener('click', function () {
              // Make a POST request to your server to create a Stripe Checkout session
@@ -71,10 +74,12 @@
                      'Content-Type': 'application/json'
                  },
                  body: JSON.stringify({
-                     Title: document.getElementById('productName').value,
-                     Description: document.getElementById('productDescription').value,
-                     Price: document.getElementById('amount').value
+                     CourseId:@Model.Id,
+                     Title:`@Model.Title`,
+                     Description:`@Model.Description`,
+                     Price:@Model.Price
                  })
+
              })
                  .then(function (response) {
 
@@ -84,13 +89,17 @@
                      return response.json();
                  })
                  .then(function (session) {
+                      console.log(session);
                      return stripe.redirectToCheckout({ sessionId: session.sessionId });
                  })
                  .then(function (result) {
+                     console.log("success");
 
                      if (result.error) {
                          alert(result.error.message);
+                         
                      }
+                   
                  })
                  .catch(function (error) {
                      console.log(error.message);
