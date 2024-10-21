@@ -20,7 +20,10 @@ namespace E_Learning.Controllers
 			this.signinmanger = signinmanger;
 			this.userManager = userManager;
         }
-
+        public IActionResult TeacherProfile()
+        {
+            return View("teacherprofile");
+        }
         public IActionResult UserProfile()
         {
             return View("profile");
