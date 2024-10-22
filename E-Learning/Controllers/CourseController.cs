@@ -20,6 +20,12 @@ namespace E_Learning.Controllers
             return View(courses);
         }
         [HttpGet]
+        public async Task<IActionResult> Unbuyedcourses()
+        {
+            var courses = await _servicesManger.courseServices.GetCoursesunpaidforUsers(false);
+            return View("Index",courses);
+        }
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             try

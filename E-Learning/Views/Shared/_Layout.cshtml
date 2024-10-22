@@ -44,15 +44,17 @@
                 <ul>
                     <li><a href="/" class="active">Home</a></li>
                     <li><a href="/Home/about">About</a></li>
-                    <li><a href="/Course/Index">Courses</a></li>
+                   
 
                     @if (!User.Identity.IsAuthenticated)
                     {
+                        <li><a href="/Course/Index">Courses</a></li>
                         <li><a href="/User/Login">Log in</a></li>
                         <li><a href="/User/Register">Register</a></li>
                     }
                     else
                     {
+                        <li><a href="/Course/Unbuyedcourses">Courses</a></li>
                         <li><a href="/Enrollment/GetEnrollmentsForUser">My Learning</a></li>
                         <li><a href="/User/TeacherProfile">Teaching</a></li>
                         <li><a href="/User/UserProfile">@User.Identity.Name</a></li>

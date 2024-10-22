@@ -8,6 +8,7 @@ namespace Services.Interfaces
     public interface ICourseServices
     {
       public Task<List<Course>> GetAllCourcesAsync(bool istraked);
+        public Task<List<Course>> GetCoursesunpaidforUsers(bool istracked);
       public  Task<Course> GetCourseByIdAsync(int id, bool istracked);
         public Task<List<Course>> GetCourseByTeacherIdAsync(string id, bool istracked);
         public Task<List<Course>> GetCourseByUserIdAsync();
