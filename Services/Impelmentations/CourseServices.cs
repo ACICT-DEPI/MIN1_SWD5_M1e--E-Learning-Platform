@@ -42,6 +42,12 @@ namespace Services.Impelmentations
             var course =await _repositoryManger.courseRepository.GetCourseByIdAsync(id,istracked);
             return course;
         }
+        public async Task<List<Course>> GetCourseByUserIdAsync()
+        {
+            var courses = await _repositoryManger.courseRepository.GetCourseByUserIdAsync(await GetUserId(), false);
+            var coursesdto=  _mapper.Map<List<Course>>(courses);
+            return coursesdto;
+        }
         public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
         {
             Course newcourse=_mapper.Map<Course>(course);
@@ -111,6 +117,6 @@ namespace Services.Impelmentations
             //return result;
         }
 
-       
+        
     }
 }

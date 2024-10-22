@@ -8,6 +8,8 @@ using Entites.ViewModel.User;
 using Enities.ViweModel.User;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Text.RegularExpressions;
+using Repositories.Interfaces;
+using Services.Interfaces;
 
 namespace E_Learning.Controllers
 {
@@ -15,14 +17,26 @@ namespace E_Learning.Controllers
     {
 		private readonly SignInManager<User> signinmanger;
 		private readonly UserManager<User> userManager;
-        public UserController(SignInManager<User> signinmanger,UserManager<User>userManager)
+        private readonly IServicesManger _servicesManger;
+
+        public UserController(SignInManager<User> signinmanger,UserManager<User>userManager,IServicesManger servicesManger)
         {
 			this.signinmanger = signinmanger;
 			this.userManager = userManager;
+            _servicesManger = servicesManger;
         }
-        public IActionResult TeacherProfile()
+        public async Task<IActionResult> TeacherProfile()
         {
-            return View("teacherprofile");
+			try
+			{
+				var result = await _servicesManger.courseServices.GetCourseByUserIdAsync();
+                return View("teacherprofile",result);
+            }
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message.ToString());
+			}
+          
         }
         public IActionResult UserProfile()
         {
