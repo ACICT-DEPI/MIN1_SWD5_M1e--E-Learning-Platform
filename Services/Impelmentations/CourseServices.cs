@@ -117,6 +117,12 @@ namespace Services.Impelmentations
             //return result;
         }
 
-        
+        public async Task<List<Course>> GetCourseByTeacherIdAsync(string id, bool istracked)
+        {
+            var courses = await _repositoryManger.courseRepository.GetCourseByTeacherIdAsync( id, false);
+            var coursesdto = _mapper.Map<List<Course>>(courses);
+            return coursesdto;
+
+        }
     }
 }

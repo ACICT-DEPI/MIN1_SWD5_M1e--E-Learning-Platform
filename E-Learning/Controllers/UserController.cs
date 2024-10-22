@@ -38,6 +38,19 @@ namespace E_Learning.Controllers
 			}
           
         }
+        public async Task<IActionResult> TeacherProfile1(string id)
+        {
+            try
+            {
+                var result = await _servicesManger.courseServices.GetCourseByTeacherIdAsync(id,false);
+                return View("teacherprofile2", result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+
+        }
         public IActionResult UserProfile()
         {
             return View("profile");
