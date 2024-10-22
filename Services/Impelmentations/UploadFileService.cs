@@ -9,7 +9,8 @@ namespace Services.Implementations
     public sealed class UploadFileService : IUploadFileService
     {
         private string[] videoExtensions = new string[] { ".mp4", ".m4v", ".svi" ,".webm"};
-        private string[] resourseExtensions = new string[] { ".pdf"};
+        private string[] fileExtensions = new string[] { ".pdf"};
+        private string[] imageExtensions = new string[] { ".JPG",".PNG" };
         private string[] info = new string[2];
 
 
@@ -48,12 +49,12 @@ namespace Services.Implementations
             }
 
         }
-        public async Task<ResponseVM> UploadResourses(IFormFile resourse, string location)
+        public async Task<ResponseVM> UploadResourses(IFormFile file, string location)
         {
-            string extension = Path.GetExtension(resourse.FileName);
+            string extension = Path.GetExtension(file.FileName);
             info[1] = "File";
-            info[0] = resourse.FileName;
-            if (string.IsNullOrEmpty(extension) || !resourseExtensions.Contains(extension))
+            info[0] = file.FileName;
+            if (string.IsNullOrEmpty(extension) || !fileExtensions.Contains(extension))
             {
 
                 return new ResponseVM { isSuccess = false, message = "The Files extension should be one of the following types: {\".pdf\"}" };
@@ -64,13 +65,13 @@ namespace Services.Implementations
                 Directory.CreateDirectory(uploadPath);
             }
 
-            string filePath = Path.Combine(uploadPath, resourse.FileName);
+            string filePath = Path.Combine(uploadPath, file.FileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 try
                 {
-                    await resourse.CopyToAsync(fileStream);
+                    await file.CopyToAsync(fileStream);
                     return new ResponseVM { isSuccess = true, message = "success", model = info };
 
                 }
@@ -81,5 +82,40 @@ namespace Services.Implementations
             }
 
         }
+
+        public async Task<ResponseVM> UplaodUserImage(IFormFile file, string location)
+        {
+            string extension = Path.GetExtension(file.FileName);
+            info[1] = "Image";
+            info[0] = file.FileName;
+            if (string.IsNullOrEmpty(extension) || !imageExtensions.Contains(extension))
+            {
+
+                return new ResponseVM { isSuccess = false, message = "The Files extension should be one of the following types: {\".JPG\", \".PNG\"}" };
+            }
+            string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "UserImage", location);
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            string filePath = Path.Combine(uploadPath, file.FileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                try
+                {
+                    await file.CopyToAsync(fileStream);
+                    return new ResponseVM { isSuccess = true, message = "success", model = info };
+
+                }
+                catch (Exception ex)
+                {
+                    return new ResponseVM { isSuccess = false, message = ex.Message.ToString() };
+                }
+            }
+        }
+
+       
     }
 }

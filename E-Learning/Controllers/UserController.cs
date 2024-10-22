@@ -160,7 +160,14 @@ namespace E_Learning.Controllers
             }
            
         }
+		public async Task<IActionResult> UpdateUser(UpadateProfileVM upadateProfileVM)
+		{
+			if(ModelState.IsValid)
+			{
 
+			}
+			return BadRequest(ModelState);
+		}
         public async Task<IActionResult> Logout() {
 			await signinmanger.SignOutAsync();
 			return RedirectToAction("Index","Home");
