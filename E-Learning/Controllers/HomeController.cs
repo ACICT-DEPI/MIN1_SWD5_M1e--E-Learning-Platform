@@ -2,6 +2,7 @@ using Entites.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Services.Interfaces;
 using System.Diagnostics;
 
 namespace E_Learning.Controllers
@@ -11,9 +12,12 @@ namespace E_Learning.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> userManager;
-        public HomeController(ILogger<HomeController> logger,UserManager<User> userManager)
+        private readonly IServicesManger servicesManger;
+
+        public HomeController(ILogger<HomeController> logger,UserManager<User> userManager,IServicesManger servicesManger)
         {
             this.userManager = userManager;
+            this.servicesManger = servicesManger;
             _logger = logger;
         }
         public IActionResult ReadMore()
@@ -24,9 +28,10 @@ namespace E_Learning.Controllers
         {
             return View("about");
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var course = await servicesManger.courseServices.GetAllCourcesAsync(false);
+            return View(course);
         }
         [Authorize]  
         public IActionResult Privacy()
