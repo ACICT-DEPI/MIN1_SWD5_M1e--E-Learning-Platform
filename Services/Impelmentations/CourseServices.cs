@@ -36,7 +36,12 @@ namespace Services.Impelmentations
             var Coursesdto= _mapper.Map<List<Course>>(courses);
             return Coursesdto;
         }
-
+        public async Task<List<Course>> GetCoursesunpaidforUsers(bool istracked)
+        {
+            var result = await _repositoryManger.courseRepository.GetCoursesunpaidforUsers(await GetUserId(), false);
+            var coursesdto = _mapper.Map<List<Course>>(result);
+            return coursesdto;
+        }
         public async Task<Course> GetCourseByIdAsync(int id, bool istracked)
         {
             var course =await _repositoryManger.courseRepository.GetCourseByIdAsync(id,istracked);
@@ -117,6 +122,6 @@ namespace Services.Impelmentations
             //return result;
         }
 
-        
+      
     }
 }
