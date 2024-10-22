@@ -41,7 +41,17 @@ namespace Repositories.Impelmentations
 
         }
 
-        
+        public async Task<IQueryable<Course>> GetCourseByUserIdAsync(string id, bool istracked)
+        {
+            return  _context.Courses
+               .Include(c => c.User)
+               .Include(c => c.Modules.Where(m => !m.IsDeleted))
+               .ThenInclude(m => m.Lessons.Where(l => !l.IsDeleted))
+               .ThenInclude(l => l.Materials.Where(m => !m.IsDeleted))
+               .AsNoTracking()
+               .Where(e => e.InstractourId == id && !e.IsDeleted)
+               ;
+        }
         public async Task<ResponseVM> CreateNewCourse(Course course)
         {
            return await Create(course);
@@ -56,5 +66,7 @@ namespace Repositories.Impelmentations
         {
           return  Delete(course);
         }
+
+       
     }
 }

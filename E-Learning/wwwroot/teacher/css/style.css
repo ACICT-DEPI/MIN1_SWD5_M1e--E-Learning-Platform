@@ -19,10 +19,10 @@
    text-decoration: none;
 }
 
-*::selection{
-   background-color: var(--main-color);
-   color:#fff;
-}
+    *::selection {
+        background-color: #5fcf80;
+        color: #fff;
+    }
 
 html{
    font-size: 62.5%;
@@ -38,9 +38,9 @@ html::-webkit-scrollbar-track{
    background-color: transparent;
 }
 
-html::-webkit-scrollbar-thumb{
-   background-color: var(--main-color);
-}
+    html::-webkit-scrollbar-thumb {
+        background-color: #5fcf80;
+    }
 
 body{
    background-color: var(--light-bg);
@@ -104,8 +104,8 @@ section{
 }
 
 .btn,
-.inline-btn{
-   background-color: var(--main-color);
+.inline-btn {
+    background-color: #5fcf80;
 }
 
 .option-btn,
@@ -283,9 +283,9 @@ section{
    color:var(--black);
 }
 
-.home-grid .box-container .flex a span{
-   color:var(--light-color);
-}
+    .home-grid .box-container .flex a span {
+        color: #5fcf80;
+    }
 
 .home-grid .box-container .flex a:hover{
    background-color: var(--black);
@@ -295,9 +295,9 @@ section{
    color:var(--white);
 }
 
-.home-grid .box-container .flex a:hover i{
-   color:var(--white);
-}
+    .home-grid .box-container .flex a:hover i {
+        color: #5fcf80;
+    }
 
 .home-grid .box-container .tutor{
    padding: 1rem 0;
@@ -312,9 +312,9 @@ section{
    margin-top: 1.5rem;
 }
 
-.home-grid .box-container .likes span{
-   color:var(--main-color);
-}
+    .home-grid .box-container .likes span {
+        color: #5fcf80;
+    }
 
 .about .row{
    display: flex;
@@ -875,9 +875,9 @@ section{
    background:none;
 }
 
-.teachers .search-tutor button:hover{
-   color: var(--main-color);
-}
+    .teachers .search-tutor button:hover {
+        color: #5fcf80;
+    }
 
 .teachers .box-container{
    display: grid;
@@ -941,9 +941,9 @@ section{
    color: var(--light-color);
 }
 
-.teachers .box-container .box p span{
-   color: var(--main-color);
-}
+    .teachers .box-container .box p span {
+        color: #5fcf80;
+    }
 
 .teacher-profile .details{
    text-align: center;
@@ -986,9 +986,9 @@ section{
    color: var(--light-color);
 }
 
-.teacher-profile .details .flex p span{
-   color: var(--main-color);
-}
+    .teacher-profile .details .flex p span {
+        color: #5fcf80;
+    }
 
 .user-profile .info{
    background-color: var(--white);
@@ -1052,10 +1052,10 @@ section{
    line-height: 4.9rem;
 }
 
-.user-profile .info .box-container .box .flex span{
-   font-size: 2.5rem;
-   color: var(--main-color);
-}
+    .user-profile .info .box-container .box .flex span {
+        font-size: 2.5rem;
+        color: #5fcf80;
+    }
 
 .user-profile .info .box-container .box .flex p{
    color: var(--light-color);
@@ -1122,11 +1122,11 @@ section{
    padding: 3rem;
 }
 
-.contact .box-container .box i{
-   font-size: 3rem;
-   color: var(--main-color);
-   margin-bottom: 1rem;
-}
+    .contact .box-container .box i {
+        font-size: 3rem;
+        color: #5fcf80;
+        margin-bottom: 1rem;
+    }
 
 .contact .box-container .box h3{
    font-size: 2rem;
@@ -1206,9 +1206,9 @@ section{
    /* padding-bottom: 9.5rem; */
 }
 
-.footer span{
-   color:var(--main-color);
-}
+    .footer span {
+        color: #5fcf80;
+    }
 
 
 
