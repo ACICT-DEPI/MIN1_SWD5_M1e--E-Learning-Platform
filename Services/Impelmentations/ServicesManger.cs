@@ -107,7 +107,7 @@ namespace Services.Impelmentations
 
 
         public IUserService userServices => _userService.Value;
-    }
+    
 
 		public IQuestionServices questionServices => _questionServices.Value;
 		public IAnswerServices answerServices => _answerServices.Value;
