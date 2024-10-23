@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
-	public interface IQuestionSevices
+	public interface IQuestionServices
 	{
 		public Task<List<GetQuestionVM>> GetAllQuestionsByCourseId(int id);
 		public Task<List<GetQuestionVM>> GetAllQuestionsByLessonId(int id);

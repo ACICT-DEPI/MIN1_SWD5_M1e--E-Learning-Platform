@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Services.Impelmentations
 {
-	internal class QuestionServices: IQuestionSevices
+	internal class QuestionServices: IQuestionServices
 	{
 		private readonly IRepositoryManger _repositoryManger;
 		private readonly IMapper _mapper;

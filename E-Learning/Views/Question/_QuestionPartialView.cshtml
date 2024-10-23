@@ -94,75 +94,101 @@
     </div>
 </div>
 
-<script>
-// Add Comment using AJAX
-function addComment() {
-    var commentText = document.getElementById('new-comment').value;
-    if (commentText.trim()) {
-        $.ajax({
-            type: "POST",
-                url: "/question/createquestion",
-            data: { Text: commentText, CourseId: @Model.CourseId, LessonId:@Model.LessonId},
-            success: function(response) {
-                    console.log(response)
-                    $('#comments-list').append(`
-                        <div class="comment" id="comment-${response.Id}">
-                            <p>${response.Text}</p>
-                            <div class="actions">
-                                <button onclick="showReplyBox(${response.Id})">Reply</button>
-                            </div>
-                            <div class="reply-box" id="reply-box-${response.Id}"></div>
-                        </div>
-                    `);
-                    document.getElementById('new-comment').value = '';
-                
-            },
-            error: function (response) {
-                alert(response);
-            }
-        });
-    }
-}
 
-// Show Reply Box
-function showReplyBox(commentId) {
-    var replyBox = document.getElementById('reply-box-' + commentId);
-    if (!replyBox.querySelector('textarea')) {
-        var textarea = document.createElement('textarea');
-        textarea.placeholder = "Write a reply...";
-        var button = document.createElement('button');
-        button.textContent = 'Reply';
-        button.onclick = function() {
-            addReply(commentId, textarea.value);
-        };
-        replyBox.appendChild(textarea);
-        replyBox.appendChild(button);
-    }
-}
+    <script>
+        // Ensure DOM is fully loaded before running the code
+        $(document).ready(function () {
 
-// Add Reply using AJAX
-function addReply(commentId, replyText) {
-    if (replyText.trim()) {
-        $.ajax({
-            type: "POST",
-            url: "/Comment/AddReply",
-            data: { commentId: commentId, replyText: replyText },
-            success: function(response) {
-                if (response.success) {
-                    $('#reply-box-' + commentId).append(`
-                        <div class="reply">
-                            <p>${response.reply.text}</p>
-                        </div>
-                    `);
+            // Add Comment using AJAX
+            function addComment() {
+                var commentText = document.getElementById('new-comment').value;
+
+                if (commentText.trim()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/question/createquestion",
+                        data: {
+                            Text: commentText,
+                            CourseId: '@Model.CourseId',
+                            LessonId: x
+                        },
+                        success: function (response) {
+                            console.log(response);
+
+                            // Append the new comment to the comments list
+                            $('#comments-list').append(`
+                                        <div class="comment" id="comment-${response.Id}">
+                                            <p>${response.Text}</p>
+                                            <div class="actions">
+                                                <button onclick="showReplyBox(${response.Id})">Reply</button>
+                                            </div>
+                                            <div class="reply-box" id="reply-box-${response.Id}"></div>
+                                        </div>
+                                    `);
+                            document.getElementById('new-comment').value = ''; // Clear the input field
+                        },
+                        error: function (response) {
+                            alert("Error: " + response.responseText);
+                        }
+                    });
                 } else {
-                    alert('Failed to add reply');
+                    alert("Comment cannot be empty!");
                 }
             }
+
+            // Make addComment globally accessible
+            window.addComment = addComment;
+
+            // Show Reply Box Function
+            window.showReplyBox = function (commentId) {
+                var replyBox = document.getElementById('reply-box-' + commentId);
+
+                if (!replyBox.querySelector('textarea')) {
+                    var textarea = document.createElement('textarea');
+                    textarea.placeholder = "Write a reply...";
+
+                    var button = document.createElement('button');
+                    button.textContent = 'Reply';
+
+                    button.onclick = function () {
+                        addReply(commentId, textarea.value);
+                    };
+
+                    replyBox.appendChild(textarea);
+                    replyBox.appendChild(button);
+                }
+            };
+
+            // Add Reply using AJAX
+            function addReply(commentId, replyText) {
+                if (replyText.trim()) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Answer/CreateAnswer",
+                        data: {
+                            QuestionId: commentId,
+                            Text: replyText,
+                            CourseId: '@Model.CourseId',
+                            LessonId: '@Model.LessonId'
+                        },
+                        success: function (response) {
+                            $('#reply-box-' + commentId).append(`
+                                        <div class="reply">
+                                            <p>${response.Text}</p>
+                                        </div>
+                                    `);
+                        },
+                        error: function (response) {
+                            alert("Error: " + response.responseText);
+                        }
+                    });
+                } else {
+                    alert("Reply cannot be empty!");
+                }
+            }
+
+            // Make addReply globally accessible
+            window.addReply = addReply;
         });
-    }
-}
-</script>
+    </script>
 
-<script>
-
-</script>
