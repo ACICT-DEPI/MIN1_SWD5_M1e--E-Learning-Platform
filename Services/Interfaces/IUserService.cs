@@ -1,6 +1,7 @@
 ﻿using Enities.ViweModel;
 using Enities.ViweModel;
 using Enities.ViweModel.User;
+using Entites.Models;
 using Entites.ViewModel.User;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,6 @@ namespace Services.Interfaces
         public Task<ResponseVM> loginprocess(LoginVM model);
 		public Task<ResponseVM> Registerprocess(LoginVM model);
         public Task<ResponseVM> UpdateProfile(UpadateProfileVM model,string image);
-	}
+        public Task<User> GetCurrentUser();
+    }
 }

@@ -27,7 +27,14 @@ namespace Services.Impelmentations
             _userManager = userManager;
 			_mapper = mapper;
         }
-		public async Task<ResponseVM> loginprocess(LoginVM model)
+
+        public async Task<User> GetCurrentUser()
+        {
+          var userid=await _repositoryManger.GetCurrentUserId();
+			return await _userManager.FindByIdAsync(userid);
+        }
+
+        public async Task<ResponseVM> loginprocess(LoginVM model)
 		{
 			var user = _mapper.Map<User>(model);
 			throw new NotImplementedException();
@@ -43,15 +50,20 @@ namespace Services.Impelmentations
 			var user = await _userManager.FindByIdAsync(await _repositoryManger.GetCurrentUserId());
 			if (user != null)
 			{
-				if(_userManager.FindByNameAsync(model.UserName)!=null)
-				{
-					user.UserName = model.UserName;
+				
 					user.Email = model.Email;
 					user.image =image;
+				try
+				{
+					await _userManager.UpdateAsync(user);
+					return new ResponseVM { isSuccess = true, message = "this process is success" };
 				}
-			   await _userManager.UpdateAsync(user);
-				return new ResponseVM { isSuccess = true, message = "this process is success" };
-			}
+				catch (Exception ex)
+				{
+					return new ResponseVM { isSuccess = false, message = "this process is Faild" };
+				}
+
+            }
 
             return new ResponseVM { isSuccess = false, message = "this process is Faild" };
 

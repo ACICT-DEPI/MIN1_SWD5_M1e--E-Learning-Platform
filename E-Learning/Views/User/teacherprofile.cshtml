@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model List<Course>
 @inject SignInManager<User> signInManager
+@inject UserManager<User> usermanger;
+@{
+    var user = await usermanger.FindByNameAsync(@User.Identity.Name);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +31,7 @@
 
    <div class="details">
       <div class="tutor">
-         <img src="/teacher/images/pic-2.jpg" alt="">
+           <img src="/UserImage/@user.Id/@user.image" alt="">
          <h3>@User.Identity.Name</h3>
          <span>developer</span>
       </div>
@@ -56,7 +60,7 @@
                 }
                 <div class="box">
                     <div class="thumb">
-                        <img src="/teacher/images/thumb-1.png" alt="">
+                        <img src="/UserImage/@user.Id/" alt="">
                         <span>@coursevideo videos</span>
                     </div>
                     <h3 class="title">@item.Title</h3>

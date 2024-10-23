@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using Repositories.Interfaces;
 using Services.Interfaces;
 using Services.Implementations;
+using Enities.ViweModel;
 
 namespace E_Learning.Controllers
 {
@@ -39,11 +40,12 @@ namespace E_Learning.Controllers
 			}
           
         }
-        public IActionResult UserProfile()
+        public async Task<IActionResult> UserProfile()
         {
-            return View("profile");
+			var user=await _servicesManger.userServices.GetCurrentUser();
+            return View("profile",user);
         }
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View();
         }
@@ -165,10 +167,17 @@ namespace E_Learning.Controllers
 		{
             if(ModelState.IsValid)
 			{
-                var image = await _servicesManger.uploadFileServices.UplaodUserImage(upadateProfileVM.formFile, upadateProfileVM.Location);
+				var image=new ResponseVM();
 
-				await _servicesManger.userServices.UpdateProfile(upadateProfileVM, image.message);
-				return RedirectToAction("Index","Home");
+				if (upadateProfileVM.formFile != null)
+				{
+					image = await _servicesManger.uploadFileServices.UplaodUserImage(upadateProfileVM.formFile, upadateProfileVM.Location);
+
+					await _servicesManger.userServices.UpdateProfile(upadateProfileVM, image.model[0]);
+				}
+				else
+                    await _servicesManger.userServices.UpdateProfile(upadateProfileVM, string.Empty);
+                return Ok();
 			}
 			return BadRequest(ModelState);
 		}

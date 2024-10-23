@@ -10,7 +10,7 @@ namespace Services.Implementations
     {
         private string[] videoExtensions = new string[] { ".mp4", ".m4v", ".svi" ,".webm"};
         private string[] fileExtensions = new string[] { ".pdf"};
-        private string[] imageExtensions = new string[] { ".JPG",".PNG" };
+        private string[] imageExtensions = new string[] { ".jpg",".png" };
         private string[] info = new string[2];
 
 

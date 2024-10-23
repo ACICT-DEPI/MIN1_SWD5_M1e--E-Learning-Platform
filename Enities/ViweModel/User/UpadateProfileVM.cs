@@ -9,9 +9,8 @@ namespace Enities.ViweModel.User
 {
     public class UpadateProfileVM
     {
-        public string UserName { get; set; }
         public string Email { get; set; }
         public string Location { get; set; }
-        public IFormFile formFile { get; set; }
+        public IFormFile? formFile { get; set; }
     }
 }
