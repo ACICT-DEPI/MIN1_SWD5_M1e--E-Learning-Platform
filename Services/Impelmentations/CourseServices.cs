@@ -53,11 +53,11 @@ namespace Services.Impelmentations
             var coursesdto=  _mapper.Map<List<Course>>(courses);
             return coursesdto;
         }
-        public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course,string image)
+        public async Task<ResponseVM> CreateNewCourse(CreateorUpdateCourseVM course)
         {
             Course newcourse=_mapper.Map<Course>(course);
             newcourse.InstractourId=await GetUserId();
-            newcourse.image=image;
+            
            ResponseVM result= await _repositoryManger.courseRepository.CreateNewCourse(newcourse);
 			if (result.isSuccess)
 			{

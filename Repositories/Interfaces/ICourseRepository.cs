@@ -13,7 +13,7 @@ namespace Repositories.Interfaces
         Task<Course> GetCourseByIdAsync(int id,bool istracked );
         public Task<IQueryable<Course>> GetCourseByTeacherIdAsync(string id, bool istracked);
         Task<IQueryable<Course>> GetCourseByUserIdAsync(string id, bool istracked);
-        Task<ResponseVM> CreateNewCourse(Course course);
+        Task<ResponseVM> CreateNewCourse(Course course );
         Task<ResponseVM>UpdateCourse(Course course);
         Task<ResponseVM> DeleteCourse(Course course);
     }

@@ -63,7 +63,7 @@ namespace E_Learning.Controllers
             var image = await _servicesManger.uploadFileServices.UplaodCourseImage(model.file);
             if (ModelState.IsValid)
             {
-               var result= await _servicesManger.courseServices.CreateNewCourse(model, image.model[0]);
+               var result= await _servicesManger.courseServices.CreateNewCourse(model);
                 if(result.isSuccess)
                 {
                     return RedirectToAction("ManageCourse",new { id = result.model.Entity.Id });
