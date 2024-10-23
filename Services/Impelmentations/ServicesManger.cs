@@ -31,6 +31,7 @@ namespace Services.Impelmentations
 		private readonly Lazy<INoteServices> _noteServices;
 		private readonly Lazy<IEnrollmentServices> _enrollmentServices;
 		private readonly Lazy<IAnouncmentServices> _anouncmentServices;
+		private readonly Lazy<IQuestionSevices> _questionServices;
 
 		public ServicesManger(IRepositoryManger repositoryManger, IMapper mapper, IHttpContextAccessor httpContext,
 				IOptions<StripeSetting> stripeSetting, UserManager<User> userManager, IOptions<PayPalSetting> payPalSetting)
@@ -66,6 +67,8 @@ namespace Services.Impelmentations
 			new EnrollmentServices(_repositoryManger, _mapper,_userManager,_httpContext));
             _anouncmentServices = new Lazy<IAnouncmentServices>(()=>
 			new AnouncmentServices(_repositoryManger, _mapper));
+			_questionServices = new Lazy<IQuestionSevices>(()=>
+			new QuestionServices(_repositoryManger, _mapper));
 
 		}
 		public ICourseServices courseServices => _courseServices.Value;
@@ -89,5 +92,7 @@ namespace Services.Impelmentations
         public IEnrollmentServices enrollmentServices => _enrollmentServices.Value;
 
         public IAnouncmentServices anouncmentServices => _anouncmentServices.Value;
-    }
+
+		public IQuestionSevices questionServices => _questionServices.Value;
+	}
 }

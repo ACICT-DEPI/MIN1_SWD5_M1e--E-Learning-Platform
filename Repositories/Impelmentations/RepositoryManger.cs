@@ -1,5 +1,9 @@
 ﻿using Entites.Data;
+using Entites.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Repositories.Interfaces;
+using System.Net.Http;
 
 
 namespace Repositories.Impelmentations
@@ -17,7 +21,9 @@ namespace Repositories.Impelmentations
         private readonly Lazy<IEnrollmentRepository> _enrollmentRepository;
         private readonly Lazy<IQuestionRepository> _questionRepository;
         private readonly Lazy<IAnouncmentRepository> _anouncmentRepository;
-        public RepositoryManger(ElearingDbcontext context)
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly UserManager<User> _userManager;
+        public RepositoryManger(ElearingDbcontext context,IHttpContextAccessor httpContext,UserManager<User> userManager)
         {
             _context = context;
             _courseRepository=new Lazy<ICourseRepository>(()=>
@@ -40,7 +46,15 @@ namespace Repositories.Impelmentations
             new QuestionRepository(context));
             _anouncmentRepository = new Lazy<IAnouncmentRepository>(()=>
             new AnouncmentRepository(context));
+            _httpContext = httpContext;
+            _userManager = userManager;
         }
+        public async Task<string> GetUserId()
+        {
+            var user = await _userManager.FindByNameAsync(_httpContext.HttpContext.User.Identity.Name);
+            return user.Id;
+        }
+
         public ICourseRepository courseRepository => _courseRepository.Value;
 
 		public IModuleRepository moduleRepository => _moduleRepository.Value;

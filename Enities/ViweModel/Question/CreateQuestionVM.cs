@@ -10,8 +10,8 @@ namespace Enities.ViweModel.Question
 	{
 		public string Text { get; set; }
 		public DateTime QuestionDate { get; set; } = DateTime.Now;
-		public string UserId { get; set; }
+		public string? UserId { get; set; }
 		public int CourseId { get; set; }
-		public int LessonId { get; set; }
+		public int? LessonId { get; set; }
 	}
 }
