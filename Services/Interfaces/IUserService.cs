@@ -14,6 +14,6 @@ namespace Services.Interfaces
     {
         public Task<ResponseVM> loginprocess(LoginVM model);
 		public Task<ResponseVM> Registerprocess(LoginVM model);
-        public Task<ResponseVM> UpdateProfile(UpadateProfileVM model);
+        public Task<ResponseVM> UpdateProfile(UpadateProfileVM model,string image);
 	}
 }

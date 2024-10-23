@@ -18,15 +18,15 @@ namespace Services.Impelmentations
 	{
         private readonly IRepositoryManger _repositoryManger;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
 		private readonly IMapper _mapper;
 
-		public UserServices(IRepositoryManger repositoryManger,UserManager<User> userManager,SignInManager<User> signInManager,IMapper mapper) {
+        public UserServices(IRepositoryManger repositoryManger,
+			UserManager<User> userManager,IMapper mapper) 
+		{
             _repositoryManger = repositoryManger;
             _userManager = userManager;
-            _signInManager = signInManager;
 			_mapper = mapper;
-		}
+        }
 		public async Task<ResponseVM> loginprocess(LoginVM model)
 		{
 			var user = _mapper.Map<User>(model);
@@ -38,10 +38,22 @@ namespace Services.Impelmentations
 			throw new NotImplementedException();
 		}
 
-        public async Task<ResponseVM> UpdateProfile(UpadateProfileVM model)
-        {
-            //var user= await _userManager.FindByIdAsync(await _repositoryManger.Ge)
-            throw new NotImplementedException();
+        public async Task<ResponseVM> UpdateProfile(UpadateProfileVM model,string image)
+		{ 
+			var user = await _userManager.FindByIdAsync(await _repositoryManger.GetCurrentUserId());
+			if (user != null)
+			{
+				if(_userManager.FindByNameAsync(model.UserName)!=null)
+				{
+					user.UserName = model.UserName;
+					user.Email = model.Email;
+					user.image =image;
+				}
+			   await _userManager.UpdateAsync(user);
+				return new ResponseVM { isSuccess = true, message = "this process is success" };
+			}
+
+            return new ResponseVM { isSuccess = false, message = "this process is Faild" };
 
         }
     }

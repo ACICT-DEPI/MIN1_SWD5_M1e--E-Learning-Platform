@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using System.Text.RegularExpressions;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using Services.Implementations;
 
 namespace E_Learning.Controllers
 {
@@ -162,9 +163,12 @@ namespace E_Learning.Controllers
         }
 		public async Task<IActionResult> UpdateUser(UpadateProfileVM upadateProfileVM)
 		{
-			if(ModelState.IsValid)
+            if(ModelState.IsValid)
 			{
+                var image = await _servicesManger.uploadFileServices.UplaodUserImage(upadateProfileVM.formFile, upadateProfileVM.Location);
 
+				await _servicesManger.userServices.UpdateProfile(upadateProfileVM, image.message);
+				return RedirectToAction("Index","Home");
 			}
 			return BadRequest(ModelState);
 		}

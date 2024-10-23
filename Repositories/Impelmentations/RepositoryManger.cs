@@ -1,4 +1,7 @@
 ﻿using Entites.Data;
+using Entites.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Repositories.Interfaces;
 
 
@@ -7,6 +10,8 @@ namespace Repositories.Impelmentations
     public sealed class RepositoryManger : IRepositoryManger
     {
         private readonly ElearingDbcontext _context;
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly UserManager<User> _userManager;
         private readonly Lazy<ICourseRepository> _courseRepository;
         private readonly Lazy<IModuleRepository> _moduleRepository;
         private readonly Lazy<ILessonRepository> _lessonRepository;
@@ -17,10 +22,12 @@ namespace Repositories.Impelmentations
         private readonly Lazy<IEnrollmentRepository> _enrollmentRepository;
         private readonly Lazy<IQuestionRepository> _questionRepository;
         private readonly Lazy<IAnouncmentRepository> _anouncmentRepository;
-        public RepositoryManger(ElearingDbcontext context)
+        public RepositoryManger(ElearingDbcontext context, IHttpContextAccessor httpContext,UserManager<User> userManager)
         {
             _context = context;
-            _courseRepository=new Lazy<ICourseRepository>(()=>
+            _httpContext = httpContext;
+            _userManager = userManager;
+            _courseRepository =new Lazy<ICourseRepository>(()=>
                 new CourseRepository(context));
             _moduleRepository=new Lazy<IModuleRepository>(()=> 
             new ModuleRepository(context));
@@ -58,6 +65,12 @@ namespace Repositories.Impelmentations
 
         public IEnrollmentRepository enrollmentRepository => _enrollmentRepository.Value;
         public IAnouncmentRepository anouncmentRepository => _anouncmentRepository.Value;
+
+        public async Task<string> GetCurrentUserId()
+        {
+            var user = await _userManager.FindByNameAsync(_httpContext.HttpContext.User.Identity.Name);
+            return user.Id;
+        }
 
         public async Task Save()
         {
