@@ -1,0 +1,168 @@
+﻿@using Enities.ViweModel.Question
+
+@model QuestionDataVM
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .comments-section {
+        background-color: white;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .add-comment textarea {
+        width: 100%;
+        height: 60px;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .add-comment button {
+        padding: 10px 15px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .comment {
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+        .comment .actions {
+            margin-top: 10px;
+        }
+
+        .comment button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+    .reply-box {
+        margin-top: 10px;
+        padding-left: 20px;
+    }
+
+</style>
+<div class="comments-section">
+    <h2>Questions</h2>
+
+    <!-- Display Existing Comments -->
+    <div id="comments-list">
+        @foreach (var comment in Model.getQuestionVMs)
+        {
+            <div class="comment" id="comment-@comment.Id">
+                <p>@comment.Text</p>
+                <div class="actions">
+                    <button onclick="showReplyBox(@comment.Id)">Reply</button>
+                </div>
+
+                <div class="reply-box" id="reply-box-@comment.Id">
+                    @foreach (var reply in comment.Answers)
+                    {
+                        <div class="reply">
+                            <p>@reply.Text</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Form for Adding New Comment -->
+    <div class="add-comment">
+        <textarea id="new-comment" placeholder="Write a Question..."></textarea>
+        <button onclick="addComment()">Ask</button>
+    </div>
+</div>
+
+<script>
+// Add Comment using AJAX
+function addComment() {
+    var commentText = document.getElementById('new-comment').value;
+    if (commentText.trim()) {
+        $.ajax({
+            type: "POST",
+                url: "/question/createquestion",
+            data: { Text: commentText, CourseId: @Model.CourseId, LessonId:@Model.LessonId},
+            success: function(response) {
+                    console.log(response)
+                    $('#comments-list').append(`
+                        <div class="comment" id="comment-${response.Id}">
+                            <p>${response.Text}</p>
+                            <div class="actions">
+                                <button onclick="showReplyBox(${response.Id})">Reply</button>
+                            </div>
+                            <div class="reply-box" id="reply-box-${response.Id}"></div>
+                        </div>
+                    `);
+                    document.getElementById('new-comment').value = '';
+                
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    }
+}
+
+// Show Reply Box
+function showReplyBox(commentId) {
+    var replyBox = document.getElementById('reply-box-' + commentId);
+    if (!replyBox.querySelector('textarea')) {
+        var textarea = document.createElement('textarea');
+        textarea.placeholder = "Write a reply...";
+        var button = document.createElement('button');
+        button.textContent = 'Reply';
+        button.onclick = function() {
+            addReply(commentId, textarea.value);
+        };
+        replyBox.appendChild(textarea);
+        replyBox.appendChild(button);
+    }
+}
+
+// Add Reply using AJAX
+function addReply(commentId, replyText) {
+    if (replyText.trim()) {
+        $.ajax({
+            type: "POST",
+            url: "/Comment/AddReply",
+            data: { commentId: commentId, replyText: replyText },
+            success: function(response) {
+                if (response.success) {
+                    $('#reply-box-' + commentId).append(`
+                        <div class="reply">
+                            <p>${response.reply.text}</p>
+                        </div>
+                    `);
+                } else {
+                    alert('Failed to add reply');
+                }
+            }
+        });
+    }
+}
+</script>
+
+<script>
+
+</script>

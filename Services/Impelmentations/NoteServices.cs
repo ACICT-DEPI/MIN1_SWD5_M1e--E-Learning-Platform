@@ -17,6 +17,7 @@ namespace Services.Impelmentations
         private readonly IRepositoryManger _repositoryManger;
         private readonly IMapper _mapper;
 
+
         public NoteServices(IRepositoryManger repositoryManger, IMapper mapper)
         {
             _repositoryManger = repositoryManger;
@@ -52,7 +53,7 @@ namespace Services.Impelmentations
         public async Task<ResponseVM> CreateNote(CreateNoteVM note)
         {
             var notes = _mapper.Map<Note>(note);
-            notes.UserId = "new-id";
+            notes.UserId = await _repositoryManger.GetUserId();
             var result = await _repositoryManger.noteRepository.CreateNote(notes);
             if (result.isSuccess)
             {

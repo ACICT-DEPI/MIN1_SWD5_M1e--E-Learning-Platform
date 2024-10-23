@@ -14,5 +14,6 @@
         INoteServices noteServices { get; }
         IEnrollmentServices enrollmentServices { get; }
         IAnouncmentServices anouncmentServices { get; }
+        IQuestionSevices questionServices { get; }
     }
 }
