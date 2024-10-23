@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,5 +16,6 @@ namespace Enities.ViweModel.Course
         public string SkillLevel { get; set; }
         public decimal Price { get; set; }
         public string Requirments { get; set; }
+        public IFormFile file   { get; set; }
     }
 }
