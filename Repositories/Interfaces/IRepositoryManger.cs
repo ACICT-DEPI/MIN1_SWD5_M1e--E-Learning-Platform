@@ -16,10 +16,15 @@ namespace Repositories.Interfaces
         IEnrollmentRepository enrollmentRepository { get; }
         IQuestionRepository questionRepository { get; }
         IAnouncmentRepository anouncmentRepository { get; }
+
+        Task<string> GetCurrentUserId();
+		
+
         IAnswerRepository answerRepository { get; }
 
         Task<string> GetUserId();
 
         Task Save();
+
     }
 }

@@ -24,7 +24,7 @@ namespace E_Learning.Controllers
 				var result = await _servicesManger.progressServices.AddProgress(model);
 				if (result.isSuccess)
 				{
-					return Ok(result);
+					return Ok(result.message);
 				}
 				
 			}

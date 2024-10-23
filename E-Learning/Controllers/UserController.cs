@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using System.Text.RegularExpressions;
 using Repositories.Interfaces;
 using Services.Interfaces;
+using Services.Implementations;
+using Enities.ViweModel;
 
 namespace E_Learning.Controllers
 {
@@ -38,6 +40,7 @@ namespace E_Learning.Controllers
 			}
           
         }
+
         public async Task<IActionResult> TeacherProfile1(string id)
         {
             try
@@ -51,11 +54,13 @@ namespace E_Learning.Controllers
             }
 
         }
-        public IActionResult UserProfile()
+       public async Task<IActionResult> UserProfile()
+
         {
-            return View("profile");
+			var user=await _servicesManger.userServices.GetCurrentUser();
+            return View("profile",user);
         }
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             return View();
         }
@@ -173,7 +178,24 @@ namespace E_Learning.Controllers
             }
            
         }
+		public async Task<IActionResult> UpdateUser(UpadateProfileVM upadateProfileVM)
+		{
+            if(ModelState.IsValid)
+			{
+				var image=new ResponseVM();
 
+				if (upadateProfileVM.formFile != null)
+				{
+					image = await _servicesManger.uploadFileServices.UplaodUserImage(upadateProfileVM.formFile, upadateProfileVM.Location);
+
+					await _servicesManger.userServices.UpdateProfile(upadateProfileVM, image.model[0]);
+				}
+				else
+                    await _servicesManger.userServices.UpdateProfile(upadateProfileVM, string.Empty);
+                return Ok();
+			}
+			return BadRequest(ModelState);
+		}
         public async Task<IActionResult> Logout() {
 			await signinmanger.SignOutAsync();
 			return RedirectToAction("Index","Home");
