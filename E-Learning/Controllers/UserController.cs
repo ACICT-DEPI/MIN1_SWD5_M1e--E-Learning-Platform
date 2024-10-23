@@ -40,7 +40,22 @@ namespace E_Learning.Controllers
 			}
           
         }
-        public async Task<IActionResult> UserProfile()
+
+        public async Task<IActionResult> TeacherProfile1(string id)
+        {
+            try
+            {
+                var result = await _servicesManger.courseServices.GetCourseByTeacherIdAsync(id,false);
+                return View("teacherprofile2", result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+
+        }
+       public async Task<IActionResult> UserProfile()
+
         {
 			var user=await _servicesManger.userServices.GetCurrentUser();
             return View("profile",user);

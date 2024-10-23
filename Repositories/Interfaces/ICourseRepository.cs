@@ -11,6 +11,7 @@ namespace Repositories.Interfaces
         Task<IQueryable<Course>> GetAllCourcesAsync(bool istraked);
         Task<IQueryable<Course>> GetCoursesunpaidforUsers(string userid,bool istracked);
         Task<Course> GetCourseByIdAsync(int id,bool istracked );
+        public Task<IQueryable<Course>> GetCourseByTeacherIdAsync(string id, bool istracked);
         Task<IQueryable<Course>> GetCourseByUserIdAsync(string id, bool istracked);
         Task<ResponseVM> CreateNewCourse(Course course);
         Task<ResponseVM>UpdateCourse(Course course);

@@ -160,7 +160,7 @@
                         <img src="~/assets/img/course-1.jpg" class="img-fluid" alt="...">
                         <div class="course-content">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h3><a href="course-details.html">@item.Title</a></h3>
+                                <h3><a href="/Course/Details/@item.Id">@item.Title</a></h3>
                                 <p class="price">@item.Price$</p>
                             </div>
 
@@ -169,7 +169,7 @@
                             <div class="trainer d-flex justify-content-between align-items-center">
                                 <div class="trainer-profile d-flex align-items-center">
                                     <img src="~/assets/img/trainers/trainer-1-2.jpg" class="img-fluid" alt="">
-                                    <a href="" class="trainer-link">@item.User.UserName</a>
+                                    <a href="/User/TeacherProfile1/@item.InstractourId" class="trainer-link">@item.User.UserName</a>
                                 </div>
                                 <div class="trainer-rank d-flex align-items-center">
                                     <i class="bi bi-person user-icon"></i>&nbsp;@item.NumberOfStudents

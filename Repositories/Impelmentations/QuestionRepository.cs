@@ -1,6 +1,7 @@
 ﻿using Enities.ViweModel;
 using Entites.Data;
 using Entites.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,14 @@ namespace Repositories.Impelmentations
 {
 	public sealed class QuestionRepository : BaseRepository<Question>,IQuestionRepository
 	{
+		private readonly ElearingDbcontext _context;
+
 		public QuestionRepository(ElearingDbcontext context) : base(context)
 		{
+			_context = context;
 		}
+
+
 
 		public Task<ResponseVM> CreateQuestion(Question question)
 		{
@@ -31,9 +37,16 @@ namespace Repositories.Impelmentations
 			return Delete(question);
 		}
 
-		public Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked)
+        public  async Task<Question> GetQuestionById(int id, bool isTracked)
 		{
-			return FindByCondition(q => q.CourseId == id, isTracked);
+			var question = await FindByCondition(x => x.Id == id,isTracked);
+			return question.First();
+		}
+
+
+        public async Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked)
+		{
+			return _context.Questions.Include(x => x.Answers).AsNoTracking().Where(x => x.CourseId == id);
 		}
 
 		public Task<IQueryable<Question>> GetAllQuestionsByLessonId(int id, bool isTracked)

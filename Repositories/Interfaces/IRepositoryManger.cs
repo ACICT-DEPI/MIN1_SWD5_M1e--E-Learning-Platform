@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
+using System.Net.Http;
+
 namespace Repositories.Interfaces
 {
     public interface IRepositoryManger
@@ -11,9 +14,17 @@ namespace Repositories.Interfaces
         INoteRepository noteRepository { get; }
         IPaymentRepository paymentRepository { get; }
         IEnrollmentRepository enrollmentRepository { get; }
-		IQuestionRepository questionRepository { get; }
+        IQuestionRepository questionRepository { get; }
         IAnouncmentRepository anouncmentRepository { get; }
+
         Task<string> GetCurrentUserId();
-		Task Save();
+		
+
+        IAnswerRepository answerRepository { get; }
+
+        Task<string> GetUserId();
+
+        Task Save();
+
     }
 }

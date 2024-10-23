@@ -10,6 +10,8 @@ using Enities.ViweModel.User;
 using Enities.ViweModel.Note;
 using Entites.ViewModel.User;
 using Enities.ViweModel.Anouncment;
+using Enities.ViweModel.Question;
+using Enities.ViweModel.AnswerVM;
 namespace E_Learning.MappingProfile
 {
     public class MappingProfile:Profile
@@ -31,6 +33,10 @@ namespace E_Learning.MappingProfile
             CreateMap<Note, CreateNoteVM>().ReverseMap();
             CreateMap<Note, UpdateNoteVM>().ReverseMap();
             CreateMap<Anouncment, GetAnouncmentForStudentVM>().ReverseMap();
+            CreateMap<Question, GetQuestionVM>().ReverseMap();
+            CreateMap<Question, CreateQuestionVM>().ReverseMap();
+            CreateMap<Question, UpdateQuestionVM>().ReverseMap();
+            CreateMap<Answer, CreateAnswerVM>().ReverseMap();
 
 		}
     }

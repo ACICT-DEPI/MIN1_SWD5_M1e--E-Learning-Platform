@@ -39,7 +39,7 @@
 						<a class="nav-link ">Overview</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link ">Q&A</a>
+						<a class="nav-link " onclick="getQuestionsAndAnswers(@Model.Id)">Q&A</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link " onclick="getNotes()">Notes</a>
@@ -477,4 +477,18 @@
 		});
 	}
 
+	function getQuestionsAndAnswers(){
+
+		$.ajax({
+			url: `/Question/GetAllQuestionsAndAnswersByCourseId/?id=${@Model.Id}&LessonId=${x}`,
+			type: 'GET',
+			success: function(questionsAndAnswers){
+				$('#content-of-lesson').html(questionsAndAnswers);
+
+			},
+			error: function () {
+                alert('Error loading questions.');
+            }
+		});
+	}
 </script>

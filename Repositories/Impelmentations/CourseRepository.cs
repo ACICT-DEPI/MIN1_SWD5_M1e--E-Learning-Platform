@@ -5,6 +5,7 @@ using Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Enities.ViweModel;
 using Microsoft.VisualBasic;
+
 using Microsoft.AspNetCore.Identity;
 using System.Net.Http;
 namespace Repositories.Impelmentations
@@ -85,6 +86,17 @@ namespace Repositories.Impelmentations
           return  Delete(course);
         }
 
+        public async Task<IQueryable<Course>> GetCourseByTeacherIdAsync(string id, bool istracked)
+        {
+            return _context.Courses
+     .Include(c => c.User)
+     .Include(c => c.Modules.Where(m => !m.IsDeleted))
+     .ThenInclude(m => m.Lessons.Where(l => !l.IsDeleted))
+     .ThenInclude(l => l.Materials.Where(m => !m.IsDeleted))
+     .AsNoTracking()
+     .Where(e => e.InstractourId == id && !e.IsDeleted)
+     ;
+        }
       
     }
 }
