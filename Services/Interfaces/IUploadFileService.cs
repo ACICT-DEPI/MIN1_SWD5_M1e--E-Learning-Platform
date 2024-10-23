@@ -13,5 +13,6 @@ namespace Services.Interfaces
         public Task<ResponseVM> UploadVideo(IFormFile video, string location);
         public Task<ResponseVM> UploadResourses(IFormFile resourse, string location);
         public Task<ResponseVM> UplaodUserImage(IFormFile image, string location);
-    }
+		public Task<ResponseVM> UplaodCourseImage(IFormFile image);
+	}
 }

@@ -20,7 +20,7 @@
 };
 }
 <div class="bg-white m-5 w-80 border border-2 shadow  rounded ">
-	<form asp-controller="Course" asp-action="CreateCourse" method="post">
+	<form asp-controller="Course" asp-action="CreateCourse" method="post" enctype="multipart/form-data">
 		<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 		<div class="bg-white m-5">
 			<div class=" bg-white m-5 d-flex flex-column justify-content-between">
@@ -96,6 +96,16 @@
 						Course Language
 					</h4>
 					<select asp-for="Language" asp-items="Languages" class="form-control mt-2 w-25"></select>
+					<span asp-validation-for="Language" class="text-danger"></span>
+				</div>
+				<div class="mt-2">
+					<h4 class="mt-2">
+						Course Image
+					</h4>
+					<label asp-for="file">
+						<br/>
+						<input asp-for="file" type="file" accept=".jpg,.jpeg,.png" />
+					</label>
 					<span asp-validation-for="Language" class="text-danger"></span>
 				</div>
 				<div class="mt-4 mb-2  mx-auto">
