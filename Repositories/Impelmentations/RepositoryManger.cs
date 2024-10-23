@@ -25,8 +25,7 @@ namespace Repositories.Impelmentations
         private readonly Lazy<IAnouncmentRepository> _anouncmentRepository;
 
         private readonly Lazy<IAnswerRepository> _answerRepository;
-        private readonly IHttpContextAccessor _httpContext;
-        private readonly UserManager<User> _userManager;
+
         public RepositoryManger(ElearingDbcontext context,IHttpContextAccessor httpContext,UserManager<User> userManager)
 
         {
@@ -55,8 +54,7 @@ namespace Repositories.Impelmentations
             new AnouncmentRepository(context));
             _answerRepository = new Lazy<IAnswerRepository>(()=>
             new AnswerRepository(context));
-            _httpContext = httpContext;
-            _userManager = userManager;
+         
         }
         public async Task<string> GetUserId()
         {
