@@ -46,7 +46,7 @@ namespace Repositories.Impelmentations
 
         public async Task<IQueryable<Question>> GetAllQuestionsByCourseId(int id, bool isTracked)
 		{
-			return _context.Questions.Include(x => x.Answers).AsNoTracking().Where(x => x.Id == id);
+			return _context.Questions.Include(x => x.Answers).AsNoTracking().Where(x => x.CourseId == id);
 		}
 
 		public Task<IQueryable<Question>> GetAllQuestionsByLessonId(int id, bool isTracked)

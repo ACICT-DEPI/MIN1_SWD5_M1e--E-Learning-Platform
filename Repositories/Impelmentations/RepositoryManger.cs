@@ -21,6 +21,7 @@ namespace Repositories.Impelmentations
         private readonly Lazy<IEnrollmentRepository> _enrollmentRepository;
         private readonly Lazy<IQuestionRepository> _questionRepository;
         private readonly Lazy<IAnouncmentRepository> _anouncmentRepository;
+        private readonly Lazy<IAnswerRepository> _answerRepository;
         private readonly IHttpContextAccessor _httpContext;
         private readonly UserManager<User> _userManager;
         public RepositoryManger(ElearingDbcontext context,IHttpContextAccessor httpContext,UserManager<User> userManager)
@@ -46,6 +47,8 @@ namespace Repositories.Impelmentations
             new QuestionRepository(context));
             _anouncmentRepository = new Lazy<IAnouncmentRepository>(()=>
             new AnouncmentRepository(context));
+            _answerRepository = new Lazy<IAnswerRepository>(()=>
+            new AnswerRepository(context));
             _httpContext = httpContext;
             _userManager = userManager;
         }
@@ -72,6 +75,7 @@ namespace Repositories.Impelmentations
 
         public IEnrollmentRepository enrollmentRepository => _enrollmentRepository.Value;
         public IAnouncmentRepository anouncmentRepository => _anouncmentRepository.Value;
+        public IAnswerRepository answerRepository => _answerRepository.Value;
 
         public async Task Save()
         {

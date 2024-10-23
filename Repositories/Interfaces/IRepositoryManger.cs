@@ -16,6 +16,7 @@ namespace Repositories.Interfaces
         IEnrollmentRepository enrollmentRepository { get; }
         IQuestionRepository questionRepository { get; }
         IAnouncmentRepository anouncmentRepository { get; }
+        IAnswerRepository answerRepository { get; }
 
         Task<string> GetUserId();
 
