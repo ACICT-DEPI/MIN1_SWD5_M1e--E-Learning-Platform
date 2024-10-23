@@ -50,7 +50,7 @@ namespace Services.Impelmentations
 			_userManager = userManager;
 			_payPalSetting = payPalSetting;
 			_courseServices = new Lazy<ICourseServices>(() =>
-			new CourseServices(_repositoryManger, _mapper, _httpContext,_userManager));
+			new CourseServices(_repositoryManger, _mapper, _httpContext, _userManager));
 			_moduleServices = new Lazy<IModuleServices>(() =>
 			new ModuleServices(_repositoryManger, _mapper));
 			_lessonService = new Lazy<ILessonService>(() =>
@@ -62,23 +62,23 @@ namespace Services.Impelmentations
 			_progressServices = new Lazy<IProgressServices>(() =>
 			new ProgressServices(_repositoryManger, _mapper));
 			_paymentServices = new Lazy<IPaymentServices>(() =>
-			new PaymentServices(_repositoryManger, _mapper,_userManager,_httpContext));
+			new PaymentServices(_repositoryManger, _mapper, _userManager, _httpContext));
 			_stripeServices = new Lazy<IStripeServices>(() =>
 			new StripeServices(httpContext, _stripeSetting, _userManager));
 			_payPalServices = new Lazy<IPayPalServices>(() =>
 			new PayPalServices(_payPalSetting, httpContext));
 			_noteServices = new Lazy<INoteServices>(() =>
 			new NoteServices(_repositoryManger, _mapper));
-			_enrollmentServices=new Lazy<IEnrollmentServices>(()=>
-			new EnrollmentServices(_repositoryManger, _mapper,_userManager,_httpContext));
-            _anouncmentServices = new Lazy<IAnouncmentServices>(()=>
+			_enrollmentServices = new Lazy<IEnrollmentServices>(() =>
+			new EnrollmentServices(_repositoryManger, _mapper, _userManager, _httpContext));
+			_anouncmentServices = new Lazy<IAnouncmentServices>(() =>
 			new AnouncmentServices(_repositoryManger, _mapper));
 			_userService = new Lazy<IUserService>(() =>
 			new UserServices(_repositoryManger, _userManager, _mapper));
 
-			_questionServices = new Lazy<IQuestionServices>(()=>
+			_questionServices = new Lazy<IQuestionServices>(() =>
 			new QuestionServices(_repositoryManger, _mapper));
-			_answerServices = new Lazy<IAnswerServices>(()=>
+			_answerServices = new Lazy<IAnswerServices>(() =>
 			new AnswerServices(_repositoryManger, _mapper));
 
 
@@ -101,16 +101,18 @@ namespace Services.Impelmentations
 		public IPayPalServices payPalServices => _payPalServices.Value;
 		public INoteServices noteServices => _noteServices.Value;
 
-        public IEnrollmentServices enrollmentServices => _enrollmentServices.Value;
+		public IEnrollmentServices enrollmentServices => _enrollmentServices.Value;
 
-        public IAnouncmentServices anouncmentServices => _anouncmentServices.Value;
+		public IAnouncmentServices anouncmentServices => _anouncmentServices.Value;
 
 
-        public IUserService userServices => _userService.Value;
-    
 
-		public IQuestionServices questionServices => _questionServices.Value;
-		public IAnswerServices answerServices => _answerServices.Value;
-	}
+		public IUserService userServices => _userService.Value;
+
+
+
+	public IQuestionServices questionServices => _questionServices.Value;
+	public IAnswerServices answerServices => _answerServices.Value;
+}
 
 }
