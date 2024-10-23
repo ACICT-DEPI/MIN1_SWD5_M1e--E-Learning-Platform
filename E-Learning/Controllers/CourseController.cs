@@ -60,15 +60,15 @@ namespace E_Learning.Controllers
         [HttpPost]
 		public async Task<IActionResult> CreateCourse(CreateorUpdateCourseVM model)
 		{
+            var image = await _servicesManger.uploadFileServices.UplaodCourseImage(model.file);
             if (ModelState.IsValid)
             {
-               var result= await _servicesManger.courseServices.CreateNewCourse(model);
+               var result= await _servicesManger.courseServices.CreateNewCourse(model, image.model[0]);
                 if(result.isSuccess)
                 {
                     return RedirectToAction("ManageCourse",new { id = result.model.Entity.Id });
                 }
                 else
-               
                     return View();
             }
 			return View();

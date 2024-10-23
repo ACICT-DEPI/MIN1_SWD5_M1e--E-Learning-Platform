@@ -15,6 +15,7 @@ namespace Entites.Models
         public string SkillLevel { get; set; }
         public decimal Price { get; set; }
         public string Requirments { get; set; }
+        public string? image {  get; set; }  
         public bool IsPublic { get; set; }= false;
         public bool IsDeleted { get; set; } = false;
         public int NumberOfStudents { get; set; } = 0;
